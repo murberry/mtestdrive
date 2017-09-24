@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<title>试驾后添加图片</title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/maser.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+	</head>
+
+	<body>
+		<section>
+			<div class="container-fluid theme_color  text-center">
+				<h4 class="font_color">手续办理</h4>
+			</div>
+		</section>
+		<section class="container imgpad">
+			<div class="media">
+				<div class="media-left media-middle"> <span class="glyphicon glyphicon-user" ></span> </div>
+				<div class="media-body">
+				<h4>试驾信息</h4></div>
+			</div>
+		</section>
+		<section>
+			<div class="container" style=" padding-top:10px ;">
+				<div class="row">
+					<div class="col-xs-7">
+						<p>张三</p>
+						<p>车型：GHIHIL</p>
+						<p>2017.2.7&nbsp;&nbsp;13:00-14:00</p>
+					</div>
+
+					<div class="col-xs-5">
+						<p> 18133682122</p>
+					</div>
+				</div>
+				
+				<div class="photo">
+					<div class="pic">
+						<input id="img" type="file" accept="image/*" capture="camera" style=" border:1px solid red" />
+						<span style=" text-align: center;">添加试驾合同照片</span>
+					</div>
+					<div id="photo"></div>
+
+					<div class="pic">
+						<input id="img1" type="file" accept="image/*" capture="camera" />
+						<span>添加试驾驾照照片</span>
+					</div>
+					<div id="photo1"></div>
+				</div>
+				<div class="container tijiao">
+					<a href="CompleteManagement.html"><button type="button" class="btn btn-primary btn-block theme_color">下一步</button></a>
+				</div>
+			</div>
+
+		</section>
+
+      <footer class="navbar-fixed-bottom text-center " style="background: #FFF;">
+			<a href="index1.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-home"></span>
+					<h6>首页</h6>
+				</div>
+			</a>
+			<a href="testManagement.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-credit-card "></span>
+					<h6>试驾管理</h6>
+				</div>
+			</a>
+			<a href="customer_list.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-user"></span>
+					<h6>我的客户</h6>
+				</div>
+			</a>
+			<a href="Vehicle_information.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-list"></span>
+					<h6>车辆管理</h6>
+				</div>
+			</a>
+		</footer>
+	</body>
+	<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('#img').change(function() {
+					var file = this.files[0];
+					var r = new FileReader();
+					r.readAsDataURL(file);
+					$(r).load(function() {
+
+						$('#photo').html('<img src="' + this.result + '" alt="" />');
+					})
+					$("span").hide();
+				})
+				$('#img1').change(function() {
+					var file = this.files[0];
+					var r = new FileReader();
+					r.readAsDataURL(file);
+					$(r).load(function() {
+
+						$('#photo1').html('<img src="' + this.result + '" alt="" />');
+					})
+					$("span").hide();
+				})
+			})
+		</script>
+
+</html>

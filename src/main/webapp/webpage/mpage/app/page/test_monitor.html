@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<title>试驾监控</title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/maser.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+		
+	</head>
+
+	<body>
+		<section>
+			<div class="container-fluid theme_color top_bom_pad text-center">
+				<div class="col-xs-2">
+						<a href="CompleteManagement.html" class="back "><span class="glyphicon glyphicon-chevron-left" style="color: #FFFFFF;line-height: 2.5em;"></span></a>
+                </div>
+				<h4 class="font_color">试驾车位置</h4>
+			</div>
+		</section>
+		<!--
+        	作者：offline
+        	时间：2017-03-17
+        	描述：这里是现实当前的位置
+       -->
+		<div class="container-fluid" id="currMap">
+
+		</div>
+
+		<div class="container tijiao" style="margin-bottom:60px;">
+			<button type="button" class="btn btn-primary btn-block theme_color" id="ok">完成</button>
+		</div>
+
+	<!--
+   描述： 菜单栏
+    -->
+   <footer class="navbar-fixed-bottom text-center ">
+			<a href="index1.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-home"></span>
+					<h6>首页</h6>
+				</div>
+			</a>
+			<a href="testManagement.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-credit-card "></span>
+					<h6>试驾管理</h6>
+				</div>
+			</a>
+			<a href="customer_list.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-user"></span>
+					<h6>我的客户</h6>
+				</div>
+			</a>
+			<a href="Vehicle_information.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-list"></span>
+					<h6>车辆管理</h6>
+				</div>
+			</a>
+		</footer>
+</body>
+<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4lb48bMFrQh09NzCuuul4W2e7YpAGrNG"></script>
+<script type="text/javascript">
+	$("#ok").click(function(){
+		if(window.confirm('您确定当前试驾已完成吗？')){
+                 window.location.href="Add_picture.jsp";
+              }else{
+               
+                 return false;
+             }
+		
+	});
+	
+	
+			window.onload = function() {
+				// 百度地图API功能
+				var map = new BMap.Map("currMap");
+				var point = new BMap.Point(116.331398, 39.897445);
+				map.centerAndZoom(point, 12);
+
+				var geolocation = new BMap.Geolocation();
+				geolocation.getCurrentPosition(function(r) {
+					if(this.getStatus() == BMAP_STATUS_SUCCESS) {
+						var mk = new BMap.Marker(r.point);
+						map.addOverlay(mk);
+						map.panTo(r.point);
+					} else {
+						alert('failed' + this.getStatus());
+					}
+				}, { enableHighAccuracy: true })
+				//关于状态码
+				//BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+				//BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+				//BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+				//BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+				//BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+				//BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+				//BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+				//BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
+				//BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
+			};
+		</script>
+</html>

@@ -1,0 +1,184 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+a{
+	color: black;
+}
+a:hover{
+	text-decoration: none;
+}
+body{
+	font-family: "寰蒋闆呴粦";
+}
+.theme_color{
+	background-color: #12203b;
+}
+thfont_color{
+	color: #12203b;
+}
+
+.blank{
+	background-color: #fff;
+}
+.top_style{
+	height: 40px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: none;
+}
+.top_style a{
+	line-height:40px ;
+	color: #fff;
+}
+.font_color{
+	color: #fff;
+}
+.top_bom_pad{
+	padding-bottom:5px ;
+   padding-top: 5px;
+}
+.info{
+	margin: 20px 0;
+	border-bottom:2px solid #d8d8d8 ;
+}
+.info dt{
+	margin: 15px 0;
+}
+.btn_kongxi{
+	margin: 15px 0;
+}
+.callcolor{
+	color: #4efbab;
+}
+@media screen and (min-width: 320px){/* 鍙鍖哄煙灏忎簬 850px, 璁剧疆鏇村皬font-size灞炴�� */
+  dt{
+  	 font-size:10px;
+  }
+  strong{
+     font-size:12px;
+   }
+}
+.inputhight{
+	height: 45px;
+}
+#menu a{
+	display: inline-block;
+	padding:10px 0 ;
+}
+#menu a:hover{
+	color: white;
+}
+#menu .col-xs-3{
+	border-right: 2px solid #f1f1f1;
+}
+#menu .col-xs-3:hover{
+	background-color: #0f1d3a;
+}
+.menu_active{
+	background-color: #0f1d3a;
+	color:#FFF ;
+}
+.menu_active a{color:#FFF ;}
+.imgpad{
+	padding: 20px 0;
+	border-bottom: 2px solid  #f1f1f1;
+}
+.shijiaInof .row{
+	margin: 15px 0;
+}
+.row>.col-xs-12>dt{
+	margin-bottom: 15px ;
+}
+.uploader{
+	width: 80%;
+	height: 100px;
+	border: 2px solid #f1f1f1;
+	margin: 15px auto;
+	cursor: pointer;
+}
+.tijiao{
+	margin-top:40PX;
+	margin-bottom:50PX
+}
+#currMap{
+	height: 350px;
+}
+.sj_title h2{
+	margin: 20px 0;
+}
+.listName>dl>dt{
+	margin: 15px 0;
+}
+.listXiang>dl>dt{
+  line-height: 20px;
+  margin-bottom: 5px;
+}
+.kongbai{
+	margin: 25px 0;
+}
+.yuyuetijiao{
+	margin-bottom:50px;
+}
+.xuanzhepad{
+	padding:30px 0  40px 0 ;
+}
+.luxianxuanz{
+	padding:10px 0 ;
+	border-bottom: 1px solid black;
+}
+.fontBlack{
+	color: black;
+}
+.waychose{
+	height: 300px;
+}
+.reporter tr:nth-child(even){
+	border-bottom: 2px solid #F1F1F1;
+}
+.show form{margin-top:25px ;}
+.show .title{text-align: center; margin-top:50px ;}
+.show form .customers{margin-right:-15PX ; margin-left:-15PX ; margin-bottom:0PX ;}
+.show form .customeres{margin-right:-15PX ; margin-left:-15PX ; margin-bottom:10PX ;}
+.show form .compellation{padding-right:0 ; height:45px ; line-height:45px ;}
+.show form .compellations{ margin-bottom:20px ;}
+.show form .form-group .sex_distance{padding-top:10px ; padding-left:20px ;}
+.show form .form-group span{margin-left:5px}
+.show form .distance{padding-left:0px ;}
+.show form .ensure{background:#0f1d3a; padding-left:20px ; padding-right:20px ;}
+.show form .bnt_margin{margin-top:40px ; margin-bottom:20PX ;}
+.show form .textarea{margin-bottom:50px ;}
+.show form .textarea_font{margin-bottom:10px ;}
+.agreement{padding-bottom:20px ;}
+.agreement .password{float:left; margin-top:10px ;}
+#photo{ width:80%;min-height:120px; margin:auto; border:1px solid #f1f1f1; margin-bottom:30px }
+#photo img{ width:100%; height:auto;}
+#photo1{ width:80%;min-height:120px; margin:auto; border:1px solid #f1f1f1 }
+#photo1 img{ width:100%; height:auto;}
+input[type="file"] {
+    color: inherit;
+	width:100%;
+	height:100px;
+	line-height:100px
+}
+.pic{margin:0 auto; text-align:center;}
+.pic input{margin:0 auto; opacity:0; width:75%; height:100px; line-height:100px; position:absolute; margin-top:30px; right:40px}
+.pic span{position:relative; top:70px;}
+ button a{ text-decoration: none; color:#FFF ;}
+a:hover{color:#FFF; }
+.confirms a{ text-decoration: none;}
+.media span{font-size: 36px; margin-left:15px ;}
+p{ white-space:nowrap;}
+.beizhu{
+   
+    width: 75%;
+   
+    line-height: 100px;
+    position: absolute;
+    margin-top: 30px;
+    right: 40px;
+}
+#myModal { margin: 30% 0 0 0px; /* PLAY THE WITH THE VALUES TO SEE GET THE DESIRED EFFECT */ }

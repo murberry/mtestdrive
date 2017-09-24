@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>首页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+		<link rel="stylesheet" href="css/swiper.min.css" />
+		<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/swiper.min.js"></script>
+	</head>
+	<style type="text/css">
+		html,
+		body {
+			height: 100%;
+			position: relative;
+		}
+		
+		body {
+			background: #eee;
+			font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+			color: #000;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.swiper-container {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.swiper-slide {
+			height: auto;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			-webkit-align-items: center;
+			align-items: center;
+		}
+		
+		.menu {
+			min-width: 100px;
+			width: 70%;
+			max-width: 320px;
+			background-color: #0f1d3a;
+			color: #fff;
+		}
+		
+		.content {
+			position: relative;
+			width: 100%;
+		}
+		
+		.menu-button {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			padding: 15px;
+			cursor: pointer;
+			-webkit-transition: .3s;
+			transition: .3s;
+			/*margin: 14px;
+			border-radius: 5px;*/
+		}
+		
+		.menu-button .bar:nth-of-type(1) {
+			margin-top: 0px;
+		}
+		
+		.menu-button .bar:nth-of-type(3) {
+			margin-bottom: 0px;
+		}
+		
+		.bar {
+			position: relative;
+			display: block;
+			width: 40px;
+			height: 5px;
+			margin: 5px auto;
+			background-color: #000;
+			border-radius: 10px;
+			-webkit-transition: .3s;
+			transition: .3s;
+		}
+		
+		.menu-button:hover .bar:nth-of-type(2) {
+			opacity: .9;
+		}
+		
+		.left_nav {
+			width: 95%;
+			margin: 0 auto;
+		}
+		
+		.left_nav ul {
+			padding: 0px;
+		}
+		
+		.left_nav ul li {
+			border-bottom: 1px solid #FFF;
+			padding: 10px 0px;
+			list-style: none;
+			overflow: hidden;
+		}
+		
+		.left_nav ul li a {
+			color: #FFF;
+		}
+		
+		.mui-ico {
+			text-align: center;
+			background: #FFF;
+		}
+		
+		.mui-ico img {
+			margin-bottom: 5px;
+			margin-top: 6px;
+			width: auto;
+			text-align: center;
+		}
+		
+		.info_title {
+			border-bottom: 1px solid #f1f1f1;
+			margin-top: 0PX;
+		}
+		
+		.drive_info {
+			margin-top: 10px;
+			overflow: hidden;
+		}
+		
+		.container img {
+			width: 100%;
+		}
+		
+		.selected {
+			background: #0f1d3a;
+			color: #FFF;
+		}
+		
+		.footer li a {
+			color: #8f8f94
+		}
+		
+		.footer li button {
+			width: 100%;
+			border-radius: 0px;
+			border: none;
+			text-align: center;
+			outline: 0;
+			padding-top: 15px;
+			padding-bottom: 10px;
+		}
+		
+		.footer li button:active {
+			background: #0f1d3a;
+			color: #FFF;
+		}
+		
+		.deploy-sidebar {
+			position: absolute;
+			z-index: 999;
+			background-image: url(../images/header-nav.png);
+			background-repeat: no-repeat;
+			top: 20px;
+			width: 50px;
+			display: block;
+		}
+		
+		.min_ico {
+			margin: 0 auto;
+			text-align: center;
+		}
+		
+		.min_ico img {
+			border-radius: 100%;
+			text-align: center;
+			margin-top: 50px;
+			margin-bottom: 20px;
+		}
+		
+		.panel {
+			margin-bottom: 0px;
+		}
+		
+		.panel-body {
+			padding: 0px;
+		}
+		
+		.panel-body .table {
+			margin-bottom: 0px;
+		}
+		
+		.panel-body .table tr {
+			border: none;
+		}
+		
+		.panel-body .table tr>td {
+			padding: 4px;
+			line-height: 1.42857143;
+			vertical-align: top;
+			border: none;
+		}
+		
+		.navbar-fixed-bottom {
+			background-color: #FFFFFF;
+			border-top: 1px solid #F1F1F1;
+		}
+		
+		.navbar-fixed-bottom .col-xs-3 {
+			padding-top: 5px;
+			border-left: 1px solid #F1F1F1;
+			line-height: 12px;
+		}
+		
+		.navbar-fixed-bottom>a {
+			display: block;
+			text-decoration: none;
+			color: #000000;
+		}
+		
+		.navbar-fixed-bottom>a:hover {
+			color: #0e14da;
+			font-weight: bold;
+		}
+		
+		.col-xs-3>h6 {
+			padding: 0;
+			margin-top: 5px;
+		}
+		
+		.actives {
+			font-weight: bold;
+			color: #0e14da;
+		}
+		
+		.btn-block {
+			display: block;
+			margin: 0 auto;
+		}
+		
+		.btn:hover {
+			background-color: #F1F1F1;
+			color: black;
+		}
+		
+		footer a {
+			text-align: center;
+			color: black;
+			font-weight: bold;
+			display: block;
+			padding-top: 3px;
+		}
+		
+		footer a span {
+			font-size: 12px;
+		}
+		
+		footer a h6 {
+			margin: 0;
+		}
+		
+		footer .navbar-fixed-bottom .col-xs-3 {
+			padding-top: 5px;
+			border-left: 1px solid #F1F1F1;
+			line-height: 12px;
+		}
+		
+		footer a:hover {
+			color: #0e14da;
+		}
+		
+		.panel-body a {
+			color: #000000;
+		}
+		
+		.text-center a {
+			color: white;
+		}
+		
+		.text-center a:hover {
+			color: black;
+		}
+	</style>
+	</head>
+
+	<body>
+		<!-- Swiper -->
+		<div class="swiper-container">
+			<div class="swiper-wrapper" style=" position:absolute">
+				<div class="swiper-slide menu">
+					<div class="left_nav">
+						<ul class="left_nav">
+							<div style=" margin:0 auto; text-align:center"> <img src="images/tx.jpg" style="width: 100px; height:100px; text-align:center; margin-top:70px; margin-bottom:20px;border-radius:100px ;"> </div>
+							<li>工号：888</li>
+							<li>姓名：sofia</li>
+							<li>门店：上海市北京西路722号</li>
+							<li>
+								<a>
+									<div class="success_rate">预约成功率: </div>
+									<div class="graph"> <strong id="bar" style="width:1%;">70%</strong></div>
+								</a>
+							</li>
+							<li>转化率：70%</li>
+							<li>
+								<a href="">注销</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="swiper-slide content">
+					<div><img src="images/Logo.png" style=" width:100%"></div>
+					<div class="menu-button">
+						<div class="bar"></div>
+						<div class="bar"></div>
+						<div class="bar"></div>
+					</div>
+					<div class="panel theme_color" style=" background:#FFF; margin-top:10px;">
+						<div class="panel-heading">
+							<h3 class="panel-title">今日任务</h3>
+						</div>
+						<div class="panel-body">
+							<div class="bs-example" data-example-id="collapse-accordion">
+								<div class="panel-group" id="accordion" role="tablist">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+												<h4 class="panel-title">  潜在试驾 <span class="label label-default pull-right">2</span> </h4></a>
+										</div>
+										<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506 </td>
+															</tr>
+															<tr>
+																<td>状态:待确认</td>
+																<td>车况:<span class="text-primary">空闲</span></td>
+															</tr>
+															<tr class="text-center">
+																<tr class="text-center">
+																	<td>
+																		<a href="vehicle_condition.html">
+																			<a href="tel:18521706216" class="btn btn-primary">电话确认</a>
+																		</a>
+																	</td>
+																	<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+																</tr>
+															</tr>
+
+														</tbody>
+													</table>
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:林愈静</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Levante S</td>
+																<td>电话:18518816116</td>
+															</tr>
+															<tr>
+																<td>状态:待确认</td>
+																<td>车况:<span class="text-danger">报备</span></td>
+															</tr>
+															<tr class="text-center">
+																<td>
+																	<a href="vehicle_condition.html">
+																		<a href="tel:18521706216" class="btn btn-primary">电话确认</a>
+																	</a>
+																</td>
+																<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+																
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingTwo">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+												<h4 class="panel-title">  已确认 <span class="label label-default pull-right">2</span> </h4></a>
+										</div>
+										<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll; padding-bottom:100px;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.04.05&nbsp;<span>15:00-16:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506</td>
+															</tr>
+															<tr>
+																<td>状态:已电话确认</td>
+																<td>车况:空闲</td>
+															</tr>
+															<tr class="text-center">
+																<td>
+																	<a href="vehicle_condition.html" class="anniu">
+																		<button type="button" class="btn btn-primary">车况确认</button>
+																	</a>
+																</td>
+																<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:顾念杉</td>
+																<td>2017.04.05&nbsp;<span>16:00-17:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:GC</td>
+																<td>电话:15219978090</td>
+															</tr>
+															<tr>
+																<td>状态:已电话确认</td>
+																<td>车况:空闲</td>
+															</tr>
+															<tr class="text-center">
+																<td>
+																	<a href="vehicle_condition.html" class="anniu">
+																		<button type="button" class="btn btn-primary">车况确认</button>
+																	</a>
+																</td>
+																<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingsx">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsesx" aria-expanded="false" aria-controls="collapsesx">
+												<h4 class="panel-title">
+      手续办理
+       <span class="label label-default pull-right">2</span>
+      </h4> </a>
+										</div>
+										<div id="collapsesx" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsx">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll; padding-bottom:100px;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.04.05&nbsp;<span>15:00-16:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506</td>
+															</tr>
+															<tr>
+																<td>状态:车况已确认</td>
+																<td>车况:<span class="text-primary">空闲</span></td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="drive_information.html" class="anniu"> <button class="btn btn-primary">手续办理</button> </a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:泊如</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型: GT</td>
+																<td>电话:13877278866</td>
+															</tr>
+															<tr>
+																<td>状态:车况已确认</td>
+																<td>车况:<span class="text-primary">空闲</span></td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="drive_information.html" class="anniu"> <button class="btn btn-primary">手续办理</button> </a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingThree">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+												<h4 class="panel-title">正在试驾<span class="label label-default pull-right">1</span> </h4> </a>
+										</div>
+										<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll; padding-bottom:100px;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.04.05&nbsp;<span>15:00-16:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506</td>
+															</tr>
+															<tr>
+																<td>状态:正在试驾</td>
+																<td>车况:正在试驾</td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="test_monitor.html" class="btn btn-primary " style="color: white;">查看</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading4">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapse4">
+												<h4 class="panel-title">  试驾已完成  <span class="label label-default pull-right">1</span> </h4></a>
+										</div>
+										<div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+											<div class="panel-body">
+												<div style="max-height:250px;overflow-y: scroll; padding-bottom:140px;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.04.05&nbsp;<span>15:00-16:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506</td>
+															</tr>
+															<tr>
+																<td>状态:试驾已完成</td>
+																<td>车况:空闲</td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="vehicle_condition.html">
+																		<a href="report.html" class="btn btn-primary" style="color: white;">生成报告</a>
+																	</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													
+													
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<footer style="background:#FFF; width:100%; position:fixed;bottom:0px;">
+						<a href="index1.html">
+							<div class="col-xs-3">
+								<span class="glyphicon glyphicon-home"></span>
+								<h6>首页</h6>
+							</div>
+						</a>
+						<a href="testManagement.html">
+							<div class="col-xs-3">
+								<span class="glyphicon glyphicon-credit-card "></span>
+								<h6>试驾管理</h6>
+							</div>
+						</a>
+						<a href="customer_list.html">
+							<div class="col-xs-3">
+								<span class="glyphicon glyphicon-user"></span>
+								<h6>我的客户</h6>
+							</div>
+						</a>
+						<a href="Vehicle_information.html">
+							<div class="col-xs-3">
+								<span class="glyphicon glyphicon-list"></span>
+								<h6>车辆管理</h6>
+							</div>
+						</a>
+						<div class="clearfix"></div>
+					</footer>
+
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			var i = 1;
+			setInterval(function() {
+				if(i < 70) {
+					i++;
+				}
+				$("#bar").css("width", i + "%");
+				$("#bar").html(i + "%");
+
+			}, 100);
+
+			var toggleMenu = function() {
+					if(swiper.previousIndex == 0)
+						swiper.slidePrev()
+				},
+				menuButton = document.getElementsByClassName('menu-button')[0],
+				swiper = new Swiper('.swiper-container', {
+					slidesPerView: 'auto',
+					initialSlide: 1,
+					resistanceRatio: .00000000000001,
+					onSlideChangeStart: function(slider) {
+						if(slider.activeIndex == 0) {
+							menuButton.classList.add('cross')
+							menuButton.removeEventListener('click', toggleMenu, false)
+						} else
+							menuButton.classList.remove('cross')
+					},
+					onSlideChangeEnd: function(slider) {
+						if(slider.activeIndex == 0)
+							menuButton.removeEventListener('click', toggleMenu, false)
+						else
+							menuButton.addEventListener('click', toggleMenu, false)
+					},
+					slideToClickedSlide: true
+				})
+		</script>
+	</body>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>客户列表</title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+		<!--
+        	作者：offline
+        	时间：2017-03-23
+        	描述：<script type="text/javascript" src="js/customer.js" ></script>
+       -->
+		<style type="text/css">
+			.form-control {
+				width: 100%;
+				height: 30px;
+			}
+			
+			.query .query_btn {
+				height: 30px;
+				line-height: 30px;
+			}
+			.table{
+				margin: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--头部查询开始 -->
+		<header>
+			<div class="container query">
+				<div ass="row">
+					<div class="col-xs-2 ico text-right" id="addBtn" style="padding: 0px;margin-right: 0px;">
+						<a href="add_customer.html"><img src="images/guanzhu.png" height="30px" width="30px"></a>
+					</div>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" placeholder="请输入客户的手机号或姓名" id="cusInfo">
+					</div>
+					<div class="col-xs-2 query_btn" id="queryBtn">查询</div>
+				</div>
+			</div>
+		</header>
+		<!--头部查询结束 -->
+		<!--客户列表开始 -->
+		<div class="container details_list">
+			<!--客户列表内容开始 -->
+			<div>
+				<div class="row" id="lists">
+					<div class="container">
+						<table class="table">
+							<thead>
+								<tr>
+								<td style="border: none;">姓名：顾念杉</td>
+								<td style="border: none;">电话： 15219978090</td>
+							</tr>
+							<tr>
+								<td  style="border: none;">渠道：厂家销售线索</td>
+							    <td style="border: none;">性别：男</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="border: none;">最近预约：2017.04.05&nbsp;14:00-15:00 &nbsp;GC</td>
+							</tr>
+							</thead>
+						</table>
+					</div>
+					<div class="text-center">
+						<div class="col-xs-6 bnt_right ">
+							<a href=" yuyue.html">
+								<button type="button" class="btn btn-primary">试驾预约</button>
+							</a>
+						</div>
+						<div class="col-xs-6 bnt_left">
+							<a href=" test_appointment.html">
+								<button type="button" class="btn btn-primary">修改资料</button>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row details">
+					<div class="container">
+						<table class="table">
+							<tr>
+								<td style="border: none;">姓名：曲小可</td>
+								<td style="border: none;">电话： 13877278866</td>
+							</tr>
+							<tr>
+								<td style="border: none;">渠道：厂方市场活动</td>
+								<td style="border: none;">性别：女</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="border: none;">最近预约：无</td>
+							</tr>
+						</table>
+					</div>
+					<div class="text-center">
+						<div class="col-xs-6 bnt_right ">
+							<a href=" yuyue.html">
+								<button type="button" class="btn btn-primary">试驾预约</button>
+							</a>
+						</div>
+						<div class="col-xs-6 bnt_left">
+							<a href=" test_appointment.html">
+								<button type="button" class="btn btn-primary">修改资料</button>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row details">
+					<div class="container">
+						<table class="table">
+							<tr>
+								<td style="border: none;">姓名：林愈静</td>
+								<td style="border: none;">电话： 18621506216</td>
+							</tr>
+							<tr>
+								<td  style="border: none;">渠道：展厅</td>
+							    <td style="border: none;">性别：女</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="border: none;">最近预约：2017.03.21&nbsp;11:00-12:00&nbsp;QP V8</td>
+							</tr>
+						</table>
+					</div>
+					<div class="text-center">
+						<div class="col-xs-6">
+							<span class="glyphicon glyphicon-heart" style="font-size:32px; color: #0f1d3a;" onclick="javascript:alert('该客户已经试驾完成，请关注客户意向。');">
+								</span>
+						</div>
+						<div class="col-xs-6 bnt_left">
+							<a href=" test_appointment.html">
+								<button type="button" class="btn btn-primary">修改资料</button>
+							</a>
+						</div>
+					</div>
+				</div>
+			
+			<div class="row details">
+					<div class="container">
+						<table class="table">
+							<tr>
+								<td style="border: none;">姓名：泊如</td>
+								<td style="border: none;">电话： 18518816116</td>
+							</tr>
+							<tr>
+								<td  style="border: none;">渠道：售后转介绍</td>
+							    <td style="border: none;">性别：男</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="border: none;">最近预约：2017.03.22&nbsp;14:00-15:00&nbsp;Ghibli</td>
+							</tr>
+						</table>
+					</div>
+					<div class="text-center">
+						<div class="col-xs-6">
+							<span class="glyphicon glyphicon-heart" style="font-size:32px; color: #0f1d3a;" onclick="javascript:alert('该客户已经试驾完成，请关注客户意向。');">
+								</span>
+						</div>
+						<div class="col-xs-6 bnt_left">
+							<a href=" test_appointment.html">
+								<button type="button" class="btn btn-primary">修改资料</button>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--客户列表内容结束 -->
+		</div>
+<footer class="navbar-fixed-bottom text-center ">
+			<a href="index1.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-home"></span>
+					<h6>首页</h6>
+				</div>
+			</a>
+			<a href="testManagement.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-credit-card "></span>
+					<h6>试驾管理</h6>
+				</div>
+			</a>
+			<a href="customer_list.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-user"></span>
+					<h6>我的客户</h6>
+				</div>
+			</a>
+			<a href="Vehicle_information.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-list"></span>
+					<h6>车辆管理</h6>
+				</div>
+			</a>
+		</footer>
+	</body>
+	<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script><br>
+	<script src="js/dropload.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var counter = 0;
+			// 每页展示4个
+			var num = 4;
+			var pageStart = 0,
+				pageEnd = 0;
+
+			// dropload
+			$('#lists').dropload({
+					scrollArea: window,
+					loadDownFn: function(me) {
+						$.ajax({
+								type: 'GET',
+								url: 'json/more.json',
+								dataType: 'json',
+								success: function(data) {
+
+								}
+								// 为了测试，延迟1秒加载
+								setTimeout(function() {
+									$('#lists').append(result);
+									// 每次数据加载完，必须重置
+									me.resetload();
+								}, 1000);
+							},
+							error: function(xhr, type) {
+								alert('无法访问');
+								// 即使加载出错，也得重置
+								me.resetload();
+							}
+						});
+				}
+			});
+		});
+	</script>
+
+</html>

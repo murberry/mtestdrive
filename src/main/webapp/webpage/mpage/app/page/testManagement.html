@@ -1,0 +1,438 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<title>试驾管理</title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/maser.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+		<style>
+			.panel-body a {
+			color: #000000;
+		}
+		
+		.panel-body .text-center a {
+			color: white;
+		}
+		
+		.panel-body .text-center a:hover {
+			color: black;
+		}
+			
+		</style>
+		
+	</head>
+
+	<body>
+		<section>
+
+			<div class="container" style="  background:#0f1d3a ;">
+				<div class="table-responsive" style="border: none;">
+					<table class="table search" style="border: none;">
+						<tr>
+							<td>
+								<select style="border: none;color: black; background-color: #FFFFFF;height:35px ;">
+									<option>车牌</option>
+									<option>沪NT0915</option>
+									<option>沪NR8631</option>
+								</select>
+							</td>
+							<td>
+								<select style="border: none;color: black; background-color: #FFFFFF;height:35px ;">
+									<option>车辆类型</option>
+									<option>Ghibli</option>
+									<option>QP V8</option>
+									<option>GC</option>
+									<option>GT</option>
+									<option>Ghibli Q4</option>
+									<option>Ghibli S</option>
+									<option>QP V6</option>
+									<option>QP 410</option>
+									<option>Levante S</option>
+								</select>
+							</td>
+							<td>
+								<select style="border: none;color: black; background-color: #FFFFFF;height:35px ;">
+									<option>试驾状态</option>
+									<option>已确认</option>
+									<option>试驾中</option>
+									<option>试驾完成</option>
+								</select>
+							</td>
+							<td>
+								<a href="" style="color: #FFFFFF;line-height: 35px;">日期</a>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+		</section>
+
+		<!--
+          描述：这里是试驾信息的展示 : 一个section就表示一条信息
+   -->
+		<div class="panel  testMag">
+			<div class="panel-heading">
+				<h3 class="panel-title">试驾列表</h3>
+			</div>
+				<div class="panel-body">
+					<div class="bs-example" data-example-id="collapse-accordion">
+								<div class="panel-group" id="accordion" role="tablist">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+												<h4 class="panel-title">  潜在试驾 <span class="label label-default pull-right">2</span> </h4></a>
+										</div>
+										<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506 </td>
+															</tr>
+															<tr>
+																<td>状态:待确认</td>
+																<td>车况:<span class="text-primary">空闲</span></td>
+															</tr>
+															<tr class="text-center">
+																<tr class="text-center">
+																	<td>
+																		<a href="vehicle_condition.html">
+																			<a href="tel:18521706216" class="btn btn-primary">电话确认</a>
+																		</a>
+																	</td>
+																	<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+																</tr>
+															</tr>
+
+														</tbody>
+													</table>
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:林愈静</td>
+																<td>2017.03.28&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:18518816116</td>
+															</tr>
+															<tr>
+																<td>状态:待确认</td>
+																<td>车况:<span class="text-danger">报备</span></td>
+															</tr>
+															<tr class="text-center">
+																<td>
+																	<a href="vehicle_condition.html">
+																		<a href="tel:18521706216" class="btn btn-primary">电话确认</a>
+																	</a>
+																</td>
+																<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+																
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingTwo">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+												<h4 class="panel-title">  已确认 <span class="label label-default pull-right">2</span> </h4></a>
+										</div>
+										<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:顾念杉</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:GC</td>
+																<td>电话:15219978090</td>
+															</tr>
+															<tr>
+																<td>状态:已电话确认</td>
+																<td>车况:空闲</td>
+															</tr>
+															<tr class="text-center">
+																<td>
+																	<a href="vehicle_condition.html" class="anniu">
+																		<button type="button" class="btn btn-primary">车况确认</button>
+																	</a>
+																</td>
+																<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.04.05&nbsp;<span>15:00-16:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506</td>
+															</tr>
+															<tr>
+																<td>状态:已电话确认</td>
+																<td>车况:空闲</td>
+															</tr>
+															<tr class="text-center">
+																<td>
+																	<a href="vehicle_condition.html" class="anniu">
+																		<button type="button" class="btn btn-primary">车况确认</button>
+																	</a>
+																</td>
+																<td>
+																	<a href="Modify_reservation.html" class="anniu">
+																		<button type="button" class="btn btn-primary">修改预约</button>
+																	</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingsx">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsesx" aria-expanded="false" aria-controls="collapsesx">
+												<h4 class="panel-title">
+      手续办理
+       <span class="label label-default pull-right">2</span>
+      </h4> </a>
+										</div>
+										<div id="collapsesx" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsx">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:顾念杉</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:GC</td>
+																<td>电话:15219978090</td>
+															</tr>
+															<tr>
+																<td>状态:车况已确认</td>
+																<td>车况:<span class="text-danger">报备</span></td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="drive_information.html" class="anniu"> <button class="btn btn-primary">手续办理</button> </a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:泊如</td>
+																<td>2017.03.28&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:15219978090</td>
+															</tr>
+															<tr>
+																<td>状态:车况已确认</td>
+																<td>车况:<span class="text-danger">报备</span></td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="drive_information.html" class="anniu"> <button class="btn btn-primary">手续办理</button> </a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingThree">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+												<h4 class="panel-title">正在试驾<span class="label label-default pull-right">2</span> </h4> </a>
+										</div>
+										<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+											<div class="panel-body">
+												<div style="max-height:270px;overflow-y: scroll;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:顾念杉</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:GC</td>
+																<td>电话:15219978090</td>
+															</tr>
+															<tr>
+																<td>状态:已成功预约</td>
+																<td>车况:正在试驾</td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="test_monitor.html" class="btn btn-primary " style="color: white;">查看</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													
+													
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:曲小可</td>
+																<td>2017.03.28&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13866880506</td>
+															</tr>
+															<tr>
+																<td>状态:正在试驾</td>
+																<td>车况:正在试驾</td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="test_monitor.html" class="btn btn-primary " style="color: white;">查看</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="heading4">
+											<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapse4">
+												<h4 class="panel-title">  试驾已完成  <span class="label label-default pull-right">2</span> </h4></a>
+										</div>
+										<div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+											<div class="panel-body">
+												<div style="max-height:250px;overflow-y: scroll; padding-bottom: 60px;">
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:顾念杉</td>
+																<td>2017.04.05&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:GC</td>
+																<td>电话: 152199780905</td>
+															</tr>
+															<tr>
+																<td>状态:试驾已完成</td>
+																<td>车况:空闲</td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="vehicle_condition.html">
+																		<a href="report.html" class="btn btn-primary" style="color: white;">生成报告</a>
+																	</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													<table class="table">
+														<tbody>
+															<tr>
+																<td>姓名:泊如</td>
+																<td>2017.03.28&nbsp;<span>14:00-15:00</span></td>
+															</tr>
+															<tr>
+																<td>车型:Ghibli</td>
+																<td>电话:13877278866</td>
+															</tr>
+															<tr>
+																<td>状态:试驾已完成</td>
+																<td>车况:空闲</td>
+															</tr>
+															<tr class="text-center">
+																<td colspan="2">
+																	<a href="vehicle_condition.html">
+																		<a href="report.html" class="btn btn-primary" style="color: white;">生成报告</a>
+																	</a>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>				
+							</div>
+						</div>
+	
+	  </div>
+	  
+	  
+	   <footer class="navbar-fixed-bottom text-center ">
+						<a href="index1.html">
+							<div class="col-xs-3">
+								<span class="glyphicon glyphicon-home"></span>
+								<h6>首页</h6>
+							</div>
+						</a>
+						<a href="testManagement.html">
+							<div class="col-xs-3 actives">
+								<span class="glyphicon glyphicon-credit-card "></span>
+								<h6>试驾管理</h6>
+							</div>
+						</a>
+						<a href="customer_list.html">
+							<div class="col-xs-3">
+								<span class="glyphicon glyphicon-user"></span>
+								<h6>我的客户</h6>
+							</div>
+						</a>
+						<a href="Vehicle_information.html">
+							<div class="col-xs-3">
+								<span class="glyphicon glyphicon-list"></span>
+								<h6>车辆管理</h6>
+							</div>
+						</a>
+					</footer>
+  </body>
+	<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+
+</html>

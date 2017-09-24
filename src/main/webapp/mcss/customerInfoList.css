@@ -1,0 +1,14 @@
+.search_option {
+	margin: 10px 0px 10px 10px;
+	float: right;
+}
+
+.search_condition_input {
+	width: 120px;
+	height: 29px !important;
+}
+
+.icon-clear {
+	background: url('icons/clear.png') no-repeat center center;
+}
+

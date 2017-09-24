@@ -1,0 +1,239 @@
+html,
+body {
+	background-color: #efeff4;
+}
+
+p {
+	color: #3e3e3e
+}
+
+.deploy-sidebar {
+	position: relative;
+	z-index: 999;
+	background-image: url(../images/header-nav.png);
+	background-repeat: no-repeat;
+	width: 50px;
+	height:24px;
+	display: block;
+}
+
+.mui-icon {
+	font-size: 14px;
+	color: #007aff;
+	margin-left: -15px;
+	padding-right: 10px;
+}
+
+.mui-off-canvas-left {
+	color: #fff;
+}
+
+
+
+.drive_infor {
+	padding-bottom: 30px;
+	background: #FFF;
+	margin-top: -1px;
+	padding-top: 10px;
+	margin-bottom: 19px;
+}
+
+.drive_inforleft {
+	padding-right: 0px;
+}
+
+.drive_inforright {
+	padding-left: 0px;
+	padding-right: 5px;
+}
+
+.drive_inforright a span {
+	color: #4efbab;
+	margin-left: -10px;
+}
+
+.drive_inforright span {
+	margin-left: 4px;
+}
+
+.drive_inforright {
+	padding-left: 0px;
+	padding-right:0px ;
+	
+}
+.drive_inforright p { width:100% ; display: inherit; white-space:nowrap; margin-left:-15px ;}
+
+.drive_infor .drive_inforright a span {
+	color: #4efbab;
+}
+
+.drive_inforright a {
+	color: #8f8f94
+}
+
+.drive_infor .drive_inforright span {
+	margin-left: 4px;
+}
+
+.bnt_left {
+	margin-top: 10px;
+	margin-bottom: 30PX;
+}
+
+.left_bnt {
+	padding: 12px 30px;
+	background: #0f1d3a;
+	text-align: center;
+	color: #FFF;
+	border-radius: 5px
+}
+
+.bnt_right {
+	margin-top: 10px;
+	margin-bottom: 30px;
+	padding-right:0 ;
+	padding-left:25PX ;
+}
+
+.right_bnt {
+	float: right;
+	padding: 12px 30px;
+	background: #0f1d3a;
+	text-align: center;
+	color: #FFF;
+	border-radius: 5px
+}
+
+.footer {
+	position: fixed;
+	z-index: 1111;
+	bottom: 0;
+	background: #FFF;
+	width: 100%;
+	border-top: 1px solid #f1f1f1
+}
+
+.footer ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+.footer ul li {
+	float: left;
+	list-style: none;
+	width: 25%;
+	border-right: 1px solid #f1f1f1;
+	text-align: center;
+}
+
+.min_ico {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.min_ico img {
+	border-radius: 100%;
+	text-align: center;
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+.mui-off-canvas-left {
+	color: #fff;
+}
+
+.success_rate {
+	float: left;
+}
+
+.graph {
+	float: left;
+	width: 58%;
+	border: 1px solid #337ab7;
+	border-radius: 5px;
+	height: 20px;
+}
+
+#bar {
+	float: left;
+	width: 0;
+	height: 100%;
+	font-size: 12px;
+	line-height: 20px;
+	border-radius: 5px;
+	color: #fff;
+	text-align: center;
+	background-color: #337ab7;
+	-webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+	box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+	-webkit-transition: width .6s ease;
+	-o-transition: width .6s ease;
+	transition: width .6s ease;
+	background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+	background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+	-webkit-background-size: 40px 40px;
+	background-size: 40px 40px
+}
+
+#barNum {
+	position: absolute;
+}
+
+.left_nav {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.left_nav ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+.left_nav ul li {
+	border-bottom: 1px solid #FFF;
+	padding: 10px 0px;
+	list-style: none;
+	overflow: hidden;
+}
+
+.left_nav ul li a {
+	color: #FFF;
+}
+
+.mui-ico {
+	text-align: center;
+	background: #FFF;
+}
+
+.mui-ico img {
+	margin-bottom: 5px;
+	margin-top: 6px;
+	width: auto;
+	text-align: center;
+}
+
+.info_title {
+	border-bottom: 1px solid #f1f1f1;
+	margin-top: 0PX;
+}
+
+.drive_info {
+	margin-top: 10px;
+	overflow: hidden;
+}
+.container img{ width:100% ;}
+.selected{background:#0f1d3a;color:#FFF; }
+.footer li a{color:#8f8f94}
+.footer li button{width: 100%; border-radius:0px ;   border:none;text-align: center; outline:0 ;	padding-top: 15px;	padding-bottom: 10px;}
+
+.footer li button:active{background:#0f1d3a;color:#FFF;}
+.deploy-sidebar {
+    position: absolute;
+    z-index: 999;
+    background-image: url(../images/header-nav.png);
+    background-repeat: no-repeat;
+    top:20px;
+    width: 50px;
+    display: block;
+}

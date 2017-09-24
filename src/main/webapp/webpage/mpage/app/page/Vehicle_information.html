@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>车辆管理</title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+		<style type="text/css">
+		.form-control {
+			height: 30px;
+		}
+		.query .query_btn {
+   height: 30px;
+   line-height: 30px;
+}
+			
+		</style>
+	</head>
+	
+
+	<body>
+		<!--头部查询开始 -->
+		<header>
+			<div class="container query">
+				<div ass="row">
+					<div class="col-xs-3" style="padding-left:0px; padding-right:0px">	
+                    <select class="form-control" style="padding:0px">
+								<option>选择车型</option>
+								<option>GC</option>
+								<option>Ghibli</option>
+								<option>QP V8</option>
+								<option>GT</option>
+								<option>Ghibli Q4</option>
+								<option>Ghibli S</option>
+								<option>QP V6</option>
+								<option>QP 410</option>
+								<option>Levante S</option>
+					</select></div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control" placeholder="请输车牌号" id="cusInfo">
+					</div>
+					<div class="col-xs-2 query_btn" id="queryBtn">查询</div>
+				</div>
+			</div>
+		</header>
+		<!--头部查询结束 -->
+		<!--客户列表开始 -->
+                            	
+		<div class="container details_list">
+	           <div>车辆信息</div>
+			<!--客户列表内容开始 -->
+	
+				<div class="tab">
+					<div class="row details">
+						<div class="col-xs-7 details_left">
+							<p> 车型：Ghibli</p>
+							<p>配置：高端</p>
+							<p>试驾次数：5次</p>
+						</div>
+						<div class="col-xs-5 details_right">
+							<p>年份：2016.10</p>
+							<p>车牌：沪NT0915</p>
+                            <p>车辆状态：报备</p>
+						</div>
+				</div>
+			<!--客户列表内容结束 -->
+			<!--客户列表内容开始 -->
+	
+				<div class="tab">
+					<div class="row details">
+						<input type="hidden" value="jjjdfajhjdfj" name="carid"/>
+						<div class="col-xs-7 details_left">
+							<p> 车型：QP V8</p>
+							<p>配置：高端</p>
+							<p>试驾次数：5次</p>
+						</div>
+						<div class="col-xs-5 details_right">
+							<p>年份：2017.01</p>
+							<p>车牌：沪NR8631	</p>
+                            <p>车辆状态：试驾中</p>
+						</div>
+				</div>
+			<!--客户列表内容结束 -->
+		    </div>
+            </div>
+      <footer class="navbar-fixed-bottom text-center ">
+			<a href="index1.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-home"></span>
+					<h6>首页</h6>
+				</div>
+			</a>
+			<a href="testManagement.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-credit-card "></span>
+					<h6>试驾管理</h6>
+				</div>
+			</a>
+			<a href="customer_list.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-user"></span>
+					<h6>我的客户</h6>
+				</div>
+			</a>
+			<a href="Vehicle_information.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-list"></span>
+					<h6>车辆管理</h6>
+				</div>
+			</a>
+		</footer>
+	</body>
+    <script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script><br>
+	<script>
+		
+
+			$(".details").click(function(){
+			var id=	$(this).children("input[type='hidden']").val();
+			window.location.href="anpai.html";
+			});
+			
+			
+	</script>
+</html>

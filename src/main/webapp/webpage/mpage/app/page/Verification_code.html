@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>发送验证码</title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+	</head>
+
+	<body class="bg">
+		<!--title开始 -->
+		<header>
+			<div class="container top">
+				<div ass="row">
+					<div class="col-xs-2">
+						<a href="login.html" class="back "><span class="glyphicon glyphicon-chevron-left"></span></a>
+					</div>
+					<div class="col-xs-8">
+						<div class="change_password">找回密码</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!--title结束 -->
+		<!--logo开始 -->
+		<!--<div class="container login" >
+				<img src="images/logo.jpg" class="responsive-image" >
+			</div>-->
+
+		<div class="container login" style="margin: 0 auto;">
+			<img src="images/logo.jpg" class="img-responsive">
+		</div>
+		<!--logo结束 -->
+		<!--用户名和密码开始 -->
+		<section class="container">
+			<form>
+				<div class="form-group" style=" overflow: hidden;">
+					<input type="password" class="form-control phone" placeholder="请输入手机号">
+					<input id="btn" value="获取验证码" onclick="settime(this)" class="yanzhenma" />
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" placeholder="请输入验证码">
+				</div>
+				<!--				<a href="change_password.html">
+					<button type="submit" class="btn btn-primary  btn-block confirm">确定</button>
+				</a>-->
+
+				<a href="change_password.html">
+					<div type="submit" class="btn btn-primary  btn-block confirm">确定</div>
+				</a>
+			</form>
+		</section>
+		<!--用户名和密码结束 -->
+	</body>
+	<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+
+</html>

@@ -1,0 +1,78 @@
+.navbar-fixed-bottom {
+	background-color: #FFFFFF;
+	border-top: 1px solid #F1F1F1;
+}
+
+.navbar-fixed-bottom .col-xs-3 {
+	padding-top: 5px;
+	border-left: 1px solid #F1F1F1;
+	line-height: 12px;
+}
+.navbar-fixed-bottom>a {
+	display: block;
+	text-decoration: none;
+	color: #000000;
+}
+.navbar-fixed-bottom>a:hover {
+	color: #0e14da;
+	font-weight: bold;
+}
+.nenuActi{
+	color: #0e14da;
+	font-weight: bold;
+}
+.col-xs-3>h6 {
+	padding: 0;
+	margin-top: 5px;
+}
+
+.actives {
+	font-weight: bold;
+	color: #0e14da;
+}
+
+.btn-block {
+	display: block;
+	width: 61.8%;
+	margin: 0 auto;
+}
+.btn:hover{
+	background-color:#F1F1F1 ;
+	color: black;
+}
+.panel {
+    margin-bottom: 0px;}
+.panel-body {
+    padding: 0px; 
+}
+ .panel-body .table {
+    margin-bottom: 0px;
+}
+
+.panel-body .table tr{
+	border: none;
+}
+ .panel-body .table tr>td {
+    padding: 4px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border: none;
+}
+.testMag a:hover{
+	color: #000000;
+}	
+.nenuActi{
+	color: #0e14da;
+	font-weight: bold;
+}
+.show form {
+    margin-top: 0px;
+}
+.panel-primary {
+    border-color: #0f1d3a;
+}
+.primary>.panel-heading {
+    color: #fff;
+    background-color: #0f1d3a;
+    border-color: #0f1d3a;
+}

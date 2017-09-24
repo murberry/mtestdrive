@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<style type="text/css">
+		html,body{
+			width:100%;
+			height:100%;
+			margin:0;
+			font-family:"微软雅黑";
+		}
+		
+	</style>
+	</head>
+	<body>
+		
+		<div class="container top">
+				<div ass="row">
+					<div class="col-xs-2">
+						<a href="index1.html" class="back "><span class="glyphicon glyphicon-chevron-left"></span></a>
+					</div>
+					<div class="col-xs-8">
+						<h4>试驾报告</h4>
+					</div>
+				</div>
+			</div>
+		<header>
+			<div class="container" style="padding-top: 10px;">
+				<div class="wrap_share pull-right">
+					<div id="ckepop" class="share">
+						<span class="jiathis_txt">分享到：</span>
+						<a class="jiathis_button_weixin">微信</a>
+
+						<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1" charset="utf-8"></script>
+					</div>
+				</div>
+				<img src="images/heard_logo.png" width="100%" class="Distance_img" />
+			</div>
+
+		</header>
+		<div class=" container">
+			<img src="images/levante_intro.jpg"  width="100%" class="Distance_img"/>
+			<img src="images/hezhao.JPG"  width="100%" style=" margin-bottom:10px ;"/>
+			<div class="row">
+				<div class="col-xs-6">
+					<p>Date:</p>
+					<p>Sales Consultant:</p>
+					<p>Driver Nme:</p>
+					<p>Duration:</p>
+					<p>Distance:</p>
+					<p>Model:</p>
+				</div>
+				<div class="col-xs-6" style=" text-align: right;">
+					<p>5 April 2017</p>
+					<p>Jacob Nielsen</p>
+					<p>Mauro Zanna</p>
+					<p>45'34'</p>
+					<p>35km</p>
+					<p>Ghibli</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container" style="height:200px" id="container"></div>
+		<div class="container">
+			<div class="Speed_title">
+				<h6>Your Performance</h6> 
+			</div>
+			<div class="row Distance">
+				<div class="Speed">
+					<span class="speeds">●Speed</span>
+					<span class="speeds_color">●RPM</span>
+				</div>
+		    	<canvas id="canvas" class="col-md-6"></canvas>
+			</div>
+		</div>
+		<div class="footers container" >
+			<div class="footers_nav">
+				<p>www.maserati.it</p>
+				<p>Maserati sp viale Ciro Menotti,322.41121 Modena .Italy</p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4lb48bMFrQh09NzCuuul4W2e7YpAGrNG"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.min.js"></script>
+	<script type="text/javascript" src="js/Chart.js" ></script>
+	<script type="text/javascript" src="js/script.js" ></script>
+	<script type="text/javascript">
+		var poinstr="[[121.367824,31.118941],[121.377023,31.101132],[121.378173,31.095195],[121.383922,31.079361],[121.39772,31.053626],[121.403469,31.047686],[121.402319,31.035805],[121.441413,31.047686],[121.494306,31.055606],[121.509253,31.057586],[121.53455,31.057586],[121.596641,31.088268],[121.642634,31.096185],[121.617338,31.093216],[121.663331,31.094206],[121.66678,31.121909],[121.651833,31.144659],[121.634585,31.155537],[121.60239,31.157515],[121.537999,31.146637],[121.511553,31.140703],[121.446013,31.135757],[121.404619,31.135757],[121.385072,31.141692],[121.423016,31.142681],[121.469009,31.149604],[121.500055,31.15356],[121.493156,31.156526]]";
+		var pointArr=	JSON.parse(poinstr);
+			// 百度地图API功能
+			var map = new BMap.Map("container");
+			map.centerAndZoom(new BMap.Point(121.642634,  31.096185), 11);
+			map.enableScrollWheelZoom();
+			var points = [];
+			for(var i=0;i<pointArr.length;i++){
+				points.push(new BMap.Point(pointArr[i][0],pointArr[i][1])) ;
+			}
+			var curve = new BMapLib.CurveLine(points, {strokeColor:"red", strokeWeight:8, strokeOpacity:0.5}); //创建弧线对象
+			map.addOverlay(curve); //添加到地图中
+			curve.enableEditing(); //开启编辑功能
+</script>
+
+</html>

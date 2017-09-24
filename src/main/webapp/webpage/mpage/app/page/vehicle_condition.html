@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>车况检查</title>
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+		<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="css/mobiscroll.css">
+		<link rel="stylesheet" href="css/mobiscroll_002.css" />
+		<link rel="stylesheet" href="css/mobiscroll_003.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bottomnav.css" />
+	</head>
+
+	<body class="bg">
+		<!--title开始 -->
+		<header>
+			<div class="container top">
+				<div ass="row">
+					<div class="col-xs-2">
+						<a href="testManagement.html" class="back "><span class="glyphicon glyphicon-chevron-left"></span></a>
+
+					</div>
+					<div class="col-xs-8">
+						<div class="change_password">车况检查</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!--title结束 -->
+		<section>
+			<div class="container">
+				<!--检查开始 -->
+				<div class="agreements">
+					<div class="check">
+						<div class="vehicle_condition">车身清洁</div>
+						<div class="checkbox pull-right"><input type="checkbox" ></div>
+					</div>
+					<div class="check">
+						<div class="vehicle_condition">油量确认</div>
+						<div class="checkbox pull-right"><input type="checkbox"></div>
+					</div>
+					<div class="check">
+						<div class="vehicle_condition">车内准备(车内清洁、饮用水、音乐等)</div>
+						<div class="checkbox pull-right"><input type="checkbox"></div>
+					</div>
+					
+				</div>
+                <!--检查结束 -->
+                <!--车辆位置开始 -->
+				<div class="Vehicle_position">
+					<a href="#">
+						<span class="glyphicon glyphicon-map-marker"></span> 车辆位置
+					</a>
+				</div>
+				<div id="currMap"></div>
+				<!--车辆位置结束 -->
+				<!--完成按钮开始  -->
+				<a href="testManagement.html"><button type="button" class="btn btn-primary  btn-block complete">车况确认</button></a>
+				<!--完成按钮结束  -->
+			</div>
+		</section>
+		<!--底部导航开始  -->
+		<footer class="navbar-fixed-bottom text-center ">
+			<a href="index1.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-home"></span>
+					<h6>首页</h6>
+				</div>
+			</a>
+			<a href="testManagement.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-credit-card "></span>
+					<h6>试驾管理</h6>
+				</div>
+			</a>
+			<a href="customer_list.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-user"></span>
+					<h6>我的客户</h6>
+				</div>
+			</a>
+			<a href="Vehicle_information.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-list"></span>
+					<h6>车辆管理</h6>
+				</div>
+			</a>
+		</footer>
+		<!--底部导航结束-->
+	</body>
+    <script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4lb48bMFrQh09NzCuuul4W2e7YpAGrNG"></script>
+	<script type="text/javascript" src="js/mobiscroll_002.js"></script>
+	<script type="text/javascript" src="js/mobiscroll.js"></script>
+	<script type="text/javascript" src="js/mobiscroll_003.js"></script>
+	<script type="text/javascript" src="js/customer.js"></script>
+	<script type="text/javascript" src="js/customer.js"></script>
+	<script type="text/javascript">
+			window.onload = function() {
+				// 百度地图API功能
+				var map = new BMap.Map("currMap");
+				var point = new BMap.Point(116.331398, 39.897445);
+				map.centerAndZoom(point, 12);
+
+				var geolocation = new BMap.Geolocation();
+				geolocation.getCurrentPosition(function(r) {
+						if(this.getStatus() == BMAP_STATUS_SUCCESS) {
+							var mk = new BMap.Marker(r.point);
+							map.addOverlay(mk);
+							map.panTo(r.point);
+							
+						} else {
+							alert('failed' + this.getStatus());
+						}
+					}, {
+						enableHighAccuracy: true
+					})
+					//关于状态码
+					//BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+					//BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+					//BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+					//BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+					//BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+					//BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+					//BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+					//BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
+					//BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
+			};
+		</script>
+
+</html>

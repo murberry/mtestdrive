@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>试驾预约</title>
+<link rel="stylesheet" href="plug-in/bootstrap.css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/maser.css" />
+<link href="css/mobiscroll_002.css" rel="stylesheet" type="text/css">
+<link href="css/mobiscroll.css" rel="stylesheet" type="text/css">
+<link href="css/mobiscroll_003.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="css/bottomnav.css" />
+</head>
+	<body>
+	<div class="container-fluid theme_color  text-center" style="line-height: 39px;">
+				<div class="col-xs-2">
+					<a href="customer_list.html" class="back font_color" style="display: block;line-height: 39px;"><span class="glyphicon glyphicon-chevron-left"></span></a>
+				</div>
+				<div>
+					<h4 class="font_color">修改预约</h4>
+				</div>
+			</div>
+	
+	<div class="container show">
+			<section>
+				<form class="form-horizontal" role="form">
+					<div class="customers">
+						<div class="col-xs-12  compellation">姓名：曲小可</div>
+					</div>
+					<div  class=" customeres">
+						<div class="col-xs-12 compellations">电话：13866880506</div>
+				
+					</div>
+					<div class="form-group">
+						<div class="col-xs-3 compellation">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型:</div>
+						<div class="col-xs-9  distance">
+							<select class="form-control">
+								<option>选择车型</option>
+								<option>GC</option>
+								<option>Ghibli</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-3 compellation" class="demos">试驾日期:</div>
+						<div class="col-xs-9 distance">
+							<input value="选择日期" class="form-control" readonly name="appDate" id="appDate" type="text" style="background:#FFF ;">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-3 compellation" class="demos">试驾时间:</div>
+						<div class="col-xs-9 distance">
+							<input placeholder="选择开始时间" class="form-control"  readonly name="appTime" id="appTime" type="text" style="background:#FFF ; width:44% ;display: inline;"" required="required">
+						-
+						<input placeholder="选择结束时间" class="form-control" readonly name="appTime" id="endtime" type="text" style="background:#FFF ;width:44% ;display: inline;" required="required">
+						</div>
+					</div>
+					
+				
+				 <div class="text-center" style=" margin-top:20px  ;  ">
+						<a href="testManagement.html" type="button" class="btn btn-primary  " style=" margin-bottom:50px  ; margin-right:20px ; ">保存</button>
+				        <a href="customer_list.html" type="button" class="btn btn-primary " style=" margin-bottom:50px ; ">取消</a>
+					</div>
+				</form>
+
+			</section>
+		</div>
+
+ <footer class="navbar-fixed-bottom text-center ">
+			<a href="index1.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-home"></span>
+					<h6>首页</h6>
+				</div>
+			</a>
+			<a href="testManagement.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-credit-card "></span>
+					<h6>试驾管理</h6>
+				</div>
+			</a>
+			<a href="customer_list.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-user"></span>
+					<h6>我的客户</h6>
+				</div>
+			</a>
+			<a href="Vehicle_information.html">
+				<div class="col-xs-3">
+					<span class="glyphicon glyphicon-list"></span>
+					<h6>车辆管理</h6>
+				</div>
+			</a>
+		</footer>
+
+</body>
+<script type="text/javascript" src="plug-in/bootstrap.js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="plug-in/bootstrap.js/bootstrap.min.js"></script>
+<script src="js/mobiscroll_002.js" type="text/javascript"></script>
+<script src="js/mobiscroll_004.js" type="text/javascript"></script>
+<script src="js/mobiscroll.js" type="text/javascript"></script>
+<script src="js/mobiscroll_003.js" type="text/javascript"></script>
+<script src="js/mobiscroll_005.js" type="text/javascript"></script>
+<script>
+ $(function () {
+			var currYear = (new Date()).getFullYear();	
+			var opt={};
+			opt.date = {preset : 'date'};
+			opt.datetime = {preset : 'datetime'};
+			opt.time = {preset : 'time'};
+			opt.default = {
+				theme: 'android-ics light', //皮肤样式
+		        display: 'modal', //显示方式 
+		        mode: 'scroller', //日期选择模式
+				dateFormat: 'yyyy-mm-dd',
+				lang: 'zh',
+				showNow: true,
+				nowText: "今天",
+		        startYear: currYear - 10, //开始年份
+		        endYear: currYear + 10 //结束年份
+			};
+
+		  	$("#appDate").mobiscroll($.extend(opt['date'], opt['default']));
+		  	
+		  	$("#appDate1").mobiscroll($.extend(opt['date'], opt['default']));
+		  	var optTime = $.extend(opt['time'], opt['default']);
+		    $("#appTime").mobiscroll(optTime).time(optTime);
+		     $("#endtime").mobiscroll(optTime).time(optTime);
+        });
+    </script>
+
+
+</html>
