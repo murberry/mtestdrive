@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.merburry</groupId>
+	<groupId>com.mtestdrive</groupId>
 	<artifactId>mtestdrive</artifactId>
 	<version>3.6.5</version>
 	<packaging>war</packaging>
@@ -96,10 +96,16 @@
 		<easypoi.version>2.1.4</easypoi.version>
 		<cxf.version>3.0.2</cxf.version>
 		<!--maven插件变量 -->
-		<tomcat.version>2.2</tomcat.version>
+		<tomcat.version>7.0</tomcat.version>
 		<jetty.version>7.6.14.v20131031</jetty.version>
 		<webserver.port>8080</webserver.port>
+    	<maven.compiler.source>1.7</maven.compiler.source>
+    	<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<jdbc.mysql.url>${jdbc.mysql.url}</jdbc.mysql.url>
+		<jdbc.mysql.username>${jdbc.mysql.username}</jdbc.mysql.username>
+        <jdbc.mysql.password>${jdbc.mysql.password}</jdbc.mysql.password>
 	</properties>
 
 	<!-- 设定主仓库，按设定顺序进行查找 -->
@@ -230,12 +236,12 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.3</version>
+			<version>4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
-			<version>4.3.2</version>
+			<version>4.4</version>
 		</dependency>
 
 		<dependency>
@@ -372,7 +378,7 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>${druid.version}</version>
-			<scope>runtime</scope>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -934,7 +940,7 @@
 
 	<organization>
 		<name>试驾系统</name>
-		<url>merburry.com</url>
+		<url>murberry.com</url>
 	</organization>
 	<build>
 		<plugins>
@@ -948,12 +954,14 @@
 					<port>8080</port>
 					<uriEncoding>UTF-8</uriEncoding>
 					<url>http://localhost:8080/manager/html</url>
-					<server>tomcat6</server>
+					<server>tomcat8</server>
 				</configuration>
 			</plugin>
 			<plugin>
+			    <inherited>true</inherited>
+    			<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.7.0</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -971,28 +979,7 @@
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
 				</configuration>
 			</plugin>
-			<!-- jetty插件 -->
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.version}</version>
-				<configuration>
-					<connectors>
-						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-							<port>${webserver.port}</port>
-						</connector>
-					</connectors>
-					<webAppConfig>
-						<contextPath>/${project.artifactId}</contextPath>
-					</webAppConfig>
-					<systemProperties>
-						<systemProperty>
-							<name>org.mortbay.util.URI.charset</name>
-							<value>${project.build.sourceEncoding}</value>
-						</systemProperty>
-					</systemProperties>
-				</configuration>
-			</plugin>
+			
 		</plugins>
 		<finalName>mtestdrive</finalName>
 		<resources>
@@ -1003,10 +990,11 @@
 					<include>**/*.sql</include>
 					<include>**/*.ftl</include>
 				</includes>
-				<filtering>false</filtering>
+				<filtering>true</filtering>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 
@@ -1018,7 +1006,7 @@
 					<include>**/*.sql</include>
 					<include>**/*.ftl</include>
 				</includes>
-				<filtering>false</filtering>
+				<filtering>true</filtering>
 			</testResource>
 			<testResource>
 				<directory>src/test/resources</directory>
