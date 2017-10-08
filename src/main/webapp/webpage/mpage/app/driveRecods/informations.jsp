@@ -49,13 +49,13 @@
 			</div>
 			<input type="hidden" id="id" name="id" value="${driveRecodsVo.id }"/>
 			<div class="photo">
-				<div class="pic">
+				<%--<div class="pic">
 					<input id="path1" name="path1" type="hidden">
 					<input id="img" type="file" name="img[]" data-url="fileUpload.action?upImg" accept="image/*" capture="camera" style="border: 1px solid red" />
 					 <span style="text-align: center;">添加试驾合同照片</span>
 				</div>
 				<div id="photo"></div>
-
+--%>
 				<div class="pic">
 				<input id="path2" name="path2" type="hidden" value="${licensePicPath }">
 					<input id="img1" type="file" name="img[]" data-url="fileUpload.action?upImg" accept="image/*" capture="camera" />
@@ -149,18 +149,18 @@
 				})
 			})
 			function management(){
-				var path1 = $("#path1").val();
+				/*var path1 = $("#path1").val();
 				if(path1.length == 0){
 					layer.msg('请上传试驾合同！');
 					return false;
-				}
+				}*/
 				var path2 = $("#path2").val();
 				if(path2.length == 0){
-					layer.msg('请上传试驾照片！');
+					layer.msg('请上传驾照照片！');
 					return false;
 				}
 				
-				window.location.href="/mtestdrive/driveRecodsAction.action?management&id="+"${driveRecodsVo.id}&picPath1="+path1+"&picPath2="+path2;
+				window.location.href="/mtestdrive/driveRecodsAction.action?management&id="+"${driveRecodsVo.id}&picPath2="+path2;
 				
 			}
 			
