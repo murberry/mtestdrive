@@ -59,6 +59,12 @@
 						<input id="readey" type="checkbox">
 					</div>
 				</div>
+				<div class="check">
+					<div class="vehicle_condition">签订试驾协议</div>
+					<div class="checkbox pull-right">
+						<input id="testDriveProtocol" type="checkbox">
+					</div>
+				</div>
 
 			</div>
 			<!--检查结束 -->
@@ -172,6 +178,11 @@ function check(){
 		layer.msg('请完成车况确认！');
 		return false;
 	}
+    var testDriveProtocol = $("input[id='testDriveProtocol']:checked").val();
+    if(testDriveProtocol!="on"){
+        layer.msg('请完成签订试驾协议确认！');
+        return false;
+    }
 	window.location.href="/mtestdrive/carInfoAction.action?status&id="+'${driveRecods.id }';
 }
 </script>
