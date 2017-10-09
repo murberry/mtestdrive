@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.mtestdrive.MaseratiConstants.CarStatus;
 import com.mtestdrive.MaseratiConstants.ConstantStatus;
 import com.mtestdrive.MaseratiConstants.DriveRecodsStatus;
 import com.mtestdrive.MaseratiConstants.ReportStatus;
@@ -369,7 +370,7 @@ public class DriveRecodsAction extends BaseController {
 		// 查询车型
 		DetachedCriteria dc = DetachedCriteria.forClass(CarInfoEntity.class);
 		dc.add(Restrictions.eq("agency.id", ((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId()));
-		dc.add(Restrictions.ne("status", ConstantStatus.INVALID));
+		dc.add(Restrictions.ne("status", CarStatus.NO_USED));
 				
 		List<CarInfoEntity> cars = carInfoService.findByDetached(dc);
 		
