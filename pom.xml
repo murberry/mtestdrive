@@ -96,16 +96,10 @@
 		<easypoi.version>2.1.4</easypoi.version>
 		<cxf.version>3.0.2</cxf.version>
 		<!--maven插件变量 -->
-		<tomcat.version>7.0</tomcat.version>
+		<tomcat.version>2.2</tomcat.version>
 		<jetty.version>7.6.14.v20131031</jetty.version>
 		<webserver.port>8080</webserver.port>
-    	<maven.compiler.source>1.7</maven.compiler.source>
-    	<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
-		<jdbc.mysql.url>${jdbc.mysql.url}</jdbc.mysql.url>
-		<jdbc.mysql.username>${jdbc.mysql.username}</jdbc.mysql.username>
-        <jdbc.mysql.password>${jdbc.mysql.password}</jdbc.mysql.password>
 	</properties>
 
 	<!-- 设定主仓库，按设定顺序进行查找 -->
