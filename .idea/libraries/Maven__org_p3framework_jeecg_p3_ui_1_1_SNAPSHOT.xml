@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.p3framework:jeecg-p3-ui:1.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/p3framework/jeecg-p3-ui/1.1-SNAPSHOT/jeecg-p3-ui-1.1-20160831.034539-11.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/p3framework/jeecg-p3-ui/1.1-SNAPSHOT/jeecg-p3-ui-1.1-20160831.034539-11-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/p3framework/jeecg-p3-ui/1.1-SNAPSHOT/jeecg-p3-ui-1.1-20160831.034539-11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.p3framework:jeecg-p3-bizcore:1.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/p3framework/jeecg-p3-bizcore/1.0-SNAPSHOT/jeecg-p3-bizcore-1.0-20170520.095851-6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/p3framework/jeecg-p3-bizcore/1.0-SNAPSHOT/jeecg-p3-bizcore-1.0-20170520.095851-6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/p3framework/jeecg-p3-bizcore/1.0-SNAPSHOT/jeecg-p3-bizcore-1.0-20170520.095851-6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

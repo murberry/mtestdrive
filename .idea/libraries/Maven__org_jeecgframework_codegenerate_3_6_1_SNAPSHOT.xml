@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jeecgframework:codegenerate:3.6.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jeecgframework/codegenerate/3.6.1-SNAPSHOT/codegenerate-3.6.1-20170114.034704-3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jeecgframework/codegenerate/3.6.1-SNAPSHOT/codegenerate-3.6.1-20170114.034704-3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jeecgframework/codegenerate/3.6.1-SNAPSHOT/codegenerate-3.6.1-20170114.034704-3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
