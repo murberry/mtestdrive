@@ -373,7 +373,11 @@ public class DriveRecodsAction extends BaseController {
 		dc.add(Restrictions.ne("status", CarStatus.NO_USED));
 				
 		List<CarInfoEntity> cars = carInfoService.findByDetached(dc);
-		
+		logger.info("查询车辆信息集合size:" + cars.size());
+		for (CarInfoEntity car :cars){
+			logger.info("car id:" + car.getId()+"car type:"+car.getType()+"car plateno:"+car.getPlateNo());
+		}
+
 		
 		List<Object[]> types = new ArrayList<Object[]>();//carInfoService.getCarTypes();
 		for (int i = 0; i < cars.size(); i++) {
