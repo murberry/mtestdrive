@@ -88,9 +88,10 @@ public class HttpClientUtil {
 		paramMap.put("password", PASSWORD);
 		String Content = sendSSLPostRequest(GRANT_SERVICE, paramMap);
 		JSONObject a = new JSONObject(Content);
-		String[] results = new String[2];
+		String[] results = new String[3];
 		results[0] = StringUtil.getStrByObj(a.get("access_token"));
 		results[1] = StringUtil.getStrByObj(a.get("instance_url"));
+		results[2] = StringUtil.getStrByObj(a.get("token_type"));
 		return results;
 	}
 
@@ -462,12 +463,16 @@ public class HttpClientUtil {
 	  }
 	
 	public static void main(String[] args) {
-		// System.out.println(doPatchInsertTestDrive());
-		System.out.println(HttpClientUtil.USER_NAME);
+
+//		USER_NAME = "wechat@maserati.com";
+//		PASSWORD = "We$2015Chat";
+//		GRANT_TYPE = "password";
+//		GRANT_SERVICE = "https://login.salesforce.com/services/oauth2/token";
+//		CLIENT_ID = "3MVG9Y6d_Btp4xp7oyJw27xIVRBUzzehusxDk.4glFHzr.mksyyzooumEQbcvxX.Sd5lOB5MwZ6gCDh3tRMqh";
+//		CLIENT_SECRET = "1000095608080642702";
+
 		String[] token = HttpClientUtil.getAccessToken();
-//		String token = HttpClientUtil.doPostGetAccessToken();
-		System.out.println("token="+token);
-//		System.out.println(doPatchSaveQuestionnaire());
+		System.out.println("access_token="+token[0]+ "\ninstance_url="+ token[1]+ "\ntoken_type="+ token[1]);
 	}
 
 }
