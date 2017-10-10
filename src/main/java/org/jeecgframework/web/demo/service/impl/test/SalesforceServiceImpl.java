@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.xmlbeans.impl.xb.xsdschema.RestrictionDocument.Restriction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.jeecgframework.core.constant.Globals;
@@ -39,9 +38,6 @@ import com.mtestdrive.service.CustomerInfoServiceI;
 import com.mtestdrive.service.DriveRecodsServiceI;
 import com.mtestdrive.service.SalesmanInfoServiceI;
 import com.mtestdrive.utils.HttpClientUtil;
-import com.mtestdrive.web.manage.ObdInfoController;
-
-import freemarker.template.utility.DateUtil;
 
 @Service("salesforceService")
 public class SalesforceServiceImpl {
@@ -70,16 +66,16 @@ public class SalesforceServiceImpl {
 	 * @throws
 	 */
 	public void work() throws UnsupportedEncodingException, ParseException {
-		/*synchronizationAgencyInfo();*/// 经销商
-		//synchronizationSalesmanInfo();// 销售顾问
-		/*synchronizationCarInfo();*/// 车辆信息
+//		synchronizationAgencyInfo(); // 经销商 by CXG
+//		synchronizationSalesmanInfo();// 销售顾问  by CXG
+//		synchronizationCarInfo(); // 车辆信息  by CXG
 	    synchronizationCustomerInfo();// 客户信息
-		synchronizationTestDriveAppointment();// 预约信息
+		synchronizationTestDriveAppointment();// 试驾预约信息(双向同步)
 	}
 	
 	/**
 	 * @Title: synchronizationTestDriveAppointment   
-	 * @Description: 同步试驾预约数据
+	 * @Description: 同步试驾预约数据 	说明：双向同步 试驾车平台<-->SF
 	 * @param: @throws ParseException      
 	 * @return: void      
 	 * @throws
@@ -88,8 +84,8 @@ public class SalesforceServiceImpl {
 		logger.info("同步试驾预约数据   begin");
 		StringBuilder logMsg = new StringBuilder();
 		logMsg.append("同步试驾预约数据---->");
-		JSONArray array = getJSONArray("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+where+SystemModStamp=TODAY");
-		//JSONArray array = getJSONArray("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+limit+200");
+		JSONArray array = getQueryList("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+where+SystemModStamp=TODAY");
+		//JSONArray array = getAllDriveAppointment("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+limit+200");
 		if (array != null) {
 			List<DriveRecodsEntity> saveEn = new ArrayList<DriveRecodsEntity>();
 			List<DriveRecodsEntity> upEn = new ArrayList<DriveRecodsEntity>();
@@ -232,8 +228,8 @@ public class SalesforceServiceImpl {
 	public void synchronizationCustomerInfo() {
 		logger.info("同步SF客户数据   begin");
 		sysService.addSimpleLog("同步SF客户数据---->", Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
-		JSONArray array = getJSONArray("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+where+SystemModStamp=TODAY");
-		//JSONArray array = getJSONArray("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+limit+200");
+		JSONArray array = getQueryList("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+where+SystemModStamp=TODAY");
+		//JSONArray array = getAllDriveAppointment("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+limit+200");
 		
 		if (array != null) {
 			List<CustomerInfoEntity> saveEn = new ArrayList<CustomerInfoEntity>();
@@ -326,8 +322,8 @@ public class SalesforceServiceImpl {
 		logger.info("同步车辆数据      begin");
 		StringBuilder logMsg = new StringBuilder();
 		logMsg.append("同步车辆数据---->");
-		JSONObject carObject = getJSONObject("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+and+SystemModStamp=TODAY");
-        //JSONObject carObject = getJSONObject("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+limit+200");
+		JSONObject carObject = getDriveAppointment("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+and+SystemModStamp=TODAY");
+        //JSONObject carObject = getDriveAppointment("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+limit+200");
 		JSONArray array = (JSONArray) carObject.get("records");
 		if (array != null) {
 			List<CarInfoEntity> saveEn = new ArrayList<CarInfoEntity>();
@@ -391,7 +387,7 @@ public class SalesforceServiceImpl {
 	}
 	/**
 	 * @Title: synchronizationSalesmanInfo   
-	 * @Description: 同步销售顾问数据  
+	 * @Description: 同步销售顾问数据  说明：单向同步 SF-->试驾车平台
 	 * @param:       
 	 * @return: void      
 	 * @throws
@@ -400,8 +396,8 @@ public class SalesforceServiceImpl {
 		logger.info("同步销售顾问数据      begin");
 		StringBuilder logMsg = new StringBuilder();
 		logMsg.append("同步销售顾问数据---->");
-	    JSONArray array = getJSONArray("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+SystemModStamp=TODAY");
-		//JSONArray array = getJSONArray("select+id,name,Username,DealerCode__c,MobilePhone+from+User+limit+200");
+	    JSONArray array = getQueryList("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+SystemModStamp=TODAY");
+		//JSONArray array = getAllDriveAppointment("select+id,name,Username,DealerCode__c,MobilePhone+from+User+limit+200");
 		if (array != null) {
 			List<SalesmanInfoEntity> saveEn = new ArrayList<SalesmanInfoEntity>();
 			List<SalesmanInfoEntity> upEn = new ArrayList<SalesmanInfoEntity>();
@@ -461,15 +457,15 @@ public class SalesforceServiceImpl {
 
 	/**
 	 * @Title: synchronizationAgencyInfo   
-	 * @Description: 同步经销商的数据   
+	 * @Description: 同步经销商的数据 说明：单向同步 SF-->试驾车平台
 	 * @param:       
 	 * @return: void      
 	 * @throws
 	 */
 	public void synchronizationAgencyInfo() {
 		logger.info("同步经销商的数据      begin");
-		JSONArray array = getJSONArray("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+where+SystemModStamp=TODAY");
-		//JSONArray array = getJSONArray("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+limit+200");
+		JSONArray array = getQueryList("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+where+SystemModStamp=TODAY");
+		//JSONArray array = getAllDriveAppointment("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+limit+200");
 		if (array != null) {
 			List<AgencyInfoEntity> saveEn = new ArrayList<AgencyInfoEntity>();
 			List<AgencyInfoEntity> upEn = new ArrayList<AgencyInfoEntity>();
@@ -514,19 +510,19 @@ public class SalesforceServiceImpl {
 		logger.info("同步经销商的数据      end");
 	}
 	
-	private static JSONArray getJSONArray(String sql) {
-		String doGetGetDriveAppointment = HttpClientUtil.doGetGetDriveAppointment(sql);
-		if (doGetGetDriveAppointment == null) {
+	private static JSONArray getQueryList(String sql) {
+		String jsonStr = HttpClientUtil.doGetQueryList(sql);
+		if (jsonStr == null) {
 			return null;
 		} else {
-			JSONObject a = new JSONObject(doGetGetDriveAppointment);
+			JSONObject a = new JSONObject(jsonStr);
 			JSONArray array = (JSONArray) a.get("records");
 			return array;
 		}
 	}
 
-	private static JSONObject getJSONObject(String sql) {
-		String doGetGetDriveAppointment = HttpClientUtil.doGetGetDriveAppointment(sql);
+	private static JSONObject getDriveAppointment(String sql) {
+		String doGetGetDriveAppointment = HttpClientUtil.doGetQueryList(sql);
 		if (doGetGetDriveAppointment == null) {
 			return null;
 		} else {
@@ -536,7 +532,7 @@ public class SalesforceServiceImpl {
 	}
 	
 	public  SalesmanInfoEntity getSfSalesman(String agenId,String sfid){
-		JSONArray array = getJSONArray("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+id='"+sfid+"'");
+		JSONArray array = getQueryList("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+id='"+sfid+"'");
 		if(array != null && array.length() > 0){
 			JSONObject obj = (JSONObject) JSONObject.wrap(array.get(0));
 			String mobile = StringUtil.getStrByObj(obj.get("MobilePhone"));
@@ -556,11 +552,11 @@ public class SalesforceServiceImpl {
 	
 	
 	public static void main(String[] args){
-		//JSONArray array = getJSONArray("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+limit+200");
-		//JSONArray array = getJSONArray("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+id='00590000003jK81AAE'");
-		//JSONObject array = getJSONObject("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+limit+200");
-		JSONArray array = getJSONArray("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+limit+200");
-	    //JSONArray array = getJSONArray("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+where+SystemModStamp=TODAY");
+		//JSONArray array = getAllDriveAppointment("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+limit+200");
+		//JSONArray array = getAllDriveAppointment("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+id='00590000003jK81AAE'");
+		//JSONObject array = getDriveAppointment("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+limit+200");
+		JSONArray array = getQueryList("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+limit+200");
+	    //JSONArray array = getAllDriveAppointment("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+where+SystemModStamp=TODAY");
 		System.out.println(array);
 	}
 }

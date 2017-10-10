@@ -36,6 +36,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.jeecgframework.core.util.JSONHelper;
+import org.jeecgframework.core.util.PropertiesUtil;
 import org.jeecgframework.core.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,13 +47,24 @@ import com.mtestdrive.entity.AgencyInfoEntity;
  * 利用HttpClient进行post请求的工具类
  */
 public class HttpClientUtil {
-	private static final String USER_NAME = "wechat@maserati.com";
-	private static final String PASSWORD = "We$2015Chat";
-	private static final String LOGIN_URL = "https://login.salesforce.com";
-	private static final String GRANT_TYPE = "password";
-	private static final String GRANT_SERVICE = LOGIN_URL+"/services/oauth2/token";
-	private static final String CLIENT_ID = "3MVG9Y6d_Btp4xp7oyJw27xIVRBUzzehusxDk.4glFHzr.mksyyzooumEQbcvxX.Sd5lOB5MwZ6gCDh3tRMqh";
-	private static final String CLIENT_SECRET = "1000095608080642702";
+
+	private static  String USER_NAME ;
+	private static  String PASSWORD ;
+	private static  String GRANT_TYPE ;
+	private static  String GRANT_SERVICE ;
+	private static  String CLIENT_ID;
+	private static  String CLIENT_SECRET;
+
+    static {
+		PropertiesUtil util = new PropertiesUtil("sysConfig.properties");
+		HttpClientUtil.USER_NAME=util.readProperty("sc.user.name");
+		HttpClientUtil.PASSWORD=util.readProperty("sc.password");
+		HttpClientUtil.GRANT_TYPE=util.readProperty("sc.grant.type");
+		HttpClientUtil.GRANT_SERVICE=util.readProperty("sc.grant_service");
+		HttpClientUtil.CLIENT_ID=util.readProperty("sc.client.id");
+		HttpClientUtil.CLIENT_SECRET=util.readProperty("sc.client.secret");
+	}
+
 	public static String doPostGetAccessToken() {
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("grant_type", GRANT_TYPE);
@@ -60,9 +72,10 @@ public class HttpClientUtil {
 		paramMap.put("client_secret", CLIENT_SECRET);
 		paramMap.put("username", USER_NAME);
 		paramMap.put("password", PASSWORD);
-		String Content = sendSSLPostRequest(GRANT_SERVICE, paramMap);
-		JSONObject a = new JSONObject(Content);
-		String token = (String ) a.get("access_token");
+        String content = sendSSLPostRequest(GRANT_SERVICE, paramMap);
+		
+		JSONObject a = new JSONObject(content);
+		String token = (String) a.get("access_token");
 		return token;
 	}
 	
@@ -81,7 +94,7 @@ public class HttpClientUtil {
 		return results;
 	}
 
-	public static String doGetGetDriveAppointment(String sql) {
+	public static String doGetQueryList(String sql) {
 		String[] tokens = getAccessToken();
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("q", sql);
@@ -226,7 +239,7 @@ public class HttpClientUtil {
 	/**
 	 * 向HTTPS地址发送GET请求
 	 * 
-	 * @param reqURL
+	 * @param url
 	 *            请求地址
 	 * @param params
 	 *            请求参数
@@ -310,10 +323,9 @@ public class HttpClientUtil {
 	/**
 	 * 向HTTPS地址发送PATCH请求
 	 * 
-	 * @param reqURL
-	 *            请求地址
-	 * @param params
-	 *            请求参数
+	 * @param url 请求地址
+	 * @param json 请求参数
+	 * @param token 请求参数
 	 * @return 响应内容
 	 */
 	@SuppressWarnings("finally")
@@ -451,7 +463,11 @@ public class HttpClientUtil {
 	
 	public static void main(String[] args) {
 		// System.out.println(doPatchInsertTestDrive());
-		System.out.println(doPatchSaveQuestionnaire());
+		System.out.println(HttpClientUtil.USER_NAME);
+		String[] token = HttpClientUtil.getAccessToken();
+//		String token = HttpClientUtil.doPostGetAccessToken();
+		System.out.println("token="+token);
+//		System.out.println(doPatchSaveQuestionnaire());
 	}
 
 }

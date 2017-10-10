@@ -346,20 +346,19 @@ public class HttpUtil {
 	private static final String GRANT_SERVICE = "/services/oauth2/token";
 	private static final String CLIENT_ID     = "3MVG9Se4BnchkASntWHG6BwWPdaiS3s0sbFkw08j6JoWS69QZYMeUivpx3ILhOuExgxyR1kRsqcq9FtnQBCEy";//上图中Consumer Key
 	private static final String CLIENT_SECRET = "4077378209258026352";//上图中的Consumer Secret
-	private static String REST_ENDPOINT = "/services/oauth2/token" ;
     /**
      * 测试方法
      * @param args
      */
     public static void main(String[] args) throws Exception {
-    	Map paramMap = new HashMap();
-		paramMap.put("grant_type", "password");
+    	Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("grant_type", GRANT_TYPE);
 		paramMap.put("client_id", CLIENT_ID);
 		paramMap.put("client_secret", CLIENT_SECRET);
 		paramMap.put("username", USER_NAME);
 		paramMap.put("password", PASSWORD);
 		//System.out.println(tool.fetchToString("https://test.salesforce.com/services/oauth2/token?grant_type=password&client_id=3MVG9Se4BnchkASntWHG6BwWPdaiS3s0sbFkw08j6JoWS69QZYMeUivpx3ILhOuExgxyR1kRsqcq9FtnQBCEy&client_secret=4077378209258026352&username=347124781@qq.com&password=maserati2016test",paramMap));
-    	String sttt = doPostSSL("https://test.salesforce.com/services/oauth2/token", paramMap);
+    	String sttt = doPostSSL(LOGIN_URL+GRANT_SERVICE, paramMap);
     	System.out.println(sttt);
     }
 }
