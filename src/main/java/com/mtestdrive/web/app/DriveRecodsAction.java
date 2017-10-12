@@ -346,6 +346,7 @@ public class DriveRecodsAction extends BaseController {
 		String customerId = request.getParameter("customerId");
 		DriveRecodsVo driveRecodsVo = null;
 		if (StringUtil.isNotEmpty(id)) {
+			logger.info("进入分支1");
 			DriveRecodsEntity driveRecods = driveRecodsService.get(DriveRecodsEntity.class, id);
 			driveRecodsVo = new DriveRecodsVo();
 			try {
@@ -361,6 +362,7 @@ public class DriveRecodsAction extends BaseController {
 				e.printStackTrace();
 			}
 		} else if (StringUtil.isNotEmpty(customerId)) {
+			logger.info("进入分支2");
 			CustomerInfoEntity customer = customerInfoService.get(CustomerInfoEntity.class, customerId);
 			driveRecodsVo = new DriveRecodsVo();
 			driveRecodsVo.setCustomer(customer);
@@ -370,7 +372,10 @@ public class DriveRecodsAction extends BaseController {
 		// 查询车型
 		DetachedCriteria dc = DetachedCriteria.forClass(CarInfoEntity.class);
 		dc.add(Restrictions.eq("agency.id", ((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId()));
-		dc.add(Restrictions.eq("status", CarStatus.NO_USED));
+		dc.add(Restrictions.ne("status", CarStatus.NO_USED));
+
+		logger.info("agency_id:" +((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId());
+		logger.info("status:" + CarStatus.NO_USED);
 				
 		List<CarInfoEntity> cars = carInfoService.findByDetached(dc);
 		logger.info("查询车辆信息集合size:" + cars.size());
