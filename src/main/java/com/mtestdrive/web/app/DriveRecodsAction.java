@@ -370,7 +370,7 @@ public class DriveRecodsAction extends BaseController {
 		// 查询车型
 		DetachedCriteria dc = DetachedCriteria.forClass(CarInfoEntity.class);
 		dc.add(Restrictions.eq("agency.id", ((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId()));
-		dc.add(Restrictions.ne("status", CarStatus.NO_USED));
+		dc.add(Restrictions.eq("status", CarStatus.NO_USED));
 				
 		List<CarInfoEntity> cars = carInfoService.findByDetached(dc);
 		logger.info("查询车辆信息集合size:" + cars.size());
