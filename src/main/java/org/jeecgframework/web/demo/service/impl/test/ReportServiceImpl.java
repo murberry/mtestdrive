@@ -24,7 +24,7 @@ public class ReportServiceImpl {
 	@Autowired
 	private SystemService systemService;
 
-	private static final Logger logger = Logger.getLogger(QuestionnaireService.class);
+	private static final Logger logger = Logger.getLogger(ReportServiceImpl.class);
 
 	/**
 	 * @Title: work   
