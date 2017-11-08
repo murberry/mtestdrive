@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.mtestdrive.MaseratiConstants;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -246,7 +247,7 @@ public class CarInfoAction extends BaseController {
 		driveRecodsEntity.getCarId();
 		driveRecodsService.saveOrUpdate(driveRecodsEntity);
 		
-		carInfoEntity.setStatus(2);
+		carInfoEntity.setStatus(MaseratiConstants.CarStatus.NO_USED);
 		carInfoService.saveOrUpdate(carInfoEntity);
 		//跳到试驾报告
 		request.setAttribute("driveId", driveRecodsEntity.getId());
@@ -275,7 +276,7 @@ public class CarInfoAction extends BaseController {
 		}
 		String carId = driveRecodsVo.getCarId();
 		CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, carId);
-		carInfoEntity.setStatus(1);
+		carInfoEntity.setStatus(MaseratiConstants.CarStatus.TEST_DRIVING);
 		carInfoEntity.setDriveTotal(carInfoEntity.getDriveTotal()+1);
 		
 		carInfoService.saveOrUpdate(carInfoEntity);
