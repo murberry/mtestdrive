@@ -14,10 +14,11 @@
 
 	<!-- 定时任务配置 scheduler 方式 注解 暂时不支持动态更新 -->
 	<context:component-scan base-package="org.jeecgframework.core.timer" />
-	<task:executor id="executor" pool-size="5" />
-	<task:scheduler id="scheduler" pool-size="10" />
+	<task:executor id="executor" pool-size="10" />
+	<task:scheduler id="scheduler" pool-size="20" />
 	<task:annotation-driven executor="executor" scheduler="scheduler" />
-	
+
+
 	<!-- 定时任务配置   reportJob 试驾回显 -->
 	<bean id="driveJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -25,7 +26,6 @@
 		<property name="targetMethod" value="work" />
 		<property name="concurrent" value="true" />
 	</bean>
-	
 	<bean id="testDriveServiceTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="driveJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
@@ -39,12 +39,12 @@
 		<property name="targetMethod" value="work" />
 		<property name="concurrent" value="true" />
 	</bean>
-	
 	<bean id="reportServiceTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="reportJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean>
-	
+
+
 	<!-- 定时任务配置   questionnaireJob 短信发送调查问卷 -->
 	<bean id="questionnaireJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -52,7 +52,6 @@
 		<property name="targetMethod" value="work" />
 		<property name="concurrent" value="true" />
 	</bean>
-	
 	<bean id="questionnaireServiceTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="questionnaireJob" />
 		<property name="cronExpression" value="0 59 17 ? * *" />
@@ -67,12 +66,12 @@
 		<property name="targetMethod" value="work" />
 		<property name="concurrent" value="true" />
 	</bean>
-
 	<bean id="salesforceServiceTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="salesforceTaskJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean>
-	
+
+
 	<!-- 定时任务配置 回传数据到SF  passBackDataToSfJob 可配置到管理界面 -->
 	<bean id="passBackDataToSfJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -80,10 +79,10 @@
 		<property name="targetMethod" value="work" />
 		<property name="concurrent" value="true" />
 	</bean>
-
 	<bean id="passBackDataToSfServiceTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="passBackDataToSfJob" />
-		<property name="cronExpression" value="0 16 10 ? * *" />
+		<!-- property name="cronExpression" value="0 16 10 ? * *" /-->
+		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean>
 	
 		
@@ -94,12 +93,12 @@
 		<property name="targetMethod" value="work" />
 		<property name="concurrent" value="true" />
 	</bean> -->
-
 	<!-- <bean id="taskDemoServiceTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="taskDemoServiceTaskJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean> -->
-	
+
+
 	<!-- 定时任务配置   smsSendTask 可配置到管理界面 -->
 	<!-- <bean id="smsSendTaskJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -107,7 +106,6 @@
 		<property name="targetMethod" value="run" />
 		<property name="concurrent" value="true" />
 	</bean> -->
-
 	<!-- <bean id="smsSendTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="smsSendTaskJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
