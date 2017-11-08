@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
+import com.mtestdrive.service.impl.DriveRecodsServiceImpl;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,9 @@ import com.mtestdrive.service.impl.ObdGatherInfoServiceImpl;
 
 @Service("testDriveService")
 public class TestDriveServiceImpl {
+
+	private static final Logger logger = Logger.getLogger(TestDriveServiceImpl.class);
+
 	@Autowired
 	private ObdGatherInfoServiceI  obdGatherInfoService;
 	
@@ -41,7 +46,7 @@ public class TestDriveServiceImpl {
 	private RouteInfoServiceI routeInfoService;
 	
 	public void work() throws ParseException{
-		System.out.println("定时任务执行了");
+		logger.info("开始执行全天有效试驾统计任务");
 		//获取昨天
 		Date date=new Date();//取时间
 		 Calendar calendar = new GregorianCalendar();
@@ -420,7 +425,9 @@ public class TestDriveServiceImpl {
 				}
 			  }	
 			}
-		}
-		
+		}// End for 取当日OBD记录
+
+		logger.info("结束执行全天有效试驾统计任务");
+
 	}
 }
