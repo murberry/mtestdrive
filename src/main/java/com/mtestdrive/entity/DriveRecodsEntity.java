@@ -16,6 +16,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import java.util.Date;
+
 /**
  * @Title: Entity
  * @Description: 试驾明细
@@ -60,6 +62,12 @@ public class DriveRecodsEntity implements java.io.Serializable {
 	private java.lang.String endPicPath;
 	/** 行驶里程数 */
 	private java.math.BigDecimal mileage;
+	/** 购车经销商 */
+	private java.lang.String purchaseDealer;
+	/** 是否购车 */
+	private java.lang.Boolean hasCarPurchase;
+	/** Salseforce端数据更新时间 */
+	private java.util.Date sfModified;
 	/** 试驾反馈 */
 	private java.lang.String feedback;
 	/** 创建人 */
@@ -353,6 +361,34 @@ public class DriveRecodsEntity implements java.io.Serializable {
 	 */
 	public void setMileage(java.math.BigDecimal mileage) {
 		this.mileage = mileage;
+	}
+
+
+	@Column(name = "purchase_dealer", nullable = true, length = 128)
+	public String getPurchaseDealer() {
+		return purchaseDealer;
+	}
+
+	public void setPurchaseDealer(String purchaseDealer) {
+		this.purchaseDealer = purchaseDealer;
+	}
+
+	@Column(name = "car_purchase", nullable = true)
+	public Boolean getHasCarPurchase() {
+		return hasCarPurchase;
+	}
+
+	public void setHasCarPurchase(Boolean hasCarPurchase) {
+		this.hasCarPurchase = hasCarPurchase;
+	}
+
+	@Column(name = "sf_modified", nullable = true)
+	public Date getSfModified() {
+		return sfModified;
+	}
+
+	public void setSfModified(Date sfModified) {
+		this.sfModified = sfModified;
 	}
 
 	/**
