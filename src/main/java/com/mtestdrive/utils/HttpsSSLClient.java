@@ -204,13 +204,12 @@ public class HttpsSSLClient {
         return null;
     }
     
-    private static final String USER_NAME     = "347124781@qq.com";
-	private static final String PASSWORD      = "maserati2016test";
-	private static final String LOGIN_URL     = "https://test.salesforce.com";
-	private static final String GRANT_TYPE    = "password";
-	private static final String GRANT_SERVICE = "/services/oauth2/token";
-	private static final String CLIENT_ID     = "3MVG9Se4BnchkASntWHG6BwWPdaiS3s0sbFkw08j6JoWS69QZYMeUivpx3ILhOuExgxyR1kRsqcq9FtnQBCEy";//上图中Consumer Key
-	private static final String CLIENT_SECRET = "4077378209258026352";
+    private static  String USER_NAME     = "347124781@qq.com";
+	private static  String PASSWORD      = "maserati2016test";
+	private static  String GRANT_TYPE    = "password";
+	private static  String GRANT_SERVICE = "https://test.salesforce.com/services/oauth2/token";
+	private static  String CLIENT_ID     = "3MVG9Se4BnchkASntWHG6BwWPdaiS3s0sbFkw08j6JoWS69QZYMeUivpx3ILhOuExgxyR1kRsqcq9FtnQBCEy";//上图中Consumer Key
+	private static  String CLIENT_SECRET = "4077378209258026352";
     
 	/**
      * 测试方法
@@ -225,7 +224,7 @@ public class HttpsSSLClient {
 		urlParameters.add(new BasicNameValuePair("username", USER_NAME));
 		urlParameters.add(new BasicNameValuePair("password", PASSWORD));
 	
-		String sttt = HttpsSSLClient.doPost(LOGIN_URL+GRANT_SERVICE, "UTF-8", null, urlParameters);
+		String sttt = HttpsSSLClient.doPost(GRANT_SERVICE, "UTF-8", null, urlParameters);
 		System.out.println(sttt);
 				
     }
