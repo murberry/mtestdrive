@@ -35,9 +35,11 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.jeecgframework.core.util.JSONHelper;
 import org.jeecgframework.core.util.PropertiesUtil;
 import org.jeecgframework.core.util.StringUtil;
+import org.jeecgframework.web.demo.service.impl.test.TestDriveServiceImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -48,6 +50,8 @@ import com.mtestdrive.entity.AgencyInfoEntity;
  */
 public class HttpClientUtil {
 
+	private static final Logger logger = Logger.getLogger(HttpClientUtil.class);
+
 	private static  String USER_NAME ;
 	private static  String PASSWORD ;
 	private static  String GRANT_TYPE ;
@@ -57,12 +61,12 @@ public class HttpClientUtil {
 
     static {
 		PropertiesUtil util = new PropertiesUtil("sysConfig.properties");
-		HttpClientUtil.USER_NAME=util.readProperty("sc.user.name");
-		HttpClientUtil.PASSWORD=util.readProperty("sc.password");
-		HttpClientUtil.GRANT_TYPE=util.readProperty("sc.grant.type");
-		HttpClientUtil.GRANT_SERVICE=util.readProperty("sc.grant_service");
-		HttpClientUtil.CLIENT_ID=util.readProperty("sc.client.id");
-		HttpClientUtil.CLIENT_SECRET=util.readProperty("sc.client.secret");
+		HttpClientUtil.USER_NAME=util.readProperty("sfapi.user.name");
+		HttpClientUtil.PASSWORD=util.readProperty("sfapi.password");
+		HttpClientUtil.GRANT_TYPE=util.readProperty("sfapi.grant.type");
+		HttpClientUtil.GRANT_SERVICE=util.readProperty("sfapi.grant.service");
+		HttpClientUtil.CLIENT_ID=util.readProperty("sfapi.client.id");
+		HttpClientUtil.CLIENT_SECRET=util.readProperty("sfapi.client.secret");
 	}
 
 	public static String doPostGetAccessToken() {
@@ -215,10 +219,11 @@ public class HttpClientUtil {
 				responseContent = EntityUtils.toString(entity, "UTF-8");
 				EntityUtils.consume(entity); // Consume response content
 			}
-			System.out.println("请求地址: " + httpPost.getURI());
-			System.out.println("响应状态: " + response.getStatusLine());
-			System.out.println("响应长度: " + responseLength);
-			System.out.println("响应内容: " + responseContent);
+			logger.debug("请求地址: " + httpPost.getURI());
+			logger.debug(params.toString());
+			logger.debug("响应状态: " + response.getStatusLine());
+			logger.debug("响应长度: " + responseLength);
+			logger.debug("响应内容: " + responseContent);
 		} catch (KeyManagementException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
@@ -374,7 +379,7 @@ public class HttpClientUtil {
 				
 				int statusCode = response.getStatusLine().getStatusCode();
 
-				System.out.println("执行状态码 : " + statusCode);
+				logger.debug("执行状态码 : " + statusCode);
 
 				HttpEntity entity = response.getEntity();
 				if (entity != null) {
@@ -385,7 +390,7 @@ public class HttpClientUtil {
 				e.printStackTrace();
 			}
 
-			System.out.println("响应内容: " + result);
+			logger.debug("响应内容: " + result);
 		} catch (KeyManagementException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
@@ -465,7 +470,7 @@ public class HttpClientUtil {
 	public static void main(String[] args) {
 
 //		USER_NAME = "wechat@maserati.com";
-//		PASSWORD = "We$2015Chat";
+//		PASSWORD = "maserati2017";
 //		GRANT_TYPE = "password";
 //		GRANT_SERVICE = "https://login.salesforce.com/services/oauth2/token";
 //		CLIENT_ID = "3MVG9Y6d_Btp4xp7oyJw27xIVRBUzzehusxDk.4glFHzr.mksyyzooumEQbcvxX.Sd5lOB5MwZ6gCDh3tRMqh";
