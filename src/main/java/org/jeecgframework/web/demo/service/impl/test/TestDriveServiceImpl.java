@@ -44,8 +44,23 @@ public class TestDriveServiceImpl {
 	
 	@Autowired
 	private RouteInfoServiceI routeInfoService;
-	
+
 	public void work() throws ParseException{
+		logger.info("开始执行全天有效试驾统计任务");
+		//获取昨天
+		Date date=new Date();//取时间
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		calendar.add(calendar.DATE,-1);//把日期往后增加一天.整数往后推,负数往前移动
+		date=calendar.getTime(); //这个时间就是日期往后推一天的结果
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(date);
+		obdGatherInfoService.executeProcedure("call proc_match_testdirve(?,?)", 30, dateString);
+		logger.info("结束执行全天有效试驾统计任务");
+	}
+
+
+	public void work_bak() throws ParseException{
 		logger.info("开始执行全天有效试驾统计任务");
 		//获取昨天
 		Date date=new Date();//取时间
@@ -63,9 +78,9 @@ public class TestDriveServiceImpl {
 			//List<CarInfoEntity> carList = carInfoService.findByProperty(CarInfoEntity.class, "obdId", termId);
 			List<CarInfoEntity> carList = carInfoService.getByCarObdId(termId);
 			if(carList.size()!=0){
-			System.out.println(termId);
+
 			List<ObdGatherInfoEntity> obdList = obdGatherInfoService.getObdByTermidAndGnsstime(termId,dateString);
-			System.out.println(obdList.size());
+
 			List<String> timeList = new ArrayList<String>();
 			List<ObdGatherInfoEntity> obdList2 = new  ArrayList<ObdGatherInfoEntity>();
 			for (ObdGatherInfoEntity obdGatherInfo2 : obdList) {
@@ -94,6 +109,8 @@ public class TestDriveServiceImpl {
 				
 			}
 			obdList.removeAll(obdList2);
+
+
 			for (ObdGatherInfoEntity obdGatherInfo : obdList) {
 				Boolean accOn = obdGatherInfo.getAccOn();
 				if(accOn!=null){
@@ -424,7 +441,7 @@ public class TestDriveServiceImpl {
 				
 				}
 			  }	
-			}
+			}// End for OBD设备有车
 		}// End for 取当日OBD记录
 
 		logger.info("结束执行全天有效试驾统计任务");
