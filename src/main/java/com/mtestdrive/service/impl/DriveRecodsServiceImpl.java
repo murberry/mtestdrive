@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.StringUtil;
+import org.jeecgframework.web.demo.service.impl.test.ReportServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,8 @@ import com.mtestdrive.vo.DriveRecodsVo;
 @Service("driveRecodsService")
 @Transactional
 public class DriveRecodsServiceImpl extends CommonServiceImpl implements DriveRecodsServiceI {
+
+	private static final Logger logger = Logger.getLogger(DriveRecodsServiceImpl.class);
 
 	/**
 	 * 
@@ -145,10 +149,8 @@ public class DriveRecodsServiceImpl extends CommonServiceImpl implements DriveRe
 		query.setParameter("endTime1", endTime1);
 		query.setParameter("endTime2", endTime2);*/
 		//query.setResultTransformer(Transformers.aliasToBean(DriveRecodsEntity.class));
-		System.out.println("开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始");
 		return commonDao.findHql(sql.toString(), carId, startTime1, startTime2, endTime1, endTime2);
 		//List<DriveRecodsEntity> list = query.list();
-		//System.out.println("结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束结束");
 		//return list;
 	}
 
@@ -169,7 +171,6 @@ public class DriveRecodsServiceImpl extends CommonServiceImpl implements DriveRe
 		sql.append(" and this_.driveStartTime between ? and ? ");
 		sql.append(" and this_.driveEndTime between ? and ? ");
 		sql.append(" order by this_.driveStartTime asc ");
-		System.out.println("开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始开始");
 		return commonDao.findHql(sql.toString(), carId, startTime1, startTime2, endTime1, endTime2);
 	}
 

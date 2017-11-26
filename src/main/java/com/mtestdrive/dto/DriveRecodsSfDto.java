@@ -20,6 +20,10 @@ public class DriveRecodsSfDto {
 	private String mobile;
 	private String gender;
 	private String mileage;
+
+	private String salesmanName;
+	private String endPicPath;
+
 	
 	private Set<QuestionInfoEntity> questionInfos = new HashSet<QuestionInfoEntity>();
 	public Set<QuestionInfoEntity> getQuestionInfos() {
@@ -105,5 +109,15 @@ public class DriveRecodsSfDto {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getSalesmanName() { return salesmanName;	}
+	public void setSalesmanName(String salesmanName) {
+		this.salesmanName = salesmanName;
+	}
+	public String getEndPicPath() {
+		return endPicPath;
+	}
+	public void setEndPicPath(String endPicPath) {
+		this.endPicPath = endPicPath;
 	}
 }
