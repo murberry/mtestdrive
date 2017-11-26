@@ -3,9 +3,7 @@ package org.jeecgframework.web.demo.service.impl.test;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -66,24 +64,25 @@ public class SalesforceServiceImpl {
 	 * @throws
 	 */
 	public void work() throws UnsupportedEncodingException, ParseException {
-//		synchronizationAgencyInfo(); // 经销商 by CXG
-//		synchronizationSalesmanInfo();// 销售顾问  by CXG
-//		synchronizationCarInfo(); // 车辆信息  by CXG
-	    synchronizationCustomerInfo();// 客户信息
-		synchronizationTestDriveAppointment();// 试驾预约信息(双向同步)
+//		fetchAgencyInfo(); // 经销商
+//		fetchSalesmanInfo();// 销售顾问
+//		fetchCarInfo(); // 车辆信息
+//		fetchTestDriveAppointment();// 试驾预约信息
+//		fetchCustomerInfo();// 客户信息
+		fetchTestDrivePurchase();// 试驾购买信息
 	}
 	
 	/**
-	 * @Title: synchronizationTestDriveAppointment   
+	 * @Title: fetchTestDriveAppointment
 	 * @Description: 同步试驾预约数据 	说明：双向同步 试驾车平台<-->SF
 	 * @param: @throws ParseException      
 	 * @return: void      
 	 * @throws
 	 */
-	public void synchronizationTestDriveAppointment() throws ParseException {
-		logger.info("同步试驾预约数据   begin");
+	public void fetchTestDriveAppointment() throws ParseException {
+		logger.info("获取试驾预约数据   begin");
 		StringBuilder logMsg = new StringBuilder();
-		logMsg.append("同步试驾预约数据---->");
+		logMsg.append("获取试驾预约数据---->");
 		JSONArray array = getQueryList("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+where+SystemModStamp=TODAY");
 		//JSONArray array = getAllDriveAppointment("select+id,OwnerId,Name__c,name,Gender__c,Cancelled__c,Followupstate__c,ApplicationSource__c,TestDriveCarOrder__c,Mobile__c,Dealer_Code__C,AppointmentTimeSlot__c,AppointmentDate__c,AppointmentType__c,Purchase_Plan__c,Vin__c,Province__c,City__c+from+TestDriveAppointment__c+limit+200");
 		if (array != null) {
@@ -214,23 +213,22 @@ public class SalesforceServiceImpl {
 			if (!ListUtils.isNullOrEmpty(upEn))
 				sysService.batchSave(upEn);
 		}
-		logger.info("同步试驾预约数据  end");
+		logger.info("获取试驾预约数据  end");
 	}
 
 
 	/**
-	 * @Title: synchronizationCustomerInfo   
+	 * @Title: fetchCustomerInfo
 	 * @Description: 同步SF客户数据
 	 * @param: @param isAll      
 	 * @return: void      
 	 * @throws
 	 */
-	public void synchronizationCustomerInfo() {
-		logger.info("同步SF客户数据   begin");
-		sysService.addSimpleLog("同步SF客户数据---->", Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
+	public void fetchCustomerInfo() {
+		logger.info("获取SF客户数据   begin");
+		sysService.addSimpleLog("获取SF客户数据---->", Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 		JSONArray array = getQueryList("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+where+SystemModStamp=TODAY");
-		//JSONArray array = getAllDriveAppointment("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+limit+200");
-		
+
 		if (array != null) {
 			List<CustomerInfoEntity> saveEn = new ArrayList<CustomerInfoEntity>();
 			List<CustomerInfoEntity> upEn = new ArrayList<CustomerInfoEntity>();
@@ -301,27 +299,27 @@ public class SalesforceServiceImpl {
 					dbCustomerInfo.setUpdateTime(DateUtils.gettimestamp());
 					upEn.add(dbCustomerInfo);
 				}
-			}
+			}// end for
 			// 批量保存或修改
 			if (!ListUtils.isNullOrEmpty(saveEn))
 				sysService.batchSave(saveEn);
 			if (!ListUtils.isNullOrEmpty(upEn))
 				sysService.batchUpdate(upEn);
 		}
-		logger.info("同步SF客户数据   end");
+		logger.info("获取SF客户数据   end");
 	}
 
 	/**
-	 * @Title: synchronizationCarInfo   
-	 * @Description: 同步车辆数据   
+	 * @Title: fetchCarInfo
+	 * @Description: 获取车辆数据
 	 * @param:       
 	 * @return: void      
 	 * @throws
 	 */
-	public void synchronizationCarInfo() {
-		logger.info("同步车辆数据      begin");
+	public void fetchCarInfo() {
+		logger.info("获取车辆数据      begin");
 		StringBuilder logMsg = new StringBuilder();
-		logMsg.append("同步车辆数据---->");
+		logMsg.append("获取车辆数据---->");
 		JSONObject carObject = getDriveAppointment("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+and+SystemModStamp=TODAY");
         //JSONObject carObject = getDriveAppointment("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+limit+200");
 		JSONArray array = (JSONArray) carObject.get("records");
@@ -383,19 +381,19 @@ public class SalesforceServiceImpl {
 			if (!ListUtils.isNullOrEmpty(upEn))
 				sysService.batchUpdate(upEn);
 		}
-		logger.info("同步车辆数据      end");
+		logger.info("获取车辆数据      end");
 	}
 	/**
-	 * @Title: synchronizationSalesmanInfo   
-	 * @Description: 同步销售顾问数据  说明：单向同步 SF-->试驾车平台
+	 * @Title: fetchSalesmanInfo
+	 * @Description: 获取销售顾问数据  说明：单向获取 SF-->试驾车平台
 	 * @param:       
 	 * @return: void      
 	 * @throws
 	 */
-	public void synchronizationSalesmanInfo() {
-		logger.info("同步销售顾问数据      begin");
+	public void fetchSalesmanInfo() {
+		logger.info("获取销售顾问数据      begin");
 		StringBuilder logMsg = new StringBuilder();
-		logMsg.append("同步销售顾问数据---->");
+		logMsg.append("获取销售顾问数据---->");
 	    JSONArray array = getQueryList("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+SystemModStamp=TODAY");
 		//JSONArray array = getAllDriveAppointment("select+id,name,Username,DealerCode__c,MobilePhone+from+User+limit+200");
 		if (array != null) {
@@ -452,20 +450,19 @@ public class SalesforceServiceImpl {
 			if (!ListUtils.isNullOrEmpty(upEn))
 				sysService.batchUpdate(upEn);
 		}
-		logger.info("同步销售顾问数据      end");
+		logger.info("获取销售顾问数据      end");
 	}
 
 	/**
-	 * @Title: synchronizationAgencyInfo   
-	 * @Description: 同步经销商的数据 说明：单向同步 SF-->试驾车平台
+	 * @Title: fetchAgencyInfo
+	 * @Description: 获取经销商的数据 说明：单向获取 SF-->试驾车平台
 	 * @param:       
 	 * @return: void      
 	 * @throws
 	 */
-	public void synchronizationAgencyInfo() {
-		logger.info("同步经销商的数据      begin");
+	public void fetchAgencyInfo() {
+		logger.info("获取经销商的数据      begin");
 		JSONArray array = getQueryList("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+where+SystemModStamp=TODAY");
-		//JSONArray array = getAllDriveAppointment("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+limit+200");
 		if (array != null) {
 			List<AgencyInfoEntity> saveEn = new ArrayList<AgencyInfoEntity>();
 			List<AgencyInfoEntity> upEn = new ArrayList<AgencyInfoEntity>();
@@ -507,9 +504,54 @@ public class SalesforceServiceImpl {
 			if (!ListUtils.isNullOrEmpty(upEn))
 				sysService.batchUpdate(upEn);
 		}
-		logger.info("同步经销商的数据      end");
+		logger.info("获取经销商的数据      end");
 	}
-	
+
+	/**
+	 * @Title: 获取试驾后的购买信息
+	 * @Description: 获取试驾后的购买信息 SF-->试驾车平台
+	 * @param:
+	 * @return: void
+	 * @throws
+	 */
+	public void fetchTestDrivePurchase() {
+		logger.info("获取试驾后的购买信息      begin");
+
+		//取增量时间
+		Date sfModified = (Date)driveRecodsService.findOneForJdbc("select max(sf_modified) as max_sf_modified from t_drive_recods").get("max_sf_modified");
+		if(null==sfModified) {
+			Calendar cal=Calendar.getInstance();
+			cal.clear();
+			cal.set(Calendar.YEAR,2017);
+			cal.set(Calendar.MONTH,1);//2017-01
+			sfModified = cal.getTime();
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//UTC国际标准时间格式
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));//sf的时区时间为国际标准时间
+
+		//远程取更新值
+		String sql="select+Id,GPSExternalID__c,PurchaseDealer__c,CarPurchase__c+from+GPSTestDrive__c+where+CarPurchase__c=true+and+LastModifiedDate>"+sdf.format(sfModified);
+		JSONArray array = getQueryList(sql);
+		if (array != null) {
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject jsonObject = array.getJSONObject(i);
+				JSONObject obj = new JSONObject(jsonObject.toString());
+				// 取出参数进行保存
+				String sfId = StringUtil.getStrByObj(obj.get("GPSExternalID"));
+				DriveRecodsEntity driveRec = driveRecodsService.get(DriveRecodsEntity.class, sfId);
+				driveRec.setSfId(obj.getString("Id"));
+				driveRec.setPurchaseDealer(obj.getString("PurchaseDealer__c"));
+				driveRec.setHasCarPurchase(obj.getBoolean("CarPurchase__c"));
+				driveRec.setSfModified(new Date(obj.getLong("LastModifiedDate")));
+				sysService.updateEntitie(driveRec);
+			}
+			logger.info("保存试驾后的购买信息条数="+array.length());
+		} else {
+			logger.info("SF无新的试驾后的购买信息 sql=:"+sql);
+		}
+		logger.info("获取试驾后的购买信息       end");
+	}
+
 	private static JSONArray getQueryList(String sql) {
 		String jsonStr = HttpClientUtil.doGetQueryList(sql);
 		if (jsonStr == null) {
