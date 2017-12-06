@@ -438,14 +438,14 @@ public class DriveRecodsController extends BaseController {
 			obdDrive.setPlateNo(carInfo.getPlateNo());
 			obdDrive.setCarType(carInfo.getType());
 			String customerId = obdDriveRecodsEntity.getCustomerId();
-			if("/".equals(customerId)){
+			if("/".equals(customerId)  || null== customerId){
 				obdDrive.setCustomerName(customerId);
 			}else{
 				CustomerInfoEntity customer = systemService.getEntity(CustomerInfoEntity.class, obdDriveRecodsEntity.getCustomerId());
 				obdDrive.setCustomerName(customer.getName());
 			}
 			String salesmanId = obdDriveRecodsEntity.getSalesmanId();
-			if("/".equals(salesmanId)){
+			if("/".equals(salesmanId)|| null == salesmanId ){
 				obdDrive.setSalesmanName(salesmanId);
 			}else{
 				SalesmanInfoEntity salesman=systemService.getEntity(SalesmanInfoEntity.class, obdDriveRecodsEntity.getSalesmanId());
