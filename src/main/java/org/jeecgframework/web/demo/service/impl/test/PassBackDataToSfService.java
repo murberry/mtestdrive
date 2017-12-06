@@ -2,7 +2,6 @@ package org.jeecgframework.web.demo.service.impl.test;
 
 import java.util.*;
 
-import com.mtestdrive.MaseratiConstants;
 import org.apache.log4j.Logger;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.constant.Globals;
@@ -19,7 +18,6 @@ import com.mtestdrive.dto.DriveRecodsSfDto;
 import com.mtestdrive.entity.CarInfoEntity;
 import com.mtestdrive.entity.DriveRecodsEntity;
 import com.mtestdrive.entity.QuestionInfoEntity;
-import com.mtestdrive.entity.QuestionnaireInfoEntity;
 import com.mtestdrive.utils.HttpClientUtil;
 
 @Service("passBackDataToSfService")
@@ -28,13 +26,19 @@ public class PassBackDataToSfService {
 
 	@Autowired
 	private SystemService sysService;
+    public void work() {
+        String[] tokens = HttpClientUtil.getAccessToken();
+
+    	passBackAllTestDrive(tokens); // 回传所有试驾数据
+    }
+
 
 	/**
 	 * @Title: work @Description:回传试驾数据 @param: @throws
 	 * UnsupportedEncodingException @param: @throws ParseException @return:
 	 * void @throws
 	 */
-	public void work() {
+	public void passBackAllTestDrive(String[] tokens) {
 		//取预约试驾状态为完成（status=5） 且没有同步到Salesforce（sf_id is null）的记录
 		CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
 //		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE,
@@ -50,7 +54,6 @@ public class PassBackDataToSfService {
 			DriveRecodsSfDto sfDto = null;
 			CarInfoEntity car =null;
 			int gender = 0;
-            String[] tokens = HttpClientUtil.getAccessToken();
 
 			for(int i=0; i<quList.size(); i++){
                 DriveRecodsEntity driveRecodsEntity = quList.get(i);
@@ -78,7 +81,7 @@ public class PassBackDataToSfService {
 					car = sysService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
 					if (null!=car) {
 						sfDto.setVin(car.getVin());
-					};
+					}
 					sfDto.setId(driveRecodsEntity.getId());
 
 					passBackTestDrive(sfDto, driveRecodsEntity, tokens);
@@ -124,7 +127,7 @@ public class PassBackDataToSfService {
                     json, tokens[0]);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("试驾数据回传失败: result="+result+"   json="+json);//数据添加失败
+            logger.error("试驾数据回传失败: json="+json);//数据添加失败
             sysService.addSimpleLog(e.getMessage(), Globals.Log_Type_OTHER, Globals.Log_Leavel_ERROR);
         }
 
@@ -139,7 +142,7 @@ public class PassBackDataToSfService {
                 for(int i=0; i<questionInfos.size(); i++){
                     qi = questionInfos.get(i);
                     passBackQuestionnaire(qi.getId().substring(0, 29),
-                            sfDriveId, qi.getQuestion().toString(), qi.getResult().toString());
+                            sfDriveId, qi.getQuestion().toString(), qi.getResult().toString(), tokens);
                 }
             }
 
@@ -163,13 +166,13 @@ public class PassBackDataToSfService {
 	 * @param: @param id length 30
 	 * @param: @param sfId length 30
 	 * @param: @param question
-	 * @param: @param qresult      
+	 * @param: @param qresult
+	 * @param: @param tokens
 	 * @return: void      
 	 * @throws
 	 */
-	public void passBackQuestionnaire(String id, String sfId, String question, String qresult) {
-		 String[] tokens = HttpClientUtil.getAccessToken();
-		 
+	public void passBackQuestionnaire(String id, String sfId, String question, String qresult, String[] tokens) {
+
 		 Map<String, String> paramMap = new HashMap<String, String>();
 		  paramMap.put("GPSTestDrive__c", sfId);
 		  paramMap.put("SurveyQuestion__c", question);
