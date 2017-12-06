@@ -55,7 +55,7 @@ public class TestDriveServiceImpl {
 		date=calendar.getTime(); //这个时间就是日期往后推一天的结果
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(date);
-		obdGatherInfoService.executeProcedure("call proc_match_testdirve(?,?)", 30, dateString);
+		obdGatherInfoService.executeProcedure("{call proc_match_testdrive(?,?)}", 30, dateString);
 		logger.info("结束执行全天有效试驾统计任务");
 	}
 
