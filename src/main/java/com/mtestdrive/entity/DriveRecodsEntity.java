@@ -66,6 +66,10 @@ public class DriveRecodsEntity implements java.io.Serializable {
 	private java.lang.String purchaseDealer;
 	/** 是否购车 */
 	private java.lang.Boolean hasCarPurchase;
+	/** 购车时间 */
+	private java.util.Date purchaseTime;
+	/** 购车型号 */
+	private java.lang.String purchaseModel;
 	/** Salseforce端数据更新时间 */
 	private java.util.Date sfModified;
 	/** 试驾反馈 */
@@ -382,6 +386,24 @@ public class DriveRecodsEntity implements java.io.Serializable {
 		this.hasCarPurchase = hasCarPurchase;
 	}
 
+	@Column(name = "purchase_time", nullable = true)
+	public Date getPurchaseTime() {
+		return this.purchaseTime;
+	}
+
+	public void setPurchaseTime(Date purchaseTime) {
+		this.purchaseTime = purchaseTime;
+	}
+
+	@Column(name = "purchase_model", nullable = true)
+	public String getPurchaseModel() {
+		return this.purchaseModel;
+	}
+
+	public void setPurchaseModel(String purchaseModel) {
+		this.purchaseModel = purchaseModel;
+	}
+
 	@Column(name = "sf_modified", nullable = true)
 	public Date getSfModified() {
 		return sfModified;
@@ -393,7 +415,7 @@ public class DriveRecodsEntity implements java.io.Serializable {
 
 	/**
 	 * 方法: 取得feedback
-	 * 
+	 *
 	 * @return: java.lang.Object 试驾反馈
 	 */
 	@Column(name = "FEEDBACK", nullable = true, length = 500)
@@ -403,7 +425,7 @@ public class DriveRecodsEntity implements java.io.Serializable {
 
 	/**
 	 * 方法: 设置feedback
-	 * 
+	 *
 	 * @param: java.lang.Object 试驾反馈
 	 */
 	public void setFeedback(java.lang.String feedback) {

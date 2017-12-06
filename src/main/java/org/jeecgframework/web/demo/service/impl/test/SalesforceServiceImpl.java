@@ -74,7 +74,7 @@ public class SalesforceServiceImpl {
 	
 	/**
 	 * @Title: fetchTestDriveAppointment
-	 * @Description: 同步试驾预约数据 	说明：双向同步 试驾车平台<-->SF
+	 * @Description: 获取试驾预约数据
 	 * @param: @throws ParseException      
 	 * @return: void      
 	 * @throws
@@ -526,24 +526,33 @@ public class SalesforceServiceImpl {
 			cal.set(Calendar.MONTH,1);//2017-01
 			sfModified = cal.getTime();
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//UTC国际标准时间格式
-		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));//sf的时区时间为国际标准时间
+		SimpleDateFormat querySdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//查询SF时的UTC国际标准时间格式
+		querySdf.setTimeZone(TimeZone.getTimeZone("UTC"));//sf的时区时间为国际标准时间
+		SimpleDateFormat returnSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.000+0000'");//SF返回时的UTC国际标准时间格式
+		returnSdf.setTimeZone(TimeZone.getTimeZone("UTC"));//sf的时区时间为国际标准时间
+
 
 		//远程取更新值
-		String sql="select+Id,GPSExternalID__c,PurchaseDealer__c,CarPurchase__c+from+GPSTestDrive__c+where+CarPurchase__c=true+and+LastModifiedDate>"+sdf.format(sfModified);
+		String sql="select+Id,GPSExternalID__c,PurchaseDealer__c,CarPurchase__c,PurchaseTime__c,PurchaseModel__c,LastModifiedDate+from+GPSTestDrive__c+where+CarPurchase__c=true+and+LastModifiedDate>"+querySdf.format(sfModified);
 		JSONArray array = getQueryList(sql);
 		if (array != null) {
-			for (int i = 0; i < array.length(); i++) {
-				JSONObject jsonObject = array.getJSONObject(i);
-				JSONObject obj = new JSONObject(jsonObject.toString());
-				// 取出参数进行保存
-				String sfId = StringUtil.getStrByObj(obj.get("GPSExternalID"));
-				DriveRecodsEntity driveRec = driveRecodsService.get(DriveRecodsEntity.class, sfId);
-				driveRec.setSfId(obj.getString("Id"));
-				driveRec.setPurchaseDealer(obj.getString("PurchaseDealer__c"));
-				driveRec.setHasCarPurchase(obj.getBoolean("CarPurchase__c"));
-				driveRec.setSfModified(new Date(obj.getLong("LastModifiedDate")));
-				sysService.updateEntitie(driveRec);
+			try {
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject jsonObject = array.getJSONObject(i);
+					JSONObject obj = new JSONObject(jsonObject.toString());
+					// 取出参数进行保存
+					String sfId = StringUtil.getStrByObj(obj.get("GPSExternalID"));
+					DriveRecodsEntity driveRec = driveRecodsService.get(DriveRecodsEntity.class, sfId);
+					driveRec.setSfId(obj.getString("Id"));
+					driveRec.setPurchaseDealer(obj.getString("PurchaseDealer__c"));
+					driveRec.setHasCarPurchase(obj.getBoolean("CarPurchase__c"));
+					driveRec.setPurchaseTime(returnSdf.parse(obj.getString("PurchaseTime__c")));
+					driveRec.setPurchaseModel(obj.getString("PurchaseModel__c"));
+					driveRec.setSfModified(returnSdf.parse(obj.getString("LastModifiedDate")));
+					sysService.updateEntitie(driveRec);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			logger.info("保存试驾后的购买信息条数="+array.length());
 		} else {
