@@ -34,7 +34,7 @@ public class ReportServiceImpl {
 	 * @throws
 	 */
 	public void work() {
-		logger.info("车辆报备定时任务已开始执行");
+		logger.debug("车辆报备定时任务已开始执行");
 		
 		List<ReportRecordsEntity> recods = null;
 		List<CarInfoEntity> carList = new ArrayList<CarInfoEntity>();;
@@ -83,7 +83,7 @@ public class ReportServiceImpl {
 				systemService.batchUpdate(carList);
 			}
 		}
-		logger.info("车辆报备定时任务执行完毕");
+		logger.debug("车辆报备定时任务执行完毕");
 	}
 
 	/**
