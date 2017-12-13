@@ -77,6 +77,7 @@ public class PassBackDataToSfService {
 					sfDto.setMileage(driveRecodsEntity.getMileage()+"");
 					sfDto.setMobile(driveRecodsEntity.getCustomer().getMobile());
 					sfDto.setName(driveRecodsEntity.getCustomer().getName());
+					sfDto.setSalesmanName(driveRecodsEntity.getSalesman().getName());
 					sfDto.setProvinces(driveRecodsEntity.getAgency().getProvinceId());
 					car = sysService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
 					if (null!=car) {
