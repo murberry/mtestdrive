@@ -17,15 +17,15 @@ public class Job {
 //        org.jeecgframework.core.util.LogUtil.info("1m");
 //    }
     
-    /**
-     * 每天1点执行一次
-     * */
-    @Scheduled(cron="0 14 17 ? * *") 
-    public void oneOClockPerDay(){
-        /*org.jeecgframework.core.util.LogUtil.info("1h");*/
-        System.out.println("执行定时任务！！！###################17:14");
-    }
-    
+//    /**
+//     * 每天1点执行一次
+//     * */
+//    @Scheduled(cron="0 14 17 ? * *")
+//    public void oneOClockPerDay(){
+//        /*org.jeecgframework.core.util.LogUtil.info("1h");*/
+//        System.out.println("执行定时任务！！！###################17:14");
+//    }
+//
     
     
 }
