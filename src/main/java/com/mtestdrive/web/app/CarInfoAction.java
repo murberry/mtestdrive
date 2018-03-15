@@ -17,6 +17,10 @@ import javax.validation.Validator;
 
 import com.mtestdrive.MaseratiConstants;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
+import org.apache.commons.beanutils.converters.IntegerConverter;
+import org.apache.commons.beanutils.converters.StringConverter;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -206,18 +210,35 @@ public class CarInfoAction extends BaseController {
 		} 
 		String driveId = request.getParameter("driveId");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, driveId);
-		DriveRecodsVo driveRecodsVo=new DriveRecodsVo();
-		try {
-			BeanUtils.copyProperties(driveRecodsVo, driveRecodsEntity);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DriveRecodsVo driveRecodsVo=convertToDriveRecodsVo(driveRecodsEntity);
+
 		request.setAttribute("driveRecods", driveRecodsVo);
 		request.setAttribute("carInfo", carInfoVo);
 		return new ModelAndView("carInfo/condition");
 	}
-	
+
+	private DriveRecodsVo convertToDriveRecodsVo(DriveRecodsEntity driveRecodsEntity) {
+		DriveRecodsVo driveRecodsVo=new DriveRecodsVo();
+		driveRecodsVo.setCar(driveRecodsVo.getCar());
+		driveRecodsVo.setCarId(driveRecodsEntity.getCarId());
+		driveRecodsVo.setDriveEndTime(driveRecodsEntity.getDriveEndTime());
+		driveRecodsVo.setDriver(driveRecodsEntity.getDriver());
+		driveRecodsVo.setDriveStartTime(driveRecodsEntity.getDriveStartTime());
+		driveRecodsVo.setEndPicPath(driveRecodsEntity.getEndPicPath());
+		driveRecodsVo.setFeedback(driveRecodsEntity.getFeedback());
+		driveRecodsVo.setId(driveRecodsEntity.getId());
+		driveRecodsVo.setMileage(driveRecodsEntity.getMileage()==null?new BigDecimal(0):driveRecodsEntity.getMileage());
+		driveRecodsVo.setOrderEndTime(driveRecodsEntity.getOrderEndTime());
+		driveRecodsVo.setOrderStartTime(driveRecodsEntity.getOrderStartTime());
+		driveRecodsVo.setRouteId(driveRecodsEntity.getRouteId());
+		driveRecodsVo.setStartPicPath(driveRecodsEntity.getStartPicPath());
+		driveRecodsVo.setStatus(driveRecodsEntity.getStatus());
+		driveRecodsVo.setAgency(driveRecodsEntity.getAgency());
+		driveRecodsVo.setCustomer(driveRecodsVo.getCustomer());
+		driveRecodsVo.setSalesman(driveRecodsVo.getSalesman());
+		return driveRecodsVo;
+	}
+
 	@RequestMapping(params = "status", method = RequestMethod.GET)
 	public ModelAndView status(HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -263,17 +284,11 @@ public class CarInfoAction extends BaseController {
 		Integer status = driveRecodsEntity.getStatus();
 		if(status==3){
 			driveRecodsEntity.setDriveStartTime(new Date());
-			
 			driveRecodsEntity.setStatus(4);
 			driveRecodsService.saveOrUpdate(driveRecodsEntity);
 		}
-		DriveRecodsVo driveRecodsVo=new DriveRecodsVo();
-		try {
-			BeanUtils.copyProperties(driveRecodsVo, driveRecodsEntity);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DriveRecodsVo driveRecodsVo=convertToDriveRecodsVo(driveRecodsEntity);
+
 		String carId = driveRecodsVo.getCarId();
 		CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, carId);
 		carInfoEntity.setStatus(MaseratiConstants.CarStatus.TEST_DRIVING);
