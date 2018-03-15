@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <title>试驾明细</title>
+  <title>出车明细</title>
   <t:base type="jquery,easyui,tools,DatePicker"></t:base>
  </head>
  <body >

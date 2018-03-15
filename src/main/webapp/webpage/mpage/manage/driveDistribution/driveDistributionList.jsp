@@ -3,7 +3,7 @@
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
 <div class="easyui-layout" fit="true">
   <div region="center" style="padding:0px;border:0px">
-  <t:datagrid name="driveRecodsList" title="试驾明细" queryMode="group" actionUrl="driveDistributionController.do?datagrid" idField="id" fit="true">
+  <t:datagrid name="driveRecodsList" title="出车明细" queryMode="group" actionUrl="driveDistributionController.do?datagrid" idField="id" fit="true">
    <t:dgCol title="编号" field="id" hidden="true"></t:dgCol>
    <t:dgCol field="status" title="预约试驾"  defaultVal="" hidden="true" query="ture"></t:dgCol>
    <t:dgCol title="4S经销商" field="agency.name" query="true" width="120"></t:dgCol>

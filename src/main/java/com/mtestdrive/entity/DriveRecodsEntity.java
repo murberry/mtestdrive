@@ -20,7 +20,7 @@ import java.util.Date;
 
 /**
  * @Title: Entity
- * @Description: 试驾明细
+ * @Description: 出车明细
  * @author zhangdaihao
  * @date 2017-03-10 17:36:12
  * @version V1.0

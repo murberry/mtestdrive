@@ -242,9 +242,9 @@ public class MaseratiConstants {
 	 * 报备状态 0：未开始报备，1：已开始报备，2：报备已结束
 	 */
 	public static class ReportStatus{
-		public static final int AWAIT = 0;//无效
-		public static final int UNDERWAY = 1;//无效
-		public static final int FINISHED = 2;//有效
+		public static final int AWAIT = 0;//未开始报备
+		public static final int UNDERWAY = 1;//已开始报备
+		public static final int FINISHED = 2;//报备已结束
 	}
 	
 	public static class SFInfo{

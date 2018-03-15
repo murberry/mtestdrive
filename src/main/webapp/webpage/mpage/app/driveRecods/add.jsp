@@ -183,11 +183,11 @@ function save(){
 		contentType:'application/json',
 		success:function(data){
 			if(data.obj=='1'){
-				layer.msg("时间被占用请重新选择！(预约)");
+				layer.msg("此时车辆已被预约，请重新选择！");
 			}else if(data.obj=='0'){
 				layer.msg('请选择车辆！');
 			}else if(data.obj=='3'){
-				layer.msg("时间被占用请重新选择！(报备)");
+				layer.msg("此时车辆处在报备期间，请重新选择！");
 			}else{
 				$.ajax({
 					url:"/mtestdrive/driveRecodsAction.action?save",

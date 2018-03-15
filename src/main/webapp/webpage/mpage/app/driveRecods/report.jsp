@@ -154,11 +154,14 @@ table th,table td{
 	/* var startTime = new Date($("#startTime").val());
 	var endTime = new Date($("#endTime").val());
 	alert($("#startTime").val()); */
-	
+
+	//持续时间
 	var timeDifference = "${timeDifference}";
 	var data = timeDifference/1000/60;
 	var minute = parseInt(data);
 	var second = parseInt((timeDifference-minute*60*1000)/1000)
 	$("#continueTime").html(minute+"'"+second+"'");
+
+
 </script>
 </html>
