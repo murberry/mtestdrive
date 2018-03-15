@@ -2,6 +2,8 @@ package org.jeecgframework.web.demo.service.impl.test;
 
 import java.util.*;
 
+import com.mtestdrive.MaseratiConstants;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.constant.Globals;
@@ -9,6 +11,8 @@ import org.jeecgframework.core.util.DateUtils;
 import org.jeecgframework.core.util.JSONHelper;
 import org.jeecgframework.core.util.ListUtils;
 import org.jeecgframework.core.util.StringUtil;
+import org.jeecgframework.web.system.pojo.base.TSType;
+import org.jeecgframework.web.system.pojo.base.TSTypegroup;
 import org.jeecgframework.web.system.service.SystemService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +43,11 @@ public class PassBackDataToSfService {
 	 * void @throws
 	 */
 	public void passBackAllTestDrive(String[] tokens) {
-		//取预约试驾状态为完成（status=5） 且没有同步到Salesforce（sf_id is null）的记录
+		//取预约试驾状态为完成（status=5） 且没有同步到Salesforce（sf_id is null）的，并且试驾状态为完成及以上的记录
 		CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
-//		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE,
-//				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //试驾状态暂时不管
 		cq.isNull("sfId");
+		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE,
+				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //试驾状态
 		cq.add();
 		List<DriveRecodsEntity> quList = sysService.getListByCriteriaQuery(cq, false);
         logger.info("发送试驾数据      begin （本次回传试驾数据记录数："+quList.size()+')');
@@ -53,6 +57,14 @@ public class PassBackDataToSfService {
 //			QuestionnaireInfoEntity quInfo = null;
 			DriveRecodsSfDto sfDto = null;
 			CarInfoEntity car =null;
+
+			//构建客户来源字典表Map
+			Map<String, String> quarryMap = new HashMap();
+			TSTypegroup group = sysService.getTypeGroupByCode("quarry");
+			for (TSType tsType:group.getTSTypes()){
+				quarryMap.put(tsType.getTypecode(), tsType.getTypename());
+			}
+
 			int gender = 0;
 
 			for(int i=0; i<quList.size(); i++){
@@ -84,6 +96,8 @@ public class PassBackDataToSfService {
 						sfDto.setVin(car.getVin());
 					}
 					sfDto.setId(driveRecodsEntity.getId());
+					String quarry = quarryMap.get(String.valueOf(driveRecodsEntity.getCustomer().getQuarry()));
+					sfDto.setQuarry(quarry);//客户来源
 
 					passBackTestDrive(sfDto, driveRecodsEntity, tokens);
 				}
@@ -95,7 +109,7 @@ public class PassBackDataToSfService {
 	}
 
     /**
-     * 回传的试驾信息，并取得在SF的记录ID，记录在本地试驾信息中
+     * 回传单次试驾信息，并取得在SF的记录ID，记录在本地试驾信息中
      * @param sfDto  回传的试驾信息
      * @param driveRec 本地的试驾信息
      * @param tokens 服务端鉴权信息
@@ -116,8 +130,9 @@ public class PassBackDataToSfService {
 		paramMap.put("gender__c", sfDto.getGender());
 		paramMap.put("research_haBeen__c", "true");
 //		paramMap.put("GPSMileage__c", sfDto.getMileage()); //暂不回传，不能传nll，否则报错
-		paramMap.put("endPicPath", sfDto.getEndPicPath());
-		paramMap.put("salesmanName", sfDto.getSalesmanName());
+//		paramMap.put("TestDrivePic__c", sfDto.getEndPicPath()); //暂不回传，不能传nll，否则报错
+		paramMap.put("salesmanName__c", (StringUtils.isEmpty(sfDto.getSalesmanName())?"":sfDto.getSalesmanName()));
+		paramMap.put("quarry__c", (StringUtils.isEmpty(sfDto.getQuarry())?"":sfDto.getQuarry()));
 		String json = JSONObject.valueToString(paramMap);
 
         String result = null;
@@ -126,38 +141,43 @@ public class PassBackDataToSfService {
 		    result = HttpClientUtil.sendSSLPATCHRequest(
 				tokens[1]+"/services/data/v34.0/sobjects/GPSTestDrive__c/GPSExternalID__c/"+sfDto.getId(),
                     json, tokens[0]);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("试驾数据回传失败: json="+json);//数据添加失败
-            sysService.addSimpleLog(e.getMessage(), Globals.Log_Type_OTHER, Globals.Log_Leavel_ERROR);
-        }
-
-        if (result != null) {
-            net.sf.json.JSONObject obj = JSONHelper.toJSONObject(result);
-            String sfDriveId = StringUtil.getStrByObj(obj.get("id"));//数据添加成功之后，sf返回的ID
-
-            //1.回传调查问卷
-            List<QuestionInfoEntity> questionInfos = sysService.findByProperty(QuestionInfoEntity.class, "questionnaireid", sfDto.getId());
-            QuestionInfoEntity qi = null;
-            if(!ListUtils.isNullOrEmpty(questionInfos)){
-                for(int i=0; i<questionInfos.size(); i++){
-                    qi = questionInfos.get(i);
-                    passBackQuestionnaire(qi.getId().substring(0, 29),
-                            sfDriveId, qi.getQuestion().toString(), qi.getResult().toString(), tokens);
-                }
-            }
-
-            //2.更新本地sfId
-            driveRec.setSfId(sfDriveId);
-            sysService.updateEntitie(driveRec);
-
-            logger.info("试驾数据同步成功, 本地sfId已更新：result="+result+"  sfId="+sfDriveId+"  json="+json);
-
-        } else {
-            logger.error("试驾数据添加后未正常返回（可能已经回传过了）: result="+result+"  json="+json);
-        }
 
 
+			if (result != null) {
+
+				if (!result.contains("errorCode")) {// 若未返回Errorcode，则obj属于正常
+
+                    net.sf.json.JSONObject obj = JSONHelper.toJSONObject(result);
+					String sfDriveId = StringUtil.getStrByObj(obj.get("id"));//取数据添加成功之后，sf返回的ID
+
+					//1.回传调查问卷
+					List<QuestionInfoEntity> questionInfos = sysService.findByProperty(QuestionInfoEntity.class, "questionnaireid", sfDto.getId());
+					QuestionInfoEntity qi = null;
+					if(!ListUtils.isNullOrEmpty(questionInfos)){
+						for(int i=0; i<questionInfos.size(); i++){
+							qi = questionInfos.get(i);
+							passBackQuestionnaire(qi.getId().substring(0, 29),
+									sfDriveId, qi.getQuestion().toString(), qi.getResult().toString(), tokens);
+						}
+					}
+
+					//2.更新本地sfId
+					driveRec.setSfId(sfDriveId);
+					sysService.updateEntitie(driveRec);
+
+					logger.info("试驾数据同步成功, 本地sfId已更新：result="+result+"  sfId="+sfDriveId+"  json="+json);
+
+				} else {
+					logger.error("试驾数据回传失败: 服务端返回的ErrorMsg="+result+" sfDtoId="+sfDto.getId());
+				}
+			} else {
+				logger.error("试驾数据回传失败: 服务端返回的返回的result=null"+" sfDtoId="+sfDto.getId());
+			}
+		} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("试驾数据回传失败: 当前试驾json="+json+" sfDtoId="+sfDto.getId());
+				sysService.addSimpleLog(e.getMessage(), Globals.Log_Type_OTHER, Globals.Log_Leavel_ERROR);
+		}
 
 	}
 	

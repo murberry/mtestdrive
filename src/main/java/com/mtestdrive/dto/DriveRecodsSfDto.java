@@ -24,6 +24,8 @@ public class DriveRecodsSfDto {
 	private String salesmanName;
 	private String endPicPath;
 
+	private String quarry;
+
 	
 	private Set<QuestionInfoEntity> questionInfos = new HashSet<QuestionInfoEntity>();
 	public Set<QuestionInfoEntity> getQuestionInfos() {
@@ -120,4 +122,6 @@ public class DriveRecodsSfDto {
 	public void setEndPicPath(String endPicPath) {
 		this.endPicPath = endPicPath;
 	}
+	public String getQuarry() {	return quarry; }
+	public void setQuarry(String quarry) {this.quarry = quarry;}
 }
