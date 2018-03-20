@@ -62,6 +62,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.apache.log4j.Logger;
+
 
 /**
  * 公共扩展方法
@@ -70,11 +72,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  */
 @Repository
 public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGenericBaseCommonDao {
+	private static final Logger logger = Logger.getLogger(CommonDao.class);
 
 	/**
 	 * 检查用户是否存在
 	 * */
 	public TSUser getUserByUserIdAndUserNameExits(TSUser user) {
+		logger.info("用户登录：Name="+user.getUserName());
 		String password = PasswordUtil.encrypt(user.getUserName(), user.getPassword(), PasswordUtil.getStaticSalt());
 		String query = "from TSUser u where u.userName = :username and u.password=:passowrd and deleteFlag=:deleteFlag ";
 		Query queryObject = getSession().createQuery(query);
@@ -129,8 +133,6 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 
 	/**
 	 * 文件上传
-	 * 
-	 * @param request
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -292,9 +294,6 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 	
 	/**
 	 * 文件下载或预览
-	 * 
-	 * @param request
-	 * @throws Exception
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -481,12 +480,8 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 	/**
 	 * 根据模型生成JSON
 	 * 
-	 * @param all
-	 *            全部对象
-	 * @param in
-	 *            已拥有的对象
-	 * @param comboBox
-	 *            模型
+	 * @param all 全部对象
+	 * @param comboTree 模型
 	 * @return
 	 */
 	public List<ComboTree> comTree(List<TSDepart> all, ComboTree comboTree) {
