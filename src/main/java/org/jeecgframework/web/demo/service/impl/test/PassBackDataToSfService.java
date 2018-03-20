@@ -3,6 +3,8 @@ package org.jeecgframework.web.demo.service.impl.test;
 import java.util.*;
 
 import com.mtestdrive.MaseratiConstants;
+import com.mtestdrive.entity.QuestionnaireQuestionEntity;
+import com.mtestdrive.entity.QuestionnaireInfoEntity;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import com.mtestdrive.dto.DriveRecodsSfDto;
 import com.mtestdrive.entity.CarInfoEntity;
 import com.mtestdrive.entity.DriveRecodsEntity;
-import com.mtestdrive.entity.QuestionInfoEntity;
 import com.mtestdrive.utils.HttpClientUtil;
 
 @Service("passBackDataToSfService")
@@ -34,14 +35,14 @@ public class PassBackDataToSfService {
         String[] tokens = HttpClientUtil.getAccessToken();
 
     	passBackAllTestDrive(tokens); // 回传所有试驾数据
+        passBackQuestionnaireList(tokens); // 回传所有问卷调研结果
     }
 
 
-	/**
-	 * @Title: work @Description:回传试驾数据 @param: @throws
-	 * UnsupportedEncodingException @param: @throws ParseException @return:
-	 * void @throws
-	 */
+    /**
+     * 回传试驾数据
+     * @param tokens
+     */
 	public void passBackAllTestDrive(String[] tokens) {
 		//取预约试驾状态为完成（status=5） 且没有同步到Salesforce（sf_id is null）的，并且试驾状态为完成及以上的记录
 		CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
@@ -50,13 +51,9 @@ public class PassBackDataToSfService {
 				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //试驾状态
 		cq.add();
 		List<DriveRecodsEntity> quList = sysService.getListByCriteriaQuery(cq, false);
-        logger.info("发送试驾数据      begin （本次回传试驾数据记录数："+quList.size()+')');
 
 		if(!ListUtils.isNullOrEmpty(quList)){
-			DriveRecodsEntity recods = null;
-//			QuestionnaireInfoEntity quInfo = null;
-			DriveRecodsSfDto sfDto = null;
-			CarInfoEntity car =null;
+			logger.info("-------------本次试驾回传记录数："+quList.size()+"---------------------");
 
 			//构建客户来源字典表Map
 			Map<String, String> quarryMap = new HashMap();
@@ -70,7 +67,7 @@ public class PassBackDataToSfService {
 			for(int i=0; i<quList.size(); i++){
                 DriveRecodsEntity driveRecodsEntity = quList.get(i);
 				if(driveRecodsEntity != null){
-					sfDto = new DriveRecodsSfDto();
+                    DriveRecodsSfDto sfDto = new DriveRecodsSfDto();
 					sfDto.setSfId(driveRecodsEntity.getId().substring(0, 29));//SF  ID长度为30
 					sfDto.setAddress(driveRecodsEntity.getAgency().getAddress());
 					sfDto.setBirthday(DateUtils.date2Str(driveRecodsEntity.getCustomer().getBirthday(), DateUtils.date_sdf));
@@ -91,7 +88,7 @@ public class PassBackDataToSfService {
 					sfDto.setName(driveRecodsEntity.getCustomer().getName());
 					sfDto.setSalesmanName(driveRecodsEntity.getSalesman().getName());
 					sfDto.setProvinces(driveRecodsEntity.getAgency().getProvinceId());
-					car = sysService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
+					CarInfoEntity car = sysService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
 					if (null!=car) {
 						sfDto.setVin(car.getVin());
 					}
@@ -102,8 +99,8 @@ public class PassBackDataToSfService {
 					passBackTestDrive(sfDto, driveRecodsEntity, tokens);
 				}
 			}
+			logger.info("------------- 本次试驾回传结束 ---------------------");
 		}
-		logger.info("发送试驾数据       end");
 
 
 	}
@@ -148,24 +145,13 @@ public class PassBackDataToSfService {
 				if (!result.contains("errorCode")) {// 若未返回Errorcode，则obj属于正常
 
                     net.sf.json.JSONObject obj = JSONHelper.toJSONObject(result);
-					String sfDriveId = StringUtil.getStrByObj(obj.get("id"));//取数据添加成功之后，sf返回的ID
+					String sfDriveId = StringUtil.getStrByObj(obj.get("qqId"));//取数据添加成功之后，sf返回的ID
 
-					//1.回传调查问卷
-					List<QuestionInfoEntity> questionInfos = sysService.findByProperty(QuestionInfoEntity.class, "questionnaireid", sfDto.getId());
-					QuestionInfoEntity qi = null;
-					if(!ListUtils.isNullOrEmpty(questionInfos)){
-						for(int i=0; i<questionInfos.size(); i++){
-							qi = questionInfos.get(i);
-							passBackQuestionnaire(qi.getId().substring(0, 29),
-									sfDriveId, qi.getQuestion().toString(), qi.getResult().toString(), tokens);
-						}
-					}
-
-					//2.更新本地sfId
+					//更新本地sfId
 					driveRec.setSfId(sfDriveId);
 					sysService.updateEntitie(driveRec);
 
-					logger.info("试驾数据同步成功, 本地sfId已更新：result="+result+"  sfId="+sfDriveId+"  json="+json);
+					logger.info("试驾数据同步成功, 本地sfId已更新：result="+result+" sfDtoId="+sfDto.getId()+"  driveId="+sfDriveId);
 
 				} else {
 					logger.error("试驾数据回传失败: 服务端返回的ErrorMsg="+result+" sfDtoId="+sfDto.getId());
@@ -180,42 +166,82 @@ public class PassBackDataToSfService {
 		}
 
 	}
-	
-	/**
-	 * @Title: passBackQuestionnaire   
-	 * @Description: 回传调查问卷数据到SF
-	 * @param: @param id length 30
-	 * @param: @param sfId length 30
-	 * @param: @param question
-	 * @param: @param qresult
-	 * @param: @param tokens
-	 * @return: void      
-	 * @throws
-	 */
-	public void passBackQuestionnaire(String id, String sfId, String question, String qresult, String[] tokens) {
 
-		 Map<String, String> paramMap = new HashMap<String, String>();
-		  paramMap.put("GPSTestDrive__c", sfId);
-		  paramMap.put("SurveyQuestion__c", question);
-		  paramMap.put("SurveyResult__c", qresult);
-		  /* paramMap.put("GPSTestDrive__c", "a24p00000007MTxAAM");
-		  paramMap.put("SurveyQuestion__c", "试驾后您是否考虑购买？");
-		  paramMap.put("SurveyResult__c", "是");*/
-		  String json = JSONObject.valueToString(paramMap);
-		  String result = HttpClientUtil.sendSSLPATCHRequest(tokens[1]+"/services/data/v34.0/sobjects/GPSSurveyResult__c/GPSExternalID__c/"+id,json,tokens[0]);
-		  try {
-			net.sf.json.JSONObject sfObjId = JSONHelper.toJSONObject(result);
-			logger.info("调查问卷同步成功，ID:"+sfObjId);
-		} catch (Exception e) {
-			logger.error(result);
-		}
+    /**
+     * 回传所有问卷调研结果
+     * @param tokens
+     */
+    public void passBackQuestionnaireList(String[] tokens) {
+
+        //回传调查问卷
+        CriteriaQuery cq = new CriteriaQuery(QuestionnaireInfoEntity.class);
+        cq.isNotNull("commitTime"); //用户已经有反馈
+        cq.isNull("syncTime");      //并且未同步到SF
+        cq.add();
+        List<QuestionnaireInfoEntity> qiList = sysService.getListByCriteriaQuery(cq, false);
+
+        if(!ListUtils.isNullOrEmpty(qiList)){
+            logger.info("开始回传问卷反馈，共计"+qiList.size()+"条");
+            for(int i=0; i<qiList.size(); i++){
+                QuestionnaireInfoEntity qi = qiList.get(i);
+                DriveRecodsEntity dr = sysService.get(DriveRecodsEntity.class, qi.getDriveId());
+                String sfDriveId = dr.getSfId();
+                if (StringUtils.isEmpty(sfDriveId)) {
+                    logger.error("当前问卷无对应的试驾流程：问卷ID="+qi.getId()+" 试驾流程ID="+qi.getDriveId());
+                    continue;
+                }
+
+                List<QuestionnaireQuestionEntity> qqList = sysService.findByProperty(QuestionnaireQuestionEntity.class, "questionnaireid", qi.getId());
+
+                if(!ListUtils.isNullOrEmpty(qqList)) {
+                    for(int j=0; j<qqList.size(); j++) {
+                        QuestionnaireQuestionEntity qq = qqList.get(j);
+                        passBackQuestionnaire(qq, sfDriveId, tokens);
+                    }
+                    //每同步完一组问题就记录同步完成时间
+                    qi.setSyncTime(new Date());
+                    sysService.updateEntitie(qi);
+                }
+
+            }
+            logger.info("调查问卷同步结束");
+        }
+    }
+
+
+    /**
+     * 回传单条问卷调研结果
+     * @param qq
+     * @param sfDriveId
+     * @param tokens
+     */
+	public void passBackQuestionnaire(QuestionnaireQuestionEntity qq, String sfDriveId, String[] tokens) {
+	    String qqId = qq.getId().substring(0, 29);
+
+	    Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("GPSTestDrive__c", sfDriveId);//SF生成的试驾流程ID
+		paramMap.put("SurveyQuestion__c", qq.getQuestion());
+		paramMap.put("SurveyResult__c", qq.getResult());
+
+		String json = JSONObject.valueToString(paramMap);
+        String result = null;
+        try {
+            result = HttpClientUtil.sendSSLPATCHRequest(tokens[1]+"/services/data/v34.0/sobjects/GPSSurveyResult__c/GPSExternalID__c/" + qqId,
+                                                         json,
+                                                         tokens[0]);
+            if (null==result || result.contains("errorCode")) {
+                logger.error("回传问卷问题失败, qqId="+qqId+" json="+json+" 服务端返回ErrMsg="+result);
+            } else {
+                logger.info("回传问卷问题成功, qqId="+qqId+" json="+json+" 服务端返回ErrMsg="+result);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("回传问卷问题失败, qqId="+qqId+" json="+json+" 服务端返回ErrMsg="+result);
+            sysService.addSimpleLog(e.getMessage(), Globals.Log_Type_OTHER, Globals.Log_Leavel_ERROR);
+        }
+
+
 	}
 
-	public static void main(String[] args) {
-//		String str = "{\"id\":\"a24p00000007MU7AAM\",\"success\":true,\"errors\":[]}";
-//		net.sf.json.JSONObject obj = JSONHelper.toJSONObject(str);
-//		System.out.println(obj.get("id"));
-
-
-	}
 }

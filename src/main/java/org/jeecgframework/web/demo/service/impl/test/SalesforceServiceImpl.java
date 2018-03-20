@@ -256,7 +256,7 @@ public class SalesforceServiceImpl {
 					if(salesMan != null)
 						customerInfo.setCreateBy(salesMan.getId());
 					else{
-						String msg = "经销商"+StringUtil.getStrByObj(owner.get("Dealercode__c"))+"销售顾问不存在，SFID："+salesManSfId;
+						String msg = "经销商code："+StringUtil.getStrByObj(owner.get("Dealercode__c"))+"的销售顾问不存在：SFID="+salesManSfId;
 						logger.error(msg);
 						sysService.addSimpleLog(msg, Globals.Log_Type_OTHER, Globals.Log_Leavel_ERROR);
 					}
