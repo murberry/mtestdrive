@@ -329,18 +329,13 @@
    { 
        if(mobile.length==0) 
        { 
-    	  layer.msg('请输入电话！'); 
+    	  layer.msg('请输入手机号！');
           return false; 
        }     
-       if(mobile.length!=11) 
-       { 
-    	   layer.msg('请输入有效的电话！'); 
-           return false; 
-       } 
-       var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+       var myreg = /^(1[0-9]{10})$/;
        if(!myreg.test(mobile)) 
        { 
-    	   layer.msg('请输入有效的电话！'); 
+    	   layer.msg('请输入有效的手机号！');
            return false; 
        } 
        return true;
