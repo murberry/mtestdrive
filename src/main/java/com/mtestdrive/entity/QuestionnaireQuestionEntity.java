@@ -40,7 +40,7 @@ public class QuestionInfoEntity implements java.io.Serializable {
 	private java.lang.String result;
 	/**questionnaireid*/
 	private java.lang.String questionnaireid;
-	
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  id
