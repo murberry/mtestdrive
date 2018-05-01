@@ -31,7 +31,7 @@ import javax.persistence.SequenceGenerator;
 @DynamicUpdate(true)
 @DynamicInsert(true)
 @SuppressWarnings("serial")
-public class QuestionInfoEntity implements java.io.Serializable {
+public class QuestionnaireQuestionEntity implements java.io.Serializable {
 	/**id*/
 	private java.lang.String id;
 	/**问题*/

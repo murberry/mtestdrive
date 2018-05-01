@@ -3,8 +3,7 @@ package org.jeecgframework.web.demo.service.impl.test;
 import java.util.*;
 
 import com.mtestdrive.MaseratiConstants;
-import com.mtestdrive.entity.QuestionnaireQuestionEntity;
-import com.mtestdrive.entity.QuestionnaireInfoEntity;
+import com.mtestdrive.entity.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
@@ -21,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mtestdrive.dto.DriveRecodsSfDto;
-import com.mtestdrive.entity.CarInfoEntity;
-import com.mtestdrive.entity.DriveRecodsEntity;
 import com.mtestdrive.utils.HttpClientUtil;
 
 @Service("passBackDataToSfService")
@@ -44,11 +41,12 @@ public class PassBackDataToSfService {
      * @param tokens
      */
 	public void passBackAllTestDrive(String[] tokens) {
-		//取预约试驾状态为完成（status=5） 且没有同步到Salesforce（sf_id is null）的，并且试驾状态为完成及以上的记录
+		//取没有同步到Salesforce（sf_id is null），并且试驾状态为完成及以上的合规记录
 		CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
 		cq.isNull("sfId");
-		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE,
-				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //试驾状态
+		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE, //5 完成试驾
+                                              MaseratiConstants.DriveRecodsStatus.GROUP, //8 已提交问卷
+				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //9 已生成报告
 		cq.add();
 		List<DriveRecodsEntity> quList = sysService.getListByCriteriaQuery(cq, false);
 
@@ -57,9 +55,16 @@ public class PassBackDataToSfService {
 
 			//构建客户来源字典表Map
 			Map<String, String> quarryMap = new HashMap();
-			TSTypegroup group = sysService.getTypeGroupByCode("quarry");
-			for (TSType tsType:group.getTSTypes()){
+			TSTypegroup qGroup = sysService.getTypeGroupByCode("quarry");
+			for (TSType tsType:qGroup.getTSTypes()){
 				quarryMap.put(tsType.getTypecode(), tsType.getTypename());
+			}
+
+			//构建省市字典表Map
+			Map<String, String> provinceCityMap = new HashMap();
+			List<ChinaEntity> pcList = sysService.findByProperty(ChinaEntity.class, "pid", 0);
+			for (ChinaEntity pc:pcList){
+				provinceCityMap.put(pc.getId().toString(), pc.getName());
 			}
 
 			int gender = 0;
@@ -71,7 +76,8 @@ public class PassBackDataToSfService {
 					sfDto.setSfId(driveRecodsEntity.getId().substring(0, 29));//SF  ID长度为30
 					sfDto.setAddress(driveRecodsEntity.getAgency().getAddress());
 					sfDto.setBirthday(DateUtils.date2Str(driveRecodsEntity.getCustomer().getBirthday(), DateUtils.date_sdf));
-					sfDto.setCity(driveRecodsEntity.getAgency().getCityId());
+					String cityId = driveRecodsEntity.getAgency().getCityId();
+					sfDto.setCity(provinceCityMap.get(cityId));
 					sfDto.setCode(driveRecodsEntity.getAgency().getCode());
 					sfDto.setDriveDate(DateUtils.date2Str(driveRecodsEntity.getDriveStartTime(), DateUtils.date_sdf));
 					
@@ -87,7 +93,8 @@ public class PassBackDataToSfService {
 					sfDto.setMobile(driveRecodsEntity.getCustomer().getMobile());
 					sfDto.setName(driveRecodsEntity.getCustomer().getName());
 					sfDto.setSalesmanName(driveRecodsEntity.getSalesman().getName());
-					sfDto.setProvinces(driveRecodsEntity.getAgency().getProvinceId());
+					String provinceId = driveRecodsEntity.getAgency().getProvinceId();
+					sfDto.setProvinces(provinceCityMap.get(provinceId));
 					CarInfoEntity car = sysService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
 					if (null!=car) {
 						sfDto.setVin(car.getVin());
@@ -145,13 +152,13 @@ public class PassBackDataToSfService {
 				if (!result.contains("errorCode")) {// 若未返回Errorcode，则obj属于正常
 
                     net.sf.json.JSONObject obj = JSONHelper.toJSONObject(result);
-					String sfDriveId = StringUtil.getStrByObj(obj.get("qqId"));//取数据添加成功之后，sf返回的ID
+					String sfDriveId = StringUtil.getStrByObj(obj.get("id"));//取数据添加成功之后，sf返回的ID
 
 					//更新本地sfId
 					driveRec.setSfId(sfDriveId);
 					sysService.updateEntitie(driveRec);
 
-					logger.info("试驾数据同步成功, 本地sfId已更新：result="+result+" sfDtoId="+sfDto.getId()+"  driveId="+sfDriveId);
+					logger.info("试驾数据同步成功, 本地sfId已更新：result="+result+" sfDtoId="+sfDto.getId());
 
 				} else {
 					logger.error("试驾数据回传失败: 服务端返回的ErrorMsg="+result+" sfDtoId="+sfDto.getId());
@@ -185,9 +192,8 @@ public class PassBackDataToSfService {
             for(int i=0; i<qiList.size(); i++){
                 QuestionnaireInfoEntity qi = qiList.get(i);
                 DriveRecodsEntity dr = sysService.get(DriveRecodsEntity.class, qi.getDriveId());
-                String sfDriveId = dr.getSfId();
-                if (StringUtils.isEmpty(sfDriveId)) {
-                    logger.error("当前问卷无对应的试驾流程：问卷ID="+qi.getId()+" 试驾流程ID="+qi.getDriveId());
+                if (null== dr || StringUtils.isEmpty(dr.getSfId())) {
+                    logger.error("当前问卷无对应的试驾流程或者流程未同步至Salesforce：问卷ID="+qi.getId()+" 试驾流程ID="+qi.getDriveId());
                     continue;
                 }
 
@@ -196,7 +202,7 @@ public class PassBackDataToSfService {
                 if(!ListUtils.isNullOrEmpty(qqList)) {
                     for(int j=0; j<qqList.size(); j++) {
                         QuestionnaireQuestionEntity qq = qqList.get(j);
-                        passBackQuestionnaire(qq, sfDriveId, tokens);
+                        passBackQuestionnaire(qq, dr.getSfId(), tokens);
                     }
                     //每同步完一组问题就记录同步完成时间
                     qi.setSyncTime(new Date());

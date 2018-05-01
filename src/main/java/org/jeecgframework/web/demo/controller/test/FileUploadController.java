@@ -40,9 +40,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class FileUploadController extends BaseController {
  
 	private static final Logger logger = Logger.getLogger(FileUploadController.class);
+	private int maxBufferSize =  16*1024*1024;//最大文件大小16M
 
-	
-	
+
 	/**
 	 * 方法描述:  (这里用一句话描述这个方法的作用)
 	 * 作    者： yiming.zhang
@@ -107,31 +107,34 @@ public class FileUploadController extends BaseController {
 	@RequestMapping(params = "view", method = {RequestMethod.GET,RequestMethod.POST})
 	 public void get(HttpServletResponse response,String fileName) throws Exception{
 
-        File file = new File(ResourceUtil.getConfigByName("uploadpath")+fileName);
+         File file = new File(ResourceUtil.getConfigByName("uploadpath")+fileName);
 
-        //判断文件是否存在如果不存在就返回默认图标
-        if(!(file.exists() && file.canRead())) {
-            throw new FileNotFoundException(ResourceUtil.getConfigByName("uploadpath")+fileName);
-        }
-        FileInputStream fis = null;  
-        OutputStream os = null;  
-        response.setContentType(new MimetypesFileTypeMap().getContentType(file));
-        try {  
-            fis = new FileInputStream(file);  
-            os = response.getOutputStream();  
-            int count = 0;  
-            byte[] buffer = new byte[1024 * 8];  
-            while ((count = fis.read(buffer)) != -1) {  
-                os.write(buffer, 0, count);  
-                os.flush();  
-            }  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        } finally{
-        	 if(fis != null)
-        		 fis.close();  
-        	 if(os != null)
-        		 os.close();  
-        }
+         //判断文件是否存在如果不存在就返回默认图标
+         if(!(file.exists() && file.canRead())) {
+			 logger.error("文件不存在: File = "+ResourceUtil.getConfigByName("uploadpath")+fileName);
+//            throw new FileNotFoundException(ResourceUtil.getConfigByName("uploadpath")+fileName);
+         } else {
+             FileInputStream fis = null;
+             OutputStream os = null;
+             response.setContentType(new MimetypesFileTypeMap().getContentType(file));
+             try {
+                 fis = new FileInputStream(file);
+                 os = response.getOutputStream();
+                 int count = 0;
+                 byte[] buffer = new byte[maxBufferSize];
+                 while ((count = fis.read(buffer)) != -1) {
+                    os.write(buffer, 0, count);
+                    os.flush();
+                }
+             } catch (Exception e) {
+				 logger.error("文件输出失败: File = "+file.getAbsolutePath());
+				 e.printStackTrace();
+             } finally{
+                 if(fis != null)
+                     fis.close();
+                 if(os != null)
+                     os.close();
+             }
+         } //end if
 	 }
 }

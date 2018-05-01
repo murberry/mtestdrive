@@ -435,6 +435,7 @@ public class CarInfoController extends BaseController {
 		String message = null;
 		AjaxJson j = new AjaxJson();
 		carInfo = systemService.getEntity(CarInfoEntity.class, carInfo.getId());
+		carInfo.setObdId(null);//删除车辆时，OBD_ID需要置Null，否则新车装上该设备时会有重复OBD
 		carInfo.setStatus(ConstantStatus.INVALID);
 		message = "车辆信息删除成功";
 		carInfoService.saveOrUpdate(carInfo);

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validator;
 
+import com.mtestdrive.entity.*;
 import org.apache.log4j.Logger;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.model.json.AjaxJson;
@@ -23,11 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mtestdrive.MaseratiConstants.AuthCodeStatus;
 import com.mtestdrive.dto.GroupDto;
-import com.mtestdrive.entity.AuthCodeEntity;
-import com.mtestdrive.entity.DriveRecodsEntity;
-import com.mtestdrive.entity.QuestionInfoEntity;
-import com.mtestdrive.entity.QuestionnaireInfoEntity;
-import com.mtestdrive.entity.SalesmanInfoEntity;
+import com.mtestdrive.entity.QuestionnaireQuestionEntity;
 import com.mtestdrive.service.AuthCodeServiceI;
 import com.mtestdrive.service.CarInfoServiceI;
 import com.mtestdrive.service.DriveRecodsServiceI;
@@ -158,26 +155,26 @@ public class SysAction extends BaseController {
 						break;
 				}
 				// 获取答案
-				List<QuestionInfoEntity> qiList = new ArrayList<QuestionInfoEntity>();
-				QuestionInfoEntity qie1 = new QuestionInfoEntity();
+				List<QuestionnaireQuestionEntity> qiList = new ArrayList<QuestionnaireQuestionEntity>();
+				QuestionnaireQuestionEntity qie1 = new QuestionnaireQuestionEntity();
 				qie1.setQuestionnaireid(qi.getId());
 				qie1.setQuestion(getQuestionTextByCode(1));
 				qie1.setResult(re1);
 				qiList.add(qie1);
 				
-				QuestionInfoEntity qie2 = new QuestionInfoEntity();
+				QuestionnaireQuestionEntity qie2 = new QuestionnaireQuestionEntity();
 				qie2.setQuestionnaireid(qi.getId());
 				qie2.setQuestion(getQuestionTextByCode(2));
 				qie2.setResult(re2);
 				qiList.add(qie2);
 				
-				QuestionInfoEntity qie3 = new QuestionInfoEntity();
+				QuestionnaireQuestionEntity qie3 = new QuestionnaireQuestionEntity();
 				qie3.setQuestionnaireid(qi.getId());
 				qie3.setQuestion(getQuestionTextByCode(3));
 				qie3.setResult(re3);
 				qiList.add(qie3);
 				
-				QuestionInfoEntity qie4 = new QuestionInfoEntity();
+				QuestionnaireQuestionEntity qie4 = new QuestionnaireQuestionEntity();
 				qie4.setQuestionnaireid(qi.getId());
 				qie4.setQuestion(getQuestionTextByCode(4));
 				qie4.setResult(re4);

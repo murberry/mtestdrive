@@ -67,7 +67,7 @@ import com.mtestdrive.vo.SalesmanInfoVo;
 
 /**
  * @Title: Action
- * @Description: 试驾明细
+ * @Description: 出车明细
  * @author zhangdaihao
  * @date 2017-03-10 17:36:12
  * @version V1.0
@@ -96,8 +96,7 @@ public class DriveRecodsAction extends BaseController {
 
 	
 	/**
-	 * @Title: checkCarStatus   
-	 * @Description: 点击开始试驾按钮，判断车辆是否启动   
+	 * @Title: 车辆是否启动
 	 * @param: @param recodsId
 	 * @param: @return      
 	 * @return: AjaxJson      
@@ -346,7 +345,6 @@ public class DriveRecodsAction extends BaseController {
 		String customerId = request.getParameter("customerId");
 		DriveRecodsVo driveRecodsVo = null;
 		if (StringUtil.isNotEmpty(id)) {
-			logger.info("进入分支1");
 			DriveRecodsEntity driveRecods = driveRecodsService.get(DriveRecodsEntity.class, id);
 			driveRecodsVo = new DriveRecodsVo();
 			try {
@@ -362,7 +360,6 @@ public class DriveRecodsAction extends BaseController {
 				e.printStackTrace();
 			}
 		} else if (StringUtil.isNotEmpty(customerId)) {
-			logger.info("进入分支2");
 			CustomerInfoEntity customer = customerInfoService.get(CustomerInfoEntity.class, customerId);
 			driveRecodsVo = new DriveRecodsVo();
 			driveRecodsVo.setCustomer(customer);
@@ -374,8 +371,8 @@ public class DriveRecodsAction extends BaseController {
 		dc.add(Restrictions.eq("agency.id", ((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId()));
 		dc.add(Restrictions.eq("status", CarStatus.NO_USED));
 
-		logger.info("agency_id:" +((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId());
-		logger.info("status:" + CarStatus.NO_USED);
+		logger.debug("agency_id:" +((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId());
+		logger.debug("status:" + CarStatus.NO_USED);
 				
 		List<CarInfoEntity> cars = carInfoService.findByDetached(dc);
 		logger.info("查询车辆信息集合size:" + cars.size());
@@ -422,20 +419,20 @@ public class DriveRecodsAction extends BaseController {
 				long orderEndTime = driveRecodsEntity.getOrderEndTime().getTime()-1000L;//减一秒
 				if(startTime>=orderStartTime && startTime<=orderEndTime){
 					//已占有
-					message="1";
+					message="1";//此时车辆已被预约，请重新选择！
 					j.setObj(message);
 					return j;
 				}
 				
 				if(endTime>=orderStartTime && endTime<=orderEndTime){
-					message="1";
+					message="1";//此时车辆已被预约，请重新选择！
 					j.setObj(message);
 					return j;
 				}
 				
 			}
+
 			//查询车辆报备信息
-			
 			DetachedCriteria reDc = DetachedCriteria.forClass(ReportRecordsEntity.class);
 			reDc.add(Restrictions.ne("status", ReportStatus.FINISHED));
 			reDc.add(Restrictions.eq("carId", drive.getCarId()));
@@ -445,38 +442,16 @@ public class DriveRecodsAction extends BaseController {
 				//报备的开始时间和结束时间
 				long reportStartTime = reportRecordsEntity.getStartTime().getTime();
 				long reportEndTime = reportRecordsEntity.getEndTime().getTime();
-				
-				
-				//判断预约开始时间是否在报备时间段内
-				if(startTime>=reportStartTime && startTime<=reportEndTime){
-					//已占有
-					message="3";
+
+                //判断预约时间段与报备时间段是否有重合？
+                // (报备开始时间<=预约开始时间<=报备结束时间) or (报备开始时间<=预约结束时间<=报备结束时间)
+				if((reportStartTime<=startTime && startTime<=reportEndTime)
+                    || (reportStartTime<=endTime && endTime<=reportEndTime)){
+					message="3";//此时车辆处在报备期间，请重新选择！
 					j.setObj(message);
 					return j;
 				}
-				//判断预约结束时间是否在报备时间段内
-				if(endTime>=reportStartTime && endTime<=reportEndTime){
-					//已占有
-					message="3";
-					j.setObj(message);
-					return j;
-				}
-				
-				//判断报备开始时间是否在预约时间段内
-				if(reportStartTime >= startTime && reportStartTime <= endTime){
-					//已占有
-					message="3";
-					j.setObj(message);
-					return j;
-				}
-				//判断预约结束时间是否在报备时间段内
-				if(reportEndTime >= startTime && reportEndTime <= endTime ){
-					//已占有
-					message="3";
-					j.setObj(message);
-					return j;
-				}
-				
+
 			}
 		}else{
 			//参数问题
@@ -664,8 +639,8 @@ public class DriveRecodsAction extends BaseController {
 		request.setAttribute("driveRecodsVo", driveRecodsVo);
 		Date endTime = driveRecodsVo.getDriveEndTime();
 		Date startTime = driveRecodsVo.getDriveStartTime();
-		long end = endTime.getTime();
-		long start = startTime.getTime();
+		long end = endTime==null?0L:endTime.getTime();
+		long start = startTime==null?0L:startTime.getTime();
 		long x = end-start;
 		request.setAttribute("timeDifference", x);
 		return new ModelAndView("driveRecods/report");
@@ -769,6 +744,7 @@ public class DriveRecodsAction extends BaseController {
 
 		// 保存
 		driveRecodsService.save(driveRecods);
+        logger.info("手工创建试驾预约记录成功："+driveRecods.toString());
 
 		// 按照Restful风格约定，创建指向新任务的url, 也可以直接返回id或对象.
 		// String id = driveRecods.getId();

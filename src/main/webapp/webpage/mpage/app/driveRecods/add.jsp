@@ -245,8 +245,8 @@ function getTime(){
 				lang: 'zh',
 				showNow: true,
 				stepHour: 1,
-                stepMinute: 60,
-                 stepSecond: 60,
+                stepMinute: 10, //设置显示分钟间隔 by CXG
+				stepSecond: 60,
 				nowText: "今天",
 		        startYear: currYear, //开始年份
 		        endYear: currYear + 10 //结束年份

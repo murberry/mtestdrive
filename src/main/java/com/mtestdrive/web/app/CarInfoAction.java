@@ -1,52 +1,6 @@
 package com.mtestdrive.web.app;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 import com.mtestdrive.MaseratiConstants;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.converters.BigDecimalConverter;
-import org.apache.commons.beanutils.converters.IntegerConverter;
-import org.apache.commons.beanutils.converters.StringConverter;
-import org.apache.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-import org.jeecgframework.core.beanvalidator.BeanValidators;
-import org.jeecgframework.core.common.controller.BaseController;
-import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
-import org.jeecgframework.core.util.DateUtils;
-import org.jeecgframework.core.util.ListUtils;
-import org.jeecgframework.core.util.StringUtil;
-import org.jeecgframework.web.system.service.SystemService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import com.mtestdrive.MaseratiConstants.ConstantStatus;
 import com.mtestdrive.dto.CarInfoDto;
 import com.mtestdrive.entity.CarInfoEntity;
@@ -61,6 +15,35 @@ import com.mtestdrive.vo.CarArrangeVo;
 import com.mtestdrive.vo.CarInfoVo;
 import com.mtestdrive.vo.DriveRecodsVo;
 import com.mtestdrive.vo.SalesmanInfoVo;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.jeecgframework.core.beanvalidator.BeanValidators;
+import org.jeecgframework.core.common.controller.BaseController;
+import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
+import org.jeecgframework.core.util.DateUtils;
+import org.jeecgframework.core.util.ListUtils;
+import org.jeecgframework.core.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * @Title: Action
@@ -295,6 +278,7 @@ public class CarInfoAction extends BaseController {
 		carInfoEntity.setDriveTotal(carInfoEntity.getDriveTotal()+1);
 		
 		carInfoService.saveOrUpdate(carInfoEntity);
+		logger.info("开始试驾 driveRecordId="+driveId+" CarId="+carId);
 		CarInfoVo carInfoVo = new CarInfoVo();
 		try {
 			BeanUtils.copyProperties(carInfoVo, carInfoEntity);

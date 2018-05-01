@@ -38,7 +38,9 @@ public class QuestionnaireInfoEntity implements java.io.Serializable {
 	private java.util.Date sendTime;
 	/**commitTime*/
 	private java.lang.String commitTime;
-	
+
+	private java.util.Date syncTime;
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  id
@@ -106,5 +108,22 @@ public class QuestionnaireInfoEntity implements java.io.Serializable {
 	 */
 	public void setCommitTime(String commitTime){
 		this.commitTime = commitTime;
+	}
+
+	/**
+	 *方法: 取得java.util.Date
+	 *@return: java.util.Date  syncTime
+	 */
+	@Column(name ="SYNC_TIME",nullable=true)
+	public java.util.Date getSyncTime(){
+		return this.syncTime;
+	}
+
+	/**
+	 *方法: 设置java.util.Date
+	 *@param: java.util.Date  syncTime
+	 */
+	public void setSyncTime(java.util.Date syncTime){
+		this.syncTime = syncTime;
 	}
 }

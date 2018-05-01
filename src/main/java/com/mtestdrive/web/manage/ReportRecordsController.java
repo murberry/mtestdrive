@@ -90,6 +90,11 @@ public class ReportRecordsController extends BaseController {
 				aj.setSuccess(false);
 			}else{
 				report.setStatus(ReportStatus.FINISHED);
+				CarInfoEntity car = systemService.get(CarInfoEntity.class, report.getCarId());
+				if (car != null && !car.getStatus().equals(CarStatus.TEST_DRIVING)) {
+					car.setStatus(CarStatus.NO_USED);
+					carInfoService.updateEntitie(car);
+				}
 				reportRecordsService.updateEntitie(report);
 				aj.setMsg("操作成功");
 				aj.setSuccess(true);
@@ -108,15 +113,13 @@ public class ReportRecordsController extends BaseController {
 		return new ModelAndView("mpage/manage/reportRecords/reportRecordsList");
 	}
 
-	/**
-	 * easyui AJAX请求数据
-	 * 
-	 * @param request
-	 * @param response
-	 * @param dataGrid
-	 * @param user
-	 */
-
+    /**
+     * easyui AJAX请求数据
+     * @param reportRecords
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
 	@RequestMapping(params = "datagrid")
 	public void datagrid(ReportRecordsDto reportRecords,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
 		CriteriaQuery cq = new CriteriaQuery(ReportRecordsEntity.class, dataGrid);
@@ -181,12 +184,12 @@ public class ReportRecordsController extends BaseController {
 	}
 
 
-	/**
-	 * 添加报备信息
-	 * 
-	 * @param ids
-	 * @return
-	 */
+    /**
+     * 添加报备信息
+     * @param reportRecords
+     * @param request
+     * @return
+     */
 	@RequestMapping(params = "save")
 	@ResponseBody
 	public AjaxJson save(ReportRecordsEntity reportRecords, HttpServletRequest request) {

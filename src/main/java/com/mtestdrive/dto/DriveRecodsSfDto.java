@@ -3,7 +3,7 @@ package com.mtestdrive.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mtestdrive.entity.QuestionInfoEntity;
+import com.mtestdrive.entity.QuestionnaireQuestionEntity;
 
 public class DriveRecodsSfDto {
 	private String id;
@@ -27,11 +27,11 @@ public class DriveRecodsSfDto {
 	private String quarry;
 
 	
-	private Set<QuestionInfoEntity> questionInfos = new HashSet<QuestionInfoEntity>();
-	public Set<QuestionInfoEntity> getQuestionInfos() {
+	private Set<QuestionnaireQuestionEntity> questionInfos = new HashSet<QuestionnaireQuestionEntity>();
+	public Set<QuestionnaireQuestionEntity> getQuestionInfos() {
 		return questionInfos;
 	}
-	public void setQuestionInfos(Set<QuestionInfoEntity> questionInfos) {
+	public void setQuestionInfos(Set<QuestionnaireQuestionEntity> questionInfos) {
 		this.questionInfos = questionInfos;
 	}
 	public String getBirthday() {

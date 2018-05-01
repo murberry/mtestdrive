@@ -62,7 +62,7 @@ import com.mtestdrive.vo.PlaybackTrackVo;
 
 /**   
  * @Title: Controller
- * @Description: 试驾明细
+ * @Description: 出车明细
  * @author zhangdaihao
  * @date 2017-03-10 17:36:12
  * @version V1.0   
@@ -142,7 +142,7 @@ public class DriveRecodsController extends BaseController {
 
 
 	/**
-	 * 试驾明细列表 页面跳转
+	 * 出车明细列表 页面跳转
 	 * 
 	 * @return
 	 */
@@ -263,7 +263,7 @@ public class DriveRecodsController extends BaseController {
 			}
 		}
 		if(salesmanName != null && StringUtil.isNotEmpty(salesmanName)){
-			// 根据经销商名称模糊搜索
+			// 根据销售顾问姓名模糊搜索
 			DetachedCriteria salesDc = DetachedCriteria.forClass(SalesmanInfoEntity.class);
 			salesDc.add(Restrictions.eq("status", ConstantStatus.VALID));
 			salesDc.add(Restrictions.like("name", salesmanInfoService.getLikeStr(salesmanName)));
@@ -282,7 +282,7 @@ public class DriveRecodsController extends BaseController {
 			}
 		}
 		if(customerName != null && StringUtil.isNotEmpty(customerName)){
-			// 根据经销商名称模糊搜索
+			// 根据客户名称模糊搜索
 			DetachedCriteria salesDc = DetachedCriteria.forClass(CustomerInfoEntity.class);
 			salesDc.add(Restrictions.eq("status", ConstantStatus.VALID));
 			salesDc.add(Restrictions.like("name", customerInfoService.getLikeStr(customerName)));
@@ -468,9 +468,9 @@ public class DriveRecodsController extends BaseController {
 			obdDrive.setStatus(status);
 			obdDriveList.add(obdDrive);
 		}
-		modelMap.put(NormalExcelConstants.FILE_NAME,"试驾明细");
+		modelMap.put(NormalExcelConstants.FILE_NAME,"出车明细");
 		modelMap.put(NormalExcelConstants.CLASS,ObdDriveDTO.class);
-		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("试驾明细列表", "导出人:"+ ResourceUtil.getSessionUserName().getRealName(),
+		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("出车明细列表", "导出人:"+ ResourceUtil.getSessionUserName().getRealName(),
 				"导出信息"));
 		modelMap.put(NormalExcelConstants.DATA_LIST,obdDriveList);
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
@@ -479,7 +479,7 @@ public class DriveRecodsController extends BaseController {
 	
 	/**
 	 * @Title: datagridTestDrive   
-	 * @Description: 试驾明细 
+	 * @Description: 出车明细
 	 * @param: @param driveRecods
 	 * @param: @param request
 	 * @param: @param response
@@ -557,11 +557,6 @@ public class DriveRecodsController extends BaseController {
 
 	/**
 	 * easyui AJAX请求数据
-	 * 
-	 * @param request
-	 * @param response
-	 * @param dataGrid
-	 * @param user
 	 */
 
 	@RequestMapping(params = "getAgency")
@@ -573,11 +568,6 @@ public class DriveRecodsController extends BaseController {
 	
 	/**
 	 * easyui AJAX请求数据试驾车
-	 * 
-	 * @param request
-	 * @param response
-	 * @param dataGrid
-	 * @param user
 	 */
 
 	@RequestMapping(params = "getCarInfo")
@@ -589,11 +579,6 @@ public class DriveRecodsController extends BaseController {
 	
 	/**
 	 * easyui AJAX请求数据销售
-	 * 
-	 * @param request
-	 * @param response
-	 * @param dataGrid
-	 * @param user
 	 */
 
 	@RequestMapping(params = "getSalesmanInfo")
@@ -605,11 +590,6 @@ public class DriveRecodsController extends BaseController {
 	
 	/**
 	 * easyui AJAX请求数据客户
-	 * 
-	 * @param request
-	 * @param response
-	 * @param dataGrid
-	 * @param user
 	 */
 
 	@RequestMapping(params = "getCustomerInfo")
@@ -621,7 +601,7 @@ public class DriveRecodsController extends BaseController {
 	
 	
 	/**
-	 * 删除试驾明细
+	 * 删除出车明细
 	 * 
 	 * @return
 	 */
@@ -631,7 +611,7 @@ public class DriveRecodsController extends BaseController {
 		String message = null;
 		AjaxJson j = new AjaxJson();
 		driveRecods = systemService.getEntity(DriveRecodsEntity.class, driveRecods.getId());
-		message = "试驾明细删除成功";
+		message = "出车明细删除成功";
 		driveRecodsService.delete(driveRecods);
 		systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 		
@@ -641,10 +621,7 @@ public class DriveRecodsController extends BaseController {
 
 
 	/**
-	 * 添加试驾明细
-	 * 
-	 * @param ids
-	 * @return
+	 * 添加出车明细
 	 */
 	@RequestMapping(params = "save")
 	@ResponseBody
@@ -652,7 +629,7 @@ public class DriveRecodsController extends BaseController {
 		String message = null;
 		AjaxJson j = new AjaxJson();
 		if (StringUtil.isNotEmpty(driveRecods.getId())) {
-			message = "试驾明细更新成功";
+			message = "出车明细更新成功";
 			DriveRecodsEntity t = driveRecodsService.get(DriveRecodsEntity.class, driveRecods.getId());
 			try {
 				MyBeanUtils.copyBeanNotNull2Bean(driveRecods, t);
@@ -661,10 +638,10 @@ public class DriveRecodsController extends BaseController {
 				systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = "试驾明细更新失败";
+				message = "出车明细更新失败";
 			}
 		} else {
-			message = "试驾明细添加成功";
+			message = "出车明细添加成功";
 			driveRecods.setStatus(0);
 			driveRecods.setCreateTime(new Date());
 			driveRecodsService.save(driveRecods);
@@ -675,7 +652,7 @@ public class DriveRecodsController extends BaseController {
 	}
 
 	/**
-	 * 试驾明细列表页面跳转
+	 * 出车明细列表页面跳转
 	 * 
 	 * @return
 	 */
@@ -810,12 +787,14 @@ public class DriveRecodsController extends BaseController {
 			obdDriveRecods = obdDriveRecodsService.getEntity(ObdDriveRecodsEntity.class, obdDriveRecods.getId());
 			AgencyInfoEntity agencyInfo = agencyInfoService.getEntity(AgencyInfoEntity.class, obdDriveRecods.getAgencyId());
 			CarInfoEntity carInfo = carInfoService.getEntity(CarInfoEntity.class, obdDriveRecods.getCarId());
-			obdDriveRecods.setCustomerId(obdDriveRecods.getCustomerId().replace("/", ""));
+			String customerId = obdDriveRecods.getCustomerId();
+			obdDriveRecods.setCustomerId(null==customerId?"":customerId.replace("/", ""));
 			if(StringUtil.isNotEmpty(obdDriveRecods.getCustomerId())){
 				CustomerInfoEntity customer = customerInfoService.getEntity(CustomerInfoEntity.class,obdDriveRecods.getCustomerId() );
 				obdDrive.setCustomerName(customer.getName());
 			}
-			obdDriveRecods.setSalesmanId((obdDriveRecods.getSalesmanId().replace("/", "")));
+			String salesmanId = obdDriveRecods.getSalesmanId();
+			obdDriveRecods.setSalesmanId(null==salesmanId?"":salesmanId.replace("/", ""));
 			if(StringUtil.isNotEmpty(obdDriveRecods.getSalesmanId())){
 				SalesmanInfoEntity salesman = salesmanInfoService.getEntity(SalesmanInfoEntity.class, obdDriveRecods.getSalesmanId());
 				obdDrive.setSalesmanName(salesman.getName());

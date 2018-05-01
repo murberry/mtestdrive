@@ -167,9 +167,6 @@ public class AgencyInfoController extends BaseController {
 	 * easyui AJAX请求数据省
 	 * 
 	 * @param request
-	 * @param response
-	 * @param dataGrid
-	 * @param 张丹超
 	 */
 
 	@RequestMapping(params = "getCity")

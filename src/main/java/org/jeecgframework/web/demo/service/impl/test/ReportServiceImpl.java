@@ -1,126 +1,84 @@
 package org.jeecgframework.web.demo.service.impl.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.mtestdrive.MaseratiConstants.CarStatus;
+import com.mtestdrive.MaseratiConstants.ReportStatus;
+import com.mtestdrive.entity.CarInfoEntity;
+import com.mtestdrive.entity.ReportRecordsEntity;
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
-import org.jeecgframework.core.util.DateUtils;
+import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.util.ListUtils;
-import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.web.system.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mtestdrive.MaseratiConstants.CarStatus;
-import com.mtestdrive.MaseratiConstants.ReportStatus;
-import com.mtestdrive.entity.CarInfoEntity;
-import com.mtestdrive.entity.ReportRecordsEntity;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service("reportService")
 @Transactional
 public class ReportServiceImpl {
+
 	@Autowired
 	private SystemService systemService;
 
 	private static final Logger logger = Logger.getLogger(ReportServiceImpl.class);
 
 	/**
-	 * @Title: work   
-	 * @Description: 定时任务调度的方法
-	 * @param:       
-	 * @return: void      
-	 * @throws
+	 * 定时任务调度的方法
 	 */
 	public void work() {
 		logger.debug("车辆报备定时任务已开始执行");
+
+		CriteriaQuery cq = new CriteriaQuery(ReportRecordsEntity.class);
+		cq.in("status", new Integer[]{ReportStatus.AWAIT, ReportStatus.UNDERWAY});
+		cq.add();
+		List<ReportRecordsEntity> repRecordList = systemService.getListByCriteriaQuery(cq, false);
+
+		List<CarInfoEntity> carList = new ArrayList<>();
+		Date now = new Date();
 		
-		List<ReportRecordsEntity> recods = null;
-		List<CarInfoEntity> carList = new ArrayList<CarInfoEntity>();;
-		CarInfoEntity car = null;
-		
-		//开始报备
-		recods = getRecords(ReportStatus.AWAIT);
-		ReportRecordsEntity report = null;
-		if (!ListUtils.isNullOrEmpty(recods)) {
+		if (!ListUtils.isNullOrEmpty(repRecordList)) {
 			
-			for (int i = 0; i < recods.size(); i++) {
-				report = recods.get(i);
-				report.setStatus(ReportStatus.UNDERWAY);
-				car = getChangeCarStatus(report.getCarId(), Integer.parseInt(report.getType()));
-				if(car != null)
-					carList.add(car);
+			for (ReportRecordsEntity repRecord : repRecordList) {
+
+				//如果车辆报备记录处于“未报备”状态，但当前车辆处于报备期间, 则
+				// 1. 将报备记录设为“报备中”
+				// 2. 若车辆没有在“试驾中”，将车辆状态设为报备状态：3:活动报备;4:维修报备;5:临时报备;6:巡展报备;
+				// （车辆完整状态：1:试驾中;2:空闲中;3:活动报备;4:维修报备;5:临时报备;6:巡展报备;）
+				if ( repRecord.getStatus().equals(ReportStatus.AWAIT)
+						&& now.after(repRecord.getStartTime()) && now.before(repRecord.getEndTime())) {
+					repRecord.setStatus(ReportStatus.UNDERWAY);//报备中
+					CarInfoEntity car = systemService.get(CarInfoEntity.class, repRecord.getCarId());
+					if (car != null && !car.getStatus().equals(CarStatus.TEST_DRIVING)) {
+						car.setStatus(Integer.parseInt(repRecord.getType())); //报备原因对应车辆状态中的3~6
+						carList.add(car);
+					}
+				}
+
+				//如果车辆报备记录处于“报备中”状态，且当前车辆不处于报备期间, 则
+				// 1. 将报备记录设为“报备结束”
+				// 2. 若车辆没有在“试驾中”，将车辆状态设为“空闲中”
+				// （车辆完整状态：1:试驾中;2:空闲中;3:活动报备;4:维修报备;5:临时报备;6:巡展报备;）
+				if ( repRecord.getStatus().equals(ReportStatus.UNDERWAY)
+						&& (now.before(repRecord.getStartTime()) || now.after(repRecord.getEndTime()))) {
+					repRecord.setStatus(ReportStatus.FINISHED);
+					CarInfoEntity car = systemService.get(CarInfoEntity.class, repRecord.getCarId());
+					if (car != null && !car.getStatus().equals(CarStatus.TEST_DRIVING)) {
+						car.setStatus(CarStatus.NO_USED);
+						carList.add(car);
+					}
+				}
+
+
 			}
-			systemService.batchUpdate(recods);
+			systemService.batchUpdate(repRecordList);
 			systemService.batchUpdate(carList);
 			carList.clear();
 		}
 
-		//要设为报备结束的记录
-		List<ReportRecordsEntity> finishedRecods = new ArrayList<ReportRecordsEntity>();
-		
-		//报备结束
-		recods = getRecords(ReportStatus.UNDERWAY);
-		if (!ListUtils.isNullOrEmpty(recods)) {
-			for (int i = 0; i < recods.size(); i++) {
-				report = recods.get(i);
-				long endTime = report.getEndTime().getTime();
-				
-				long nowTime = DateUtils.gettimestamp().getTime();
-				
-				//报备结束时间在当前时间前后2分钟的，直接设为报备结束
-				if(Math.abs((nowTime - endTime)/1000/60) <= 2){
-					report.setStatus(ReportStatus.FINISHED);
-					finishedRecods.add(report);
-					car = getChangeCarStatus(report.getCarId(), CarStatus.NO_USED);
-					if(car != null)
-						carList.add(car);
-				}
-			}
-			if(!ListUtils.isNullOrEmpty(finishedRecods)){
-				systemService.batchUpdate(finishedRecods);
-				systemService.batchUpdate(carList);
-			}
-		}
 		logger.debug("车辆报备定时任务执行完毕");
 	}
 
-	/**
-	 * @Title: getRecords   
-	 * @Description: 根据不同状态获取把报备记录   
-	 * @param: @param status
-	 * @param: @return      
-	 * @return: List<ReportRecordsEntity>      
-	 * @throws
-	 */
-	@SuppressWarnings("unchecked")
-	public List<ReportRecordsEntity> getRecords(Integer status) {
-		String hql = " from ReportRecordsEntity de where status=:status and :nowTime between de.startTime and de.endTime ";
-		Query query = systemService.getSession().createQuery(hql);
-		query.setParameter("status", status);
-		query.setParameter("nowTime", DateUtils.getTimestamp());
-		return query.list();
-	}
-	
-	/**
-	 * @Title: getChangeCarStatus   
-	 * @Description: 返回改变过状态之后的车辆实体  
-	 * @param: @param id
-	 * @param: @param status
-	 * @param: @return      
-	 * @return: CarInfoEntity      
-	 * @throws
-	 */
-	public CarInfoEntity getChangeCarStatus(String id, int status){
-		if(StringUtil.isNotEmpty(id)){
-			CarInfoEntity car = systemService.get(CarInfoEntity.class, id);
-			if(car != null){
-				car.setStatus(status);
-				return car;
-			}
-		}
-		return null;
-	}
-	
 }
