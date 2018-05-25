@@ -10,10 +10,9 @@ import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 
 public class SMSUtil {
+
 	private final static String apiUrl = "http://gw.api.taobao.com/router/rest";
-	//跳转调查问卷的url
-	private final static String questionnairePageUrl = "&testDriveId=";
-	private final static String appkey = "23766081";
+	private final static String appKey = "23766081";
 	private final static String secret = "b2162f67e210055926506d50d40c5101";
 	private final static String signName = "玛莎拉蒂中国";
 	
@@ -49,7 +48,7 @@ public class SMSUtil {
 	 *             mengtaocui
 	 */
 	public static boolean send(String tel, String jsonParam, String templateCode) {
-		TaobaoClient client = new DefaultTaobaoClient(apiUrl, appkey, secret);
+		TaobaoClient client = new DefaultTaobaoClient(apiUrl, appKey, secret);
 		AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
 		req.setSmsType("normal");
 		req.setSmsFreeSignName(signName);
@@ -90,6 +89,7 @@ public class SMSUtil {
 
 	public static void main(String[] args) {
 		//sendAuthCode("13127673365","2768");
-		sendTestDriveReportLink("上海易特","13127673365","2");
+		//sendTestDriveReportLink("茵诺惟熙","13917264379","2");
+		sendTestDriveReportLink("茵诺惟熙","13917264379","2c9a4cf96107c97c016140c6f64c4e06".substring(0,20));
 	}
 }

@@ -182,7 +182,7 @@
 				dateFormat: 'yyyy-mm-dd',
 				stepHour: 1,
                 stepMinute: 60,
-                 stepSecond: 60,
+				stepSecond: 60,
 				lang: 'zh',
 				showNow: true,
 				nowText: "今天",
@@ -219,8 +219,9 @@
 		})
 		
 		$('#img').fileupload({
-			autoUpload : "ture",
+			autoUpload : "true",
 			dataType:'JSON',
+            maxNumberOfFiles : 1,
 			done:function(result,data){
 				$("#drivingLicensePicPath").val(data.result[0].fileName);
 			}

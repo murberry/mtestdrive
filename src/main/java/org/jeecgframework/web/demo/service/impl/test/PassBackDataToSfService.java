@@ -25,6 +25,7 @@ import com.mtestdrive.utils.HttpClientUtil;
 @Service("passBackDataToSfService")
 public class PassBackDataToSfService {
 	private static final Logger logger = Logger.getLogger(PassBackDataToSfService.class);
+    private static final String TEST_AGENCY_ID = "2c9a4cf9622a343c016233f5f7472ff4";//测试经销商ID：茵诺惟熙
 
 	@Autowired
 	private SystemService sysService;
@@ -44,7 +45,8 @@ public class PassBackDataToSfService {
 		//取没有同步到Salesforce（sf_id is null），并且试驾状态为完成及以上的合规记录
 		CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
 		cq.isNull("sfId");
-		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE, //5 完成试驾
+		cq.notEq("agency.id", TEST_AGENCY_ID);//测试经销商不用传
+		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE, //5 出车明细
                                               MaseratiConstants.DriveRecodsStatus.GROUP, //8 已提交问卷
 				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //9 已生成报告
 		cq.add();
@@ -89,7 +91,8 @@ public class PassBackDataToSfService {
 					if(gender == 2)
 						sfDto.setGender("女");
 					
-					sfDto.setMileage(driveRecodsEntity.getMileage()+"");
+					sfDto.setMileage(String.valueOf(driveRecodsEntity.getMileage()));
+                    sfDto.setEndPicPath(driveRecodsEntity.getEndPicPath());
 					sfDto.setMobile(driveRecodsEntity.getCustomer().getMobile());
 					sfDto.setName(driveRecodsEntity.getCustomer().getName());
 					sfDto.setSalesmanName(driveRecodsEntity.getSalesman().getName());
@@ -133,8 +136,9 @@ public class PassBackDataToSfService {
 		paramMap.put("mobile__c", sfDto.getMobile());
 		paramMap.put("gender__c", sfDto.getGender());
 		paramMap.put("research_haBeen__c", "true");
-//		paramMap.put("GPSMileage__c", sfDto.getMileage()); //暂不回传，不能传nll，否则报错
-//		paramMap.put("TestDrivePic__c", sfDto.getEndPicPath()); //暂不回传，不能传nll，否则报错
+		paramMap.put("GPSMileage__c", null==sfDto.getMileage()?"0":sfDto.getMileage()); //不能传null，否则报错
+		String endPic=null==sfDto.getEndPicPath()?"":("http://www.murberry.cn/mtestdrive/fileUpload.action?view&fileName="+sfDto.getEndPicPath());
+		paramMap.put("TestDrivePic__c", endPic); //不能传null，否则报错
 		paramMap.put("salesmanName__c", (StringUtils.isEmpty(sfDto.getSalesmanName())?"":sfDto.getSalesmanName()));
 		paramMap.put("quarry__c", (StringUtils.isEmpty(sfDto.getQuarry())?"":sfDto.getQuarry()));
 		String json = JSONObject.valueToString(paramMap);

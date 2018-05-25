@@ -130,6 +130,8 @@
 				}
 			});
 
+            $(this).unbind("click");//防止重复点击
+
 		});
 		$(".carousel").carousel('pause');//停止自动轮播
 		$("#beginTestDrive").on("click", function() {

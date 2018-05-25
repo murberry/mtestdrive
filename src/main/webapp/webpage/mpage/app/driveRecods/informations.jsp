@@ -49,27 +49,34 @@
 			</div>
 			<input type="hidden" id="id" name="id" value="${driveRecodsVo.id }"/>
 			<div class="photo">
+
 				<%--<div class="pic">
 					<input id="path1" name="path1" type="hidden">
 					<input id="img" type="file" name="img[]" data-url="fileUpload.action?upImg" accept="image/*" capture="camera" style="border: 1px solid red" />
 					 <span style="text-align: center;">添加试驾合同照片</span>
 				</div>
 				<div id="photo"></div>
---%>
-				<div class="pic">
-				<input id="path2" name="path2" type="hidden" value="${licensePicPath }">
-					<input id="img1" type="file" name="img[]" data-url="fileUpload.action?upImg" accept="image/*" capture="camera" />
-					<c:if test="${empty licensePicPath}">
-						<span style="text-align: center;" id="tipSpan">添加驾照照片</span>
-					</c:if>
-				</div>
-				<div id="photo1">
-					<c:if test="${not empty licensePicPath}">
-						<img src="fileUpload.action?view&fileName=${licensePicPath}" alt="" 
-						onerror="this.src='images/onError.jpg'" />
-					</c:if>
-				</div>
-			</div>
+                --%>
+
+                <div class="pic">
+                    <input id="path2" name="path2" type="hidden" value="${licensePicPath }" />
+                    <input id="img1" type="file" name="img[]" data-url="fileUpload.action?upImg" accept="image/*" capture="camera" />
+                    <c:if test="${empty licensePicPath}">
+                    <span style="text-align: center;" id="tipSpan">添加驾照照片</span>
+                    </c:if>
+                </div>
+                <div id="photo1">
+                    <c:if test="${not empty licensePicPath}">
+                        <img src="fileUpload.action?view&fileName=${licensePicPath}" alt=""
+                        onerror="this.src='images/onError.jpg'" />
+                    </c:if>
+                    <div id="progress">
+                        <div class="bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+            </div>
+
 			<div class="container tijiao">
 				<a href="javascript:void(0);">
 					<button type="button" onclick="management()" class="btn btn-primary btn-block theme_color">下一步</button>
@@ -103,7 +110,7 @@
 		</a>
 	</footer>
 </body>
-<script type="text/javascript" src="plug-in/bootstrap.min/js/jquery-3.1.1.min.js"></script>
+<!-- script type="text/javascript" src="plug-in/bootstrap.min/js/jquery-3.1.1.min.js"></script -->
 <script type="text/javascript" src="plug-in/bootstrap.min/js/bootstrap.min.js"></script>
 
 <script src="plug-in/jquery-plugs/fileupload/js/jquery.1.9.1.min.js"></script>
@@ -113,7 +120,8 @@
 <script type="text/javascript" src="plug-in/layer/layer.js"></script>
 <script type="text/javascript">
 			$(function() {
-				$('#img').change(function() {
+
+			/*$('#img').change(function() {
 					var file = this.files[0];
 					var r = new FileReader();
 					r.readAsDataURL(file);
@@ -123,29 +131,39 @@
 					$(this).siblings().hide();
 
 				})
-				$('#img1').change(function() {
-					var file = this.files[0];
-					var r = new FileReader();
-					r.readAsDataURL(file);
-					$(r).load(function() {
-						$('#photo1').html('<img src="' + this.result + '" alt="" />');
-					})
-					$(this).siblings().hide();
-
-				})
 				$('#img').fileupload({
-					autoUpload : "ture",
+					autoUpload : "true",
 					dataType:'JSON',
+                    maxNumberOfFiles : 1,
 					done:function(e,data){
 						$("#path1").val(data.result[0].fileName);
 					}
-				})
+				})*/
+
+                $('#img1').change(function() {
+                    var file = this.files[0];
+                    var r = new FileReader();
+                    r.readAsDataURL(file);
+                    $(r).load(function() {
+                        $('#photo1').html('<img src="' + this.result + '" alt="" />');
+                    })
+                    $(this).siblings().hide();
+
+                })
 				$('#img1').fileupload({
-					autoUpload : "ture",
+					autoUpload : "true",
 					dataType:'JSON',
+                    maxNumberOfFiles : 1,
 					done:function(e,data){
 						$("#path2").val(data.result[0].fileName);
-					}
+					},
+                    progress: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .bar').css(
+                            'width',
+                            progress + '%'
+                        );
+                    }
 				})
 			})
 			function management(){

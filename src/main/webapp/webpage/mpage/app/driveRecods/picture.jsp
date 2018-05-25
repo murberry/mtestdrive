@@ -55,9 +55,14 @@
 			<div class="photo">
 				<div class="pic">
 					<input id="endPicPath" name="endPicPath" type="text" value="${driveRecods.endPicPath }">
-					<input id="img" type="file" accept="image/*" capture="camera"  data-url="fileUpload.action?upImg"/> <span>试驾后合照</span>
+					<input id="img" type="file" accept="image/*" capture="camera"  data-url="fileUpload.action?upImg"/>
+					<span>试驾后合照</span>
 				</div>
-				<div id="photo"></div>
+				<div id="photo">
+					<div id="progress">
+						<div class="bar" style="width: 0%;"></div>
+					</div>
+				</div>
 			</div>
 			<div class="container tijiao">
 				<button type="button" class="btn btn-primary  btn-block theme_color" onclick="jumpToTestDriveReportPage()">生成报告</button>
@@ -133,11 +138,18 @@
 				})
 				
 				$('#img').fileupload({
-					autoUpload : "ture",
+					autoUpload : "true",
 					dataType:'JSON',
 					done:function(e,data){
 						$("#endPicPath").val(data.result[0].fileName);
-					}
+					},
+                    progress: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .bar').css(
+                            'width',
+                            progress + '%'
+                        );
+                    }
 				})
 			})
 			function jumpToTestDriveReportPage(){

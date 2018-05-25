@@ -237,22 +237,26 @@ public class CarInfoAction extends BaseController {
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, id);
 		driveRecodsEntity.setDriveEndTime(new Date());
 		driveRecodsEntity.setStatus(5);
-		//获取公里数
+
+		//获取OBD记录的公里数
 		CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
 		List<ObdGatherInfoEntity> obdGatherInfoList = obdGatherInfoService.getDatasByTimeQuantum(carInfoEntity.getObdId(),driveRecodsEntity.getDriveStartTime(), new Date());
 		if(obdGatherInfoList.size()!=0){
-			ObdGatherInfoEntity frist = obdGatherInfoList.get(0);
+			ObdGatherInfoEntity first = obdGatherInfoList.get(0);
 			ObdGatherInfoEntity last = obdGatherInfoList.get(obdGatherInfoList.size()-1);
-			Float m = last.getMileage()-frist.getMileage(); 
+			Float m = last.getMileage()-first.getMileage();
 			Float km = m/1000;
 			BigDecimal x1 = new BigDecimal(Float.toString(km));
 			driveRecodsEntity.setMileage(x1);
 		}
 		driveRecodsEntity.getCarId();
-		driveRecodsService.saveOrUpdate(driveRecodsEntity);
-		
+		driveRecodsService.updateEntitie(driveRecodsEntity);
+
+
 		carInfoEntity.setStatus(MaseratiConstants.CarStatus.NO_USED);
-		carInfoService.saveOrUpdate(carInfoEntity);
+		carInfoService.updateEntitie(carInfoEntity);
+		logger.info("结束试驾 driveRecordId="+driveRecodsEntity.getId()+" CarId="+carInfoEntity.getId()+" （车辆状态已经置为空闲中）");
+
 		//跳到试驾报告
 		request.setAttribute("driveId", driveRecodsEntity.getId());
 		
@@ -265,9 +269,9 @@ public class CarInfoAction extends BaseController {
 		String driveId = request.getParameter("id");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, driveId);
 		Integer status = driveRecodsEntity.getStatus();
-		if(status==3){
+		if(status==MaseratiConstants.DriveRecodsStatus.FORMALITIES){//3
 			driveRecodsEntity.setDriveStartTime(new Date());
-			driveRecodsEntity.setStatus(4);
+			driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.UNDERWAY);//4
 			driveRecodsService.saveOrUpdate(driveRecodsEntity);
 		}
 		DriveRecodsVo driveRecodsVo=convertToDriveRecodsVo(driveRecodsEntity);
@@ -277,7 +281,7 @@ public class CarInfoAction extends BaseController {
 		carInfoEntity.setStatus(MaseratiConstants.CarStatus.TEST_DRIVING);
 		carInfoEntity.setDriveTotal(carInfoEntity.getDriveTotal()+1);
 		
-		carInfoService.saveOrUpdate(carInfoEntity);
+		carInfoService.updateEntitie(carInfoEntity);
 		logger.info("开始试驾 driveRecordId="+driveId+" CarId="+carId);
 		CarInfoVo carInfoVo = new CarInfoVo();
 		try {
