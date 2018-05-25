@@ -297,8 +297,7 @@ div.edui-box {
 				        show:false
 				    },
 				    grid: {
-				        height:'800px',
-				        width:'1000px',
+
 				        x:200
 				    },
 				    xAxis: {
@@ -315,11 +314,24 @@ div.edui-box {
 				        {
 				            name: seriesName,
 				            type: 'bar',
+                            barMaxWidth: '30',
+                            itemStyle:{
+                                normal:{
+                                    color:'#244e75'
+                                }
+                            },
 				            data: yVal
 				        }
 				    ]
 			}
-			myChart.setOption(option); 
+			myChart.setOption(option);
+
+            //用于使chart自适应高度和宽度
+            window.onresize = function () {
+                //重置容器高宽
+                resizeWorldMapContainer();
+                myChart.resize();
+            };
 		}
 $(".weidu_super_admin").change(function(){
 	/* if($(this).val() == "store"){

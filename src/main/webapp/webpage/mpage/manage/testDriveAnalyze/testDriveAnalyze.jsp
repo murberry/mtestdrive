@@ -285,7 +285,13 @@ div.edui-box {
 			        {
 			            name: seriesName,
 			            type: 'bar',
-			            data: yVal
+                        barMaxWidth: '30',
+                        itemStyle:{
+                            normal:{
+                                color:'#337ab7'
+                            }
+                        },
+			            data: yVal,
 			        }
 			    ]
 		}

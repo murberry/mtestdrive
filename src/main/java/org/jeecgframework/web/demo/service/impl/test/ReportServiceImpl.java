@@ -32,9 +32,9 @@ public class ReportServiceImpl {
 		logger.debug("车辆报备定时任务已开始执行");
 
 		CriteriaQuery cq = new CriteriaQuery(ReportRecordsEntity.class);
-		cq.in("status", new Integer[]{ReportStatus.AWAIT, ReportStatus.UNDERWAY});
-		cq.add();
-		List<ReportRecordsEntity> repRecordList = systemService.getListByCriteriaQuery(cq, false);
+		cq.in("status", new Integer[]{ReportStatus.AWAIT, ReportStatus.UNDERWAY});//取“未开始报备”和“已开始报备”（报备期间）的记录
+        cq.add();
+        List<ReportRecordsEntity> repRecordList = systemService.getListByCriteriaQuery(cq, false);
 
 		List<CarInfoEntity> carList = new ArrayList<>();
 		Date now = new Date();
@@ -52,6 +52,7 @@ public class ReportServiceImpl {
 					repRecord.setStatus(ReportStatus.UNDERWAY);//报备中
 					CarInfoEntity car = systemService.get(CarInfoEntity.class, repRecord.getCarId());
 					if (car != null && !car.getStatus().equals(CarStatus.TEST_DRIVING)) {
+                        logger.info("车辆自动进入报备期：carId="+car.getId()+" carStatus="+car.getStatus()+" to "+repRecord.getType());
 						car.setStatus(Integer.parseInt(repRecord.getType())); //报备原因对应车辆状态中的3~6
 						carList.add(car);
 					}
@@ -66,7 +67,8 @@ public class ReportServiceImpl {
 					repRecord.setStatus(ReportStatus.FINISHED);
 					CarInfoEntity car = systemService.get(CarInfoEntity.class, repRecord.getCarId());
 					if (car != null && !car.getStatus().equals(CarStatus.TEST_DRIVING)) {
-						car.setStatus(CarStatus.NO_USED);
+                        logger.info("车辆自动结束报备期：carId="+car.getId()+" carStatus="+car.getStatus()+" to "+repRecord.getType());
+                        car.setStatus(CarStatus.NO_USED);
 						carList.add(car);
 					}
 				}

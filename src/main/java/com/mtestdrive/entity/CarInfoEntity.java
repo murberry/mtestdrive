@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.mtestdrive.MaseratiConstants;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.jeecgframework.poi.excel.annotation.Excel;
@@ -386,6 +387,14 @@ public class CarInfoEntity extends BaseEntity implements java.io.Serializable {
 		return fallowTime[1];
 	}
 
+//    /**
+//     * 设定车辆状态
+//     * @param carStatus
+//     */
+//	public void setStatus(Integer carStatus){
+//	    this.setStatus(carStatus);
+//    }
+
 	public void setFallowTime(java.util.Date[] fallowTime) {
 		
 		this.fallowTime = fallowTime;
@@ -394,7 +403,7 @@ public class CarInfoEntity extends BaseEntity implements java.io.Serializable {
 	public CarInfoEntity(String id, java.lang.String code, java.lang.String vin, java.lang.String name, java.lang.String plateNo, java.lang.String picPath,
 			java.util.Date saleYear, java.lang.Integer driveTotal, java.lang.Integer status, java.lang.String obdId) {
 		super();
-	    id = id;
+		this.setId(id);
 		this.code = code;
 		this.vin = vin;
 		this.name = name;
@@ -402,14 +411,14 @@ public class CarInfoEntity extends BaseEntity implements java.io.Serializable {
 		this.picPath = picPath;
 		this.saleYear = saleYear;
 		this.driveTotal = driveTotal;
-		status = status;
+		this.setStatus(status);
 		this.obdId = obdId;
 	}
 
 	public CarInfoEntity(String id,java.lang.String type, java.lang.String code, java.lang.String vin, java.lang.String name, java.lang.String plateNo, java.lang.String picPath,
 			java.util.Date saleYear, java.lang.Integer driveTotal, java.lang.Integer status, java.lang.String obdId) {
 		super();
-		id = id;
+		this.setId(id);
 		this.code = code;
 		this.vin = vin;
 		this.name = name;
@@ -417,7 +426,7 @@ public class CarInfoEntity extends BaseEntity implements java.io.Serializable {
 		this.picPath = picPath;
 		this.saleYear = saleYear;
 		this.driveTotal = driveTotal;
-		status = status;
+		this.setStatus(status);
 		this.obdId = obdId;
 		this.type = type;
 	}

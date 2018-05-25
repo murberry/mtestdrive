@@ -59,7 +59,7 @@
 			<t:dgCol title="更新人名称" field="updateName" hidden="true" queryMode="single" width="120"></t:dgCol>
 			<t:dgCol title="更新人登录名称" field="updateBy" hidden="true" queryMode="single" width="120"></t:dgCol>
 			<t:dgCol title="更新日期" field="updateDate" formatter="yyyy-MM-dd" hidden="true" queryMode="single" width="120"></t:dgCol>
-			<t:dgCol title="所属部门" field="sysOrgCode" hidden="ture" queryMode="single" width="120"></t:dgCol>
+			<t:dgCol title="所属部门" field="sysOrgCode" hidden="true" queryMode="single" width="120"></t:dgCol>
 			<t:dgCol title="所属公司" field="sysCompanyCode" hidden="false" queryMode="single" width="120"></t:dgCol>
 			<t:dgCol title="表名" field="tableName" colspan="2" query="true" queryMode="single" width="100"></t:dgCol>
 			<t:dgCol title="数据ID" field="dataId" queryMode="single" query="true" width="230"></t:dgCol>

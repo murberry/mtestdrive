@@ -98,7 +98,7 @@ label.iPhoneCheckLabelOn span {
                    
                     <div class="loginButton">
                         <div style="float: left; margin-left: -9px;">
-                            <input type="checkbox" id="on_off" name="remember" checked="ture" class="on_off_checkbox" value="0" />
+                            <input type="checkbox" id="on_off" name="remember" checked="true" class="on_off_checkbox" value="0" />
                             <span class="f_help"><t:mutiLang langKey="common.remember.user"/></span>
                         </div>                        
                         <div style="float: right; padding: 3px 0; margin-right: -12px;">

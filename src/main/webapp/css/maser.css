@@ -182,3 +182,8 @@ p{ white-space:nowrap;}
     right: 40px;
 }
 #myModal { margin: 30% 0 0 0px; /* PLAY THE WITH THE VALUES TO SEE GET THE DESIRED EFFECT */ }
+
+#progress .bar{
+	height: 10px;
+	background: green;
+}
