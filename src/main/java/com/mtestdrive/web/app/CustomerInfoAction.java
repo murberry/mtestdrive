@@ -166,13 +166,13 @@ public class CustomerInfoAction extends BaseController {
 		return new ModelAndView("customerInfo/index");
 	}
 	
-	
-	
-	
+
 	@RequestMapping(params = "add", method = RequestMethod.GET)
 	public ModelAndView add(HttpServletRequest request) {
 		List<TSType> quarry = customerInfoService.getAllQuarries();
+		List<TSType> quarryDetail = customerInfoService.getAllQuarryDetail();
 		request.setAttribute("quarry", quarry);
+		request.setAttribute("quarryDetail", null==quarryDetail?(new ArrayList<TSType>()):quarryDetail);
 		String id = request.getParameter("id");
 		if(id!=null){
 			CustomerInfoEntity customerInfoEntity = customerInfoService.get(CustomerInfoEntity.class, id);
@@ -201,6 +201,7 @@ public class CustomerInfoAction extends BaseController {
 		String drivingLicensePicPath = request.getParameter("drivingLicensePicPath");
 		String mobile = request.getParameter("mobile");
 		String quarry = request.getParameter("quarry");
+		String quarryDetail = request.getParameter("quarryDetail");
 		String remark = request.getParameter("remark");
 		CustomerInfoEntity customerInfoEntity = customerInfoService.get(CustomerInfoEntity.class, id);
 		SalesmanInfoVo salesmanInfo = (SalesmanInfoVo) request.getSession().getAttribute("SalesmanInfo");
@@ -212,6 +213,7 @@ public class CustomerInfoAction extends BaseController {
 			customerInfoEntity.setDrivingLicensePicPath(drivingLicensePicPath);
 			customerInfoEntity.setMobile(mobile);
 			customerInfoEntity.setQuarry(Integer.parseInt(quarry));
+			customerInfoEntity.setQuarryDetail(Integer.parseInt(quarryDetail));
 			customerInfoEntity.setRemark(remark);
 			customerInfoEntity.setUpdateTime(DateUtils.gettimestamp());
 			customerInfoEntity.setUpdateBy(salesmanInfo.getId());
@@ -225,7 +227,8 @@ public class CustomerInfoAction extends BaseController {
 			customerInfoEntity2.setDrivingLicensePicPath(drivingLicensePicPath);
 			customerInfoEntity2.setMobile(mobile);
 			customerInfoEntity2.setQuarry(Integer.parseInt(quarry));
-			
+			customerInfoEntity2.setQuarryDetail(Integer.parseInt(quarryDetail));
+
 			customerInfoEntity2.setCreateBy(salesmanInfo.getId());
 			customerInfoEntity2.setAgencyId(salesmanInfo.getAgencyId());
 			customerInfoEntity2.setSource(2);

@@ -12,7 +12,6 @@ import org.hibernate.type.StandardBasicTypes;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.StringUtil;
-import org.jeecgframework.web.demo.service.impl.test.ReportServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -62,8 +62,10 @@ public class CustomerInfoEntity extends BaseEntity implements java.io.Serializab
 	private java.lang.String sfId;
 	/**备注 */
 	private java.lang.String remark;
-	/**备注 */
+	/**来源 */
 	private java.lang.Integer quarry;
+	/**来源细分 */
+	private java.lang.Integer quarryDetail;
 	/**客户类型 */
 	private java.lang.String type;
 	
@@ -369,6 +371,16 @@ public class CustomerInfoEntity extends BaseEntity implements java.io.Serializab
 		this.quarry = quarry;
 	}
 
+	@Column(name = "quarry_detail", nullable = true, precision = 10, scale = 0)
+	public java.lang.Integer getQuarryDetail() {
+		return quarryDetail;
+	}
+
+	public void setQuarryDetail(java.lang.Integer quarryDetail) {
+		this.quarryDetail = quarryDetail;
+	}
+
+	@Column(name = "type", nullable = true, length = 11)
 	public java.lang.String getType() {
 		return type;
 	}

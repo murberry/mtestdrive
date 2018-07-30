@@ -22,9 +22,11 @@ public class DriveRecodsSfDto {
 	private String mileage;
 
 	private String salesmanName;
-	private String endPicPath;
+    private String endPicPath;
+    private String drivingLicensePicPath;
 
 	private String quarry;
+	private String quarryDetail;
 
 	
 	private Set<QuestionnaireQuestionEntity> questionInfos = new HashSet<QuestionnaireQuestionEntity>();
@@ -119,9 +121,13 @@ public class DriveRecodsSfDto {
 	public String getEndPicPath() {
 		return endPicPath;
 	}
-	public void setEndPicPath(String endPicPath) {
-		this.endPicPath = endPicPath;
-	}
+	public void setEndPicPath(String endPicPath) {this.endPicPath = endPicPath;	}
+    public String getDrivingLicensePicPath() {
+        return drivingLicensePicPath;
+    }
+    public void setDrivingLicensePicPath(String drivingLicensePicPath) {this.drivingLicensePicPath = drivingLicensePicPath;	}
 	public String getQuarry() {	return quarry; }
 	public void setQuarry(String quarry) {this.quarry = quarry;}
+	public String getQuarryDetail() {	return quarryDetail; }
+	public void setQuarryDetail(String quarryDetail) {this.quarryDetail = quarryDetail;}
 }

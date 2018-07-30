@@ -90,6 +90,6 @@ public class SMSUtil {
 	public static void main(String[] args) {
 		//sendAuthCode("13127673365","2768");
 		//sendTestDriveReportLink("茵诺惟熙","13917264379","2");
-		sendTestDriveReportLink("茵诺惟熙","13917264379","2c9a4cf96107c97c016140c6f64c4e06".substring(0,20));
+		sendTestDriveReportLink("茵诺惟熙","13761595175","2c9a4cf96107c97c016140c6f64c4e06".substring(0,20));
 	}
 }

@@ -78,8 +78,6 @@
 			btn: ['确定','取消']
 		},function(){
 			window.location.href="/mtestdrive/carInfoAction.action?status5&id="+driveId;
-		},function(){
-			
 		});
 		
 	});

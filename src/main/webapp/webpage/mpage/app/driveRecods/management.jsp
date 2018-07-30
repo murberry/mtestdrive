@@ -127,16 +127,18 @@
 				success:function(data){
 					$("#beginTestDrive").show(1000);
 					$("#showdiv").parent().hide();
+                    $("#showdiv").unbind("click");//防止重复点击
 				}
 			});
 
-            $(this).unbind("click");//防止重复点击
+
 
 		});
 		$(".carousel").carousel('pause');//停止自动轮播
 		$("#beginTestDrive").on("click", function() {
 			var id = $("#id").val();
 			location.href = "/mtestdrive/carInfoAction.action?monitor&driveStart=1&id="+id;
+            $(this).unbind("click");//防止重复点击
 		});
 		$('#myCarousel').on('slid.bs.carousel', function() {
 			$(".carousel").carousel('pause');//停止自动轮播

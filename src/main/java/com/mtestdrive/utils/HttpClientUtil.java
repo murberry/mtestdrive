@@ -17,7 +17,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,14 +35,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.jeecgframework.core.util.JSONHelper;
 import org.jeecgframework.core.util.PropertiesUtil;
 import org.jeecgframework.core.util.StringUtil;
-import org.jeecgframework.web.demo.service.impl.test.TestDriveServiceImpl;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.mtestdrive.entity.AgencyInfoEntity;
 
 /*
  * 利用HttpClient进行post请求的工具类
@@ -84,29 +78,37 @@ public class HttpClientUtil {
 	}
 	
 	public static String[] getAccessToken() {
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("grant_type", GRANT_TYPE);
-		paramMap.put("client_id", CLIENT_ID);
-		paramMap.put("client_secret", CLIENT_SECRET);
-		paramMap.put("username", USER_NAME);
-		paramMap.put("password", PASSWORD);
-		String Content = sendSSLPostRequest(GRANT_SERVICE, paramMap);
-		JSONObject a = new JSONObject(Content);
 		String[] results = new String[3];
-		results[0] = StringUtil.getStrByObj(a.get("access_token"));
-		results[1] = StringUtil.getStrByObj(a.get("instance_url"));
-		results[2] = StringUtil.getStrByObj(a.get("token_type"));
+		try {
+			Map<String, String> paramMap = new HashMap<String, String>();
+			paramMap.put("grant_type", GRANT_TYPE);
+			paramMap.put("client_id", CLIENT_ID);
+			paramMap.put("client_secret", CLIENT_SECRET);
+			paramMap.put("username", USER_NAME);
+			paramMap.put("password", PASSWORD);
+			String Content = sendSSLPostRequest(GRANT_SERVICE, paramMap);
+			JSONObject a = new JSONObject(Content);
+			results[0] = StringUtil.getStrByObj(a.get("access_token"));
+			results[1] = StringUtil.getStrByObj(a.get("instance_url"));
+			results[2] = StringUtil.getStrByObj(a.get("token_type"));
+		} catch (Exception e) {
+    		logger.error("无法取到token："+e.getMessage());
+		}
 		return results;
 	}
 
 	public static String doGetQueryList(String sql) {
 		String[] tokens = getAccessToken();
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("q", sql);
-		String result = sendSSLGetRequest(
-				tokens[1]+"/services/data/v34.0/query/", paramMap,
-				tokens[0]);
-		return result;
+		if (null!=tokens[0]) {
+			Map<String, String> paramMap = new HashMap<String, String>();
+			paramMap.put("q", sql);
+			String result = sendSSLGetRequest(
+					tokens[1]+"/services/data/v34.0/query", paramMap,
+					tokens[0]);
+			return result;
+		} else {
+			return null;
+		}
 	}
 
 	public static String doPatchInsertTestDrive() {
@@ -296,13 +298,14 @@ public class HttpClientUtil {
 
 			HttpClient httpclient = new DefaultHttpClient();
 			try {
-				HttpGet httpPost = new HttpGet(apiUrl);
+				HttpGet httpGet = new HttpGet(apiUrl);
 				String Authorization = "Bearer " + token;
-				httpPost.setHeader("Authorization", Authorization);
-				HttpResponse response = httpclient.execute(httpPost);
+				httpGet.setHeader("Authorization", Authorization);
+				httpGet.setHeader("Content-Type","application/json");
+				HttpResponse response = httpclient.execute(httpGet);
 				int statusCode = response.getStatusLine().getStatusCode();
 
-				System.out.println("执行状态码 : " + statusCode);
+				logger.debug("执行状态码 : " + statusCode);
 
 				HttpEntity entity = response.getEntity();
 				if (entity != null) {
@@ -313,7 +316,7 @@ public class HttpClientUtil {
 				e.printStackTrace();
 			}
 
-			System.out.println("响应内容: " + result);
+			logger.info("响应内容: " + result);
 		} catch (KeyManagementException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
@@ -416,12 +419,12 @@ public class HttpClientUtil {
 		  paramMap.put("birthday__c", "2017-04-19");
 		  paramMap.put("vin__c", "ZAMPP56E3E1069238");
 		  paramMap.put("code__c", "69990");
-		  paramMap.put("name__c", "崔梦涛");
+		  paramMap.put("name__c", "CMT");
 		  paramMap.put("address__c", "上海市");
 		  paramMap.put("city__c", "上海市");
 		  paramMap.put("provinces__c", "上海市");
 		  paramMap.put("test_drive_date__c", "2017-04-20");
-		  paramMap.put("mobile__c", "13127673365");
+		  paramMap.put("mobile__c", "131xxxxxxxx");
 		  paramMap.put("gender__c", "男");
 		  paramMap.put("research_haBeen__c", "false");
 		  paramMap.put("GPSMileage__c", "9.21");
@@ -469,15 +472,8 @@ public class HttpClientUtil {
 	
 	public static void main(String[] args) {
 
-//		USER_NAME = "wechat@maserati.com";
-//		PASSWORD = "maserati2017";
-//		GRANT_TYPE = "password";
-//		GRANT_SERVICE = "https://login.salesforce.com/services/oauth2/token";
-//		CLIENT_ID = "3MVG9Y6d_Btp4xp7oyJw27xIVRBUzzehusxDk.4glFHzr.mksyyzooumEQbcvxX.Sd5lOB5MwZ6gCDh3tRMqh";
-//		CLIENT_SECRET = "1000095608080642702";
-
-		String[] token = HttpClientUtil.getAccessToken();
-		System.out.println("access_token="+token[0]+ "\ninstance_url="+ token[1]+ "\ntoken_type="+ token[1]);
+		String sql="select+Id,GPSExternalID__c,PurchaseDealer__c,CarPurchase__c,PurchaseTime__c,PurchaseModel__c,LastModifiedDate+from+GPSTestDrive__c+where+CarPurchase__c=true+and+LastModifiedDate%3E2017-01-01T00:00:00Z";
+		System.out.println(doGetQueryList(sql));
 	}
 
 }

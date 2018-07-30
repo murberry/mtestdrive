@@ -18,6 +18,7 @@ public class CustomerInfoVo {
 	private String createBy;
 	private String remark;
 	private Integer quarry;
+	private Integer quarryDetail;
 	private List<DriveRecodsVo> driveRecodses = new ArrayList<DriveRecodsVo>();
 
 	public String getId() {
@@ -131,6 +132,10 @@ public class CustomerInfoVo {
 	public void setQuarry(Integer quarry) {
 		this.quarry = quarry;
 	}
-	
-	
+
+	public Integer getQuarryDetail() {
+		return quarryDetail;
+	}
+
+	public void setQuarryDetail(Integer quarryDetail) {this.quarryDetail = quarryDetail;}
 }

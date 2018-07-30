@@ -194,6 +194,7 @@ public class CarInfoAction extends BaseController {
 		String driveId = request.getParameter("driveId");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, driveId);
 		DriveRecodsVo driveRecodsVo=convertToDriveRecodsVo(driveRecodsEntity);
+		logger.info("查看车况 driveId="+driveId+" carId="+carId);
 
 		request.setAttribute("driveRecods", driveRecodsVo);
 		request.setAttribute("carInfo", carInfoVo);
@@ -226,8 +227,9 @@ public class CarInfoAction extends BaseController {
 	public ModelAndView status(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, id);
-		driveRecodsEntity.setStatus(2);
+		driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.CONFIRMED);//2
 		driveRecodsService.saveOrUpdate(driveRecodsEntity);
+        logger.info("确认车况 driveId="+id+" carId="+driveRecodsEntity.getCarId());
 		return new ModelAndView(new RedirectView("login.action?page"));
 	}
 	
@@ -236,7 +238,7 @@ public class CarInfoAction extends BaseController {
 		String id = request.getParameter("id");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, id);
 		driveRecodsEntity.setDriveEndTime(new Date());
-		driveRecodsEntity.setStatus(5);
+		driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.COMPLETE);//5 完成试驾
 
 		//获取OBD记录的公里数
 		CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
@@ -255,7 +257,7 @@ public class CarInfoAction extends BaseController {
 
 		carInfoEntity.setStatus(MaseratiConstants.CarStatus.NO_USED);
 		carInfoService.updateEntitie(carInfoEntity);
-		logger.info("结束试驾 driveRecordId="+driveRecodsEntity.getId()+" CarId="+carInfoEntity.getId()+" （车辆状态已经置为空闲中）");
+		logger.info("结束试驾 driveId="+driveRecodsEntity.getId()+" carId="+carInfoEntity.getId());
 
 		//跳到试驾报告
 		request.setAttribute("driveId", driveRecodsEntity.getId());
@@ -282,7 +284,7 @@ public class CarInfoAction extends BaseController {
 		carInfoEntity.setDriveTotal(carInfoEntity.getDriveTotal()+1);
 		
 		carInfoService.updateEntitie(carInfoEntity);
-		logger.info("开始试驾 driveRecordId="+driveId+" CarId="+carId);
+		logger.info("开始试驾 driveId="+driveId+" carId="+carId);
 		CarInfoVo carInfoVo = new CarInfoVo();
 		try {
 			BeanUtils.copyProperties(carInfoVo, carInfoEntity);
