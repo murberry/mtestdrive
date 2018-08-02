@@ -48,9 +48,9 @@ public class PassBackDataToSfService {
 		CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
 		cq.isNull("sfId"); //没有同步到SF的记录
 		cq.notEq("agency.id", TEST_AGENCY_ID);//测试经销商不用传
-//		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE, //5 完成试驾
-//                                              MaseratiConstants.DriveRecodsStatus.GROUP, //8 已提交问卷
-//				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //9 已生成报告
+		cq.in("status", new Integer[]{MaseratiConstants.DriveRecodsStatus.COMPLETE, //5 完成试驾
+                                              MaseratiConstants.DriveRecodsStatus.GROUP, //8 已提交问卷
+				                              MaseratiConstants.DriveRecodsStatus.GENERATEDREPORT}); //9 已生成报告
 		cq.add();
 		List<DriveRecodsEntity> quList = sysService.getListByCriteriaQuery(cq, false);
 
