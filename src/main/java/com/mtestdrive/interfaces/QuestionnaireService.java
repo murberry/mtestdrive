@@ -77,10 +77,11 @@ public class QuestionnaireService {
 							&& StringUtil.isNotEmpty(customerMobile)){
 
                         //“阿里大于”参数长度限制为20
-                        recordsId = recordsId.substring(0,20);
+                        String driveId_prev = recordsId.substring(0,20);
+						String driveId_next = recordsId.substring(20,32);
 
 						//开始发送短信
-						if(SMSUtil.sendTestDriveReportLink(dealerName, customerMobile, recordsId)){
+						if(SMSUtil.sendTestDriveReportLink(dealerName, customerMobile, driveId_prev, driveId_next)){
 							logger.info("调查问卷发送成功,"+logMsg);
 							systemService.addSimpleLog("调查问卷发送成功,"+logMsg, Globals.LOG_TYPE_SEND_UESTIONNAIRE, Globals.Log_Leavel_INFO);
 							success++;

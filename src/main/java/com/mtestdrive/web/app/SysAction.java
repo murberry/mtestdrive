@@ -237,6 +237,7 @@ public class SysAction extends BaseController {
 			// 验证码错误
 			aj.setSuccess(false);
 			aj.setMsg("验证码错误");
+			logger.error("手机验证码错误：phone="+phone+" code="+code);
 		}
 		return aj;
 	}
