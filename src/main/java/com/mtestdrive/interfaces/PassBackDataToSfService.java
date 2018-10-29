@@ -180,7 +180,7 @@ public class PassBackDataToSfService {
 					logger.error("试驾数据回传失败: 服务端返回的ErrorMsg="+result+" driveId="+sfDto.getId());
 				}
 			} else {
-				logger.error("试驾数据回传失败: 服务端返回的返回的result=null"+" driveId="+sfDto.getId());
+				logger.error("试驾数据回传失败: 服务端返回的result=null"+" driveId="+sfDto.getId());
 			}
 		} catch (Exception e) {
 				e.printStackTrace();
