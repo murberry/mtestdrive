@@ -281,7 +281,7 @@ public class PassBackDataToSfService {
         List<DriveRecodsEntity> quList = sysService.getListByCriteriaQuery(cq, false);
 
 		if(!ListUtils.isNullOrEmpty(quList)){
-			logger.info("-------------本次试驾有效性记录数："+quList.size()+"---------------------");
+			logger.info("------------- 本次试驾有效性记录数："+quList.size()+"---------------------");
 
 			for(int i=0; i<quList.size(); i++){
 				DriveRecodsEntity driveRecodsEntity = quList.get(i);

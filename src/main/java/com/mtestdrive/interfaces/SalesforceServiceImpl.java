@@ -551,7 +551,7 @@ public class SalesforceServiceImpl {
 					driveRec.setSfId(obj.getString("Id"));
 					driveRec.setPurchaseDealer(String.valueOf(obj.get("PurchaseDealer__c")));
 					driveRec.setHasCarPurchase(obj.getBoolean("CarPurchase__c"));
-					driveRec.setPurchaseTime(null==obj.get("PurchaseTime__c")?null:returnSdf.parse(obj.getString("PurchaseTime__c")));
+					driveRec.setPurchaseTime(obj.isNull("PurchaseTime__c")?null:returnSdf.parse(obj.getString("PurchaseTime__c")));
 					driveRec.setPurchaseModel(String.valueOf(obj.get("PurchaseModel__c")));
 					driveRec.setSfModified(returnSdf.parse(obj.getString("LastModifiedDate")));
 					sysService.updateEntitie(driveRec);
@@ -611,9 +611,8 @@ public class SalesforceServiceImpl {
 		//JSONArray array = getAllDriveAppointment("select+id,name,Address__c,Province__c,City__c,Marketing_Team__c,SalesTeam__c,DealerCode__c,Disable_Dealer__c+from+Dealer__c+limit+200");
 		//JSONArray array = getAllDriveAppointment("select+id,name,Username,DealerCode__c,MobilePhone+from+User+where+id='00590000003jK81AAE'");
 		//JSONObject array = getDriveAppointment("select+id,name,FactoryOrders__c,order_model_type__c,Test_Driving__c,Frame_chassis_ID__c,DealerCode__c,DealerLookup__c,license_plate_number__c+from+order__c+where+Test_Driving__c=true+limit+200");
-		JSONArray array = getQueryList("select+Id,GPSExternalID__c,PurchaseDealer__c,CarPurchase__c,PurchaseTime__c,PurchaseModel__c,LastModifiedDate+from+GPSTestDrive__c+where+CarPurchase__c=true+and+LastModifiedDate>2017-01-01T00:00:00Z");
+//		JSONArray array = getQueryList("select+Id,GPSExternalID__c,PurchaseDealer__c,CarPurchase__c,PurchaseTime__c,PurchaseModel__c,LastModifiedDate+from+GPSTestDrive__c+where+CarPurchase__c=true+and+LastModifiedDate>2017-01-01T00:00:00Z");
 	    //JSONArray array = getAllDriveAppointment("select+id,name,owner.Dealercode__c,OwnerId,PersonBirthdate,PersonMobilePhone,AccountSource__c,AccountSourceDetail__c,Genger__c,Customer_types__c+from+Account+where+SystemModStamp=TODAY");
-		System.out.println(array);
 	}
 }
 
