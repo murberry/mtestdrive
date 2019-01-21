@@ -548,6 +548,12 @@ public class SalesforceServiceImpl {
 					// 取出参数进行保存
 					String driveId = StringUtil.getStrByObj(obj.get("GPSExternalID__c"));
 					DriveRecodsEntity driveRec = driveRecodsService.get(DriveRecodsEntity.class, driveId);
+
+                    if (null==driveRec) {
+                        logger.error("处理第"+processed+"/"+array.length()+"条购买记录时，GPSExternalID__c无对应试驾记录，跳过本条记录：json="+obj);
+                        continue;
+                    }
+
 					driveRec.setSfId(obj.getString("Id"));
 					driveRec.setPurchaseDealer(String.valueOf(obj.get("PurchaseDealer__c")));
 					driveRec.setHasCarPurchase(obj.getBoolean("CarPurchase__c"));
