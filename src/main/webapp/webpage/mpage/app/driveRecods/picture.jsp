@@ -52,7 +52,7 @@
 					</dt>
 				</div>
 			</div>
-			<div class="photo">
+			<%--<div class="photo">
 				<div class="pic">
 					<input id="endPicPath" name="endPicPath" type="text" value="${driveRecods.endPicPath }">
 					<input id="img" type="file" accept="image/*" capture="camera"  data-url="fileUpload.action?upImg"/>
@@ -64,6 +64,8 @@
 					</div>
 				</div>
 			</div>
+			--%>
+
 			<div class="container tijiao">
 				<button type="button" class="btn btn-primary  btn-block theme_color" onclick="jumpToTestDriveReportPage()">生成报告</button>
 

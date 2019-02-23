@@ -523,8 +523,14 @@ public class DriveRecodsAction extends BaseController {
 		j.setObj(carArrangeVoList);
 		return j;
 	}
-	
-	
+
+
+	/**
+	 * 创建或修改试驾预约信息
+	 * @param drive
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(params = "save", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxJson save(@RequestBody DriveRecodsDto drive, HttpServletRequest request) {
@@ -542,7 +548,7 @@ public class DriveRecodsAction extends BaseController {
 				t.setUpdateTime(DateUtils.gettimestamp());
 				t.setUpdateBy(salesmanInfo.getId());
 				t.setCarType(carInfo.getType());
-				driveRecodsService.saveOrUpdate(t);
+				driveRecodsService.updateEntitie(t);
                 logger.info("修改试驾 driveId="+t.getId()+" carId="+drive.getCarId());
 				// systemService.addLog(message, Globals.Log_Type_UPDATE,
 				// Globals.Log_Leavel_INFO);
@@ -579,6 +585,11 @@ public class DriveRecodsAction extends BaseController {
 		return j;
 	}
 
+    /**
+     * 当前页为“手续办理-试驾信息”展示页，由点击“首页Tab/试驾Tab-手续办理”进入
+     * @param request
+     * @return
+     */
 	@RequestMapping(params = "informations", method = RequestMethod.GET)
 	public ModelAndView informations(HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -673,9 +684,15 @@ public class DriveRecodsAction extends BaseController {
 		return new ModelAndView("driveRecods/picture");
 	}
 
+    /**
+     * 当前页面为“手续办理-完成办理”页面，由“手续办理-试驾信息”展现页，点击“下一步”进入
+     * @param request
+     * @return
+     */
 	@RequestMapping(params = "management", method = RequestMethod.GET)
 	public ModelAndView management(HttpServletRequest request) {
-		//String id = request.getParameter("id");
+		String id = request.getParameter("id");
+        logger.info("点下一步 driveId="+id+" GET方法进入management页面");
 		/*String picPath = request.getParameter("picPath");
 		if(StringUtil.isNotEmpty(picPath)){
 			try {
@@ -687,11 +704,16 @@ public class DriveRecodsAction extends BaseController {
 		}
 		
 		DriveRecodsVo driveRecodsVo = driveRecodsService.attachPic(id, picPath);*/
-		
 		//request.setAttribute("driveRecodsVo", driveRecodsVo);
 		return new ModelAndView("driveRecods/management");
 	}
 
+    /**
+     * 当前页面为“手续办理-开始试驾”页面，由“手续办理-完成办理”展现页，点击“完成办理”进入
+     * @param drive
+     * @param req
+     * @return
+     */
 	@RequestMapping(params = "management", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxJson management(@RequestBody DriveRecodsDto drive, HttpServletRequest req) {
@@ -706,8 +728,9 @@ public class DriveRecodsAction extends BaseController {
 				
 				t.setRouteId(drive.getRouteId());
 				t.setTestDriveContractPicPath(drive.getTestDriveContractPicPath());
-				t.setStatus(t.getStatus() + 1);
-				//(0预约,1已确认,2已准备,3手续已办理,4试驾中,5完成,6无效的,7放弃,8已提交问卷,9已提交问卷)"
+				//t.setStatus(t.getStatus() + 1);
+                //(0预约,1已确认,2已准备,3手续已办理,4试驾中,5完成,6无效的,7放弃,8已提交问卷,9已提交问卷)"
+                t.setStatus(DriveRecodsStatus.FORMALITIES);// =3
                 logger.info("完成办理 driveId="+t.getId()+" carId="+ t.getCarId() +" 流程状态："+t.getStatus());
 				driveRecodsService.saveOrUpdate(t);
 			} else {
