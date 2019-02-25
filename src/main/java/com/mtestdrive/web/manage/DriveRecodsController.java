@@ -427,12 +427,8 @@ public class DriveRecodsController extends BaseController {
 		for (ObdDriveRecodsEntity obdDriveRecodsEntity : tsDriveRecods) {
 			AgencyInfoEntity agencyInfo = systemService.getEntity(AgencyInfoEntity.class ,obdDriveRecodsEntity.getAgencyId() );
 			CarInfoEntity carInfo = systemService.getEntity(CarInfoEntity.class ,obdDriveRecodsEntity.getCarId() );
-			
-			
-			long endTime = obdDriveRecodsEntity.getDriveEndTime().getTime();
-			long startTime = obdDriveRecodsEntity.getDriveStartTime().getTime();
-			long time = endTime-startTime;
-			float x = time/60000;
+
+
 			ObdDriveDTO obdDrive = new ObdDriveDTO();
 			obdDrive.setAgencyName(agencyInfo.getName());
 			obdDrive.setPlateNo(carInfo.getPlateNo());
@@ -451,9 +447,18 @@ public class DriveRecodsController extends BaseController {
 				SalesmanInfoEntity salesman=systemService.getEntity(SalesmanInfoEntity.class, obdDriveRecodsEntity.getSalesmanId());
 				obdDrive.setSalesmanName(salesman.getName());
 			}
-			obdDrive.setDriveStartTime(obdDriveRecodsEntity.getDriveStartTime());
-			obdDrive.setDriveEndTime(obdDriveRecodsEntity.getDriveEndTime());
-			obdDrive.setDriveTime(x);
+
+			if (null != obdDriveRecodsEntity.getDriveStartTime()
+					&& null != obdDriveRecodsEntity.getDriveEndTime()) {
+				long endTime = obdDriveRecodsEntity.getDriveEndTime().getTime();
+				long startTime = obdDriveRecodsEntity.getDriveStartTime().getTime();
+				long time = endTime-startTime;
+				float x = time/60000;
+				obdDrive.setDriveStartTime(obdDriveRecodsEntity.getDriveStartTime());
+				obdDrive.setDriveEndTime(obdDriveRecodsEntity.getDriveEndTime());
+				obdDrive.setDriveTime(x);
+			}
+
 			obdDrive.setMileage(obdDriveRecodsEntity.getMileage());
 			obdDrive.setDearlerGroup(agencyInfo.getDearlerGroup());
 			obdDrive.setDescription(obdDriveRecodsEntity.getDescription());

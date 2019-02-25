@@ -685,14 +685,14 @@ public class DriveRecodsAction extends BaseController {
 	}
 
     /**
-     * 当前页面为“手续办理-完成办理”页面，由“手续办理-试驾信息”展现页，点击“下一步”进入
+     * 当前页面为“手续办理-线路信息”页面，由“手续办理-试驾信息”展现页的点击“下一步”进入
      * @param request
      * @return
      */
 	@RequestMapping(params = "management", method = RequestMethod.GET)
 	public ModelAndView management(HttpServletRequest request) {
 		String id = request.getParameter("id");
-        logger.info("点下一步 driveId="+id+" GET方法进入management页面");
+        logger.info("线路信息 driveId="+id);
 		/*String picPath = request.getParameter("picPath");
 		if(StringUtil.isNotEmpty(picPath)){
 			try {
@@ -720,19 +720,27 @@ public class DriveRecodsAction extends BaseController {
 		AjaxJson j = new AjaxJson();
 		if (StringUtil.isNotEmpty(drive.getId()) && StringUtil.isNotEmpty(drive.getRouteId())) {
 			DriveRecodsEntity t = driveRecodsService.get(DriveRecodsEntity.class, drive.getId());
+
 			if (t != null) {
-				CustomerInfoEntity customer = driveRecodsService.get(CustomerInfoEntity.class, t.getCustomer().getId());
-				customer.setDrivingLicensePicPath(req.getParameter("drivingLicensePicPath"));
-				driveRecodsService.updateEntitie(customer);
-				
-				
-				t.setRouteId(drive.getRouteId());
-				t.setTestDriveContractPicPath(drive.getTestDriveContractPicPath());
-				//t.setStatus(t.getStatus() + 1);
-                //(0预约,1已确认,2已准备,3手续已办理,4试驾中,5完成,6无效的,7放弃,8已提交问卷,9已提交问卷)"
-                t.setStatus(DriveRecodsStatus.FORMALITIES);// =3
-                logger.info("完成办理 driveId="+t.getId()+" carId="+ t.getCarId() +" 流程状态："+t.getStatus());
-				driveRecodsService.saveOrUpdate(t);
+
+				if (t.getStatus()==DriveRecodsStatus.CONFIRMED) {// =2 已准备
+					CustomerInfoEntity customer = driveRecodsService.get(CustomerInfoEntity.class, t.getCustomer().getId());
+					customer.setDrivingLicensePicPath(req.getParameter("drivingLicensePicPath"));
+					driveRecodsService.updateEntitie(customer);
+
+
+					t.setRouteId(drive.getRouteId());
+					t.setTestDriveContractPicPath(drive.getTestDriveContractPicPath());
+					//t.setStatus(t.getStatus() + 1);
+					//(0预约,1已确认,2已准备,3手续已办理,4试驾中,5完成,6无效的,7放弃,8已提交问卷,9已提交问卷)"
+					t.setStatus(DriveRecodsStatus.FORMALITIES);// =3 手续已办理
+					driveRecodsService.updateEntitie(t);
+					logger.info("完成办理 driveId=" + t.getId() + " carId=" + t.getCarId() + " 流程状态：" + t.getStatus());
+				} else if (t.getStatus()==DriveRecodsStatus.FORMALITIES) {// =3 手续已办理
+					logger.error("重复办理 driveId=" + t.getId() + " carId=" + t.getCarId() + " 流程状态：" + t.getStatus());
+				} else {
+					logger.error("错误办理 driveId=" + t.getId() + " carId=" + t.getCarId() + " 流程状态：" + t.getStatus());
+				}
 			} else {
                 logger.error("无对应试驾流程: DriveRecodsDto="+drive.toString());
             }
