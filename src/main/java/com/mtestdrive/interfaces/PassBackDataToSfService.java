@@ -152,7 +152,10 @@ public class PassBackDataToSfService {
 		paramMap.put("TestDrivePic__c", licensePic); //不能传null，否则报错
 		paramMap.put("salesmanName__c", (StringUtils.isEmpty(sfDto.getSalesmanName())?"":sfDto.getSalesmanName()));
 		paramMap.put("quarry__c", (StringUtils.isEmpty(sfDto.getQuarry())?"":sfDto.getQuarry()));
-		paramMap.put("SourceDetail__c", (StringUtils.isEmpty(sfDto.getQuarryDetail())?"":sfDto.getQuarryDetail()));
+		if(!("-".equals(sfDto.getQuarryDetail())
+				||StringUtils.isEmpty(sfDto.getQuarryDetail()))) {//若无实质上的来源细分，则不传
+			paramMap.put("SourceDetail__c", sfDto.getQuarryDetail());
+		}
 		String json = JSONObject.valueToString(paramMap);
 
         String result = null;
