@@ -312,7 +312,7 @@ public class PassBackDataToSfService {
         String json = JSONObject.valueToString(paramMap);
 
         try {
-            logger.info("正在回传： json="+json);
+            logger.info("正在回传： json="+json + " driveId=" + driveRec.getId());
             String result = HttpClientUtil.sendSSLPATCHRequest(
                     tokens[1]+"/services/data/v34.0/sobjects/GPSTestDrive__c/GPSExternalID__c/"+ driveRec.getId(),
                     json, tokens[0]);
