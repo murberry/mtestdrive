@@ -209,7 +209,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <location>/webpage/common/404.jsp</location>
   </error-page>
   <session-config>
-    <session-timeout>30</session-timeout>
+    <session-timeout>60</session-timeout>
   </session-config>
   <welcome-file-list>
     <welcome-file>/webpage/login/login.jsp</welcome-file>
