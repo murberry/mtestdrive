@@ -276,7 +276,7 @@ public class PassBackDataToSfService {
     public void passBackAllDriveValid(String[] tokens) {
         //取没有将有效性信息同步到Salesforce（validSyncTime is null）的试驾记录
         CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
-        cq.eq("isValid", 1); //有效试驾
+//        cq.eq("isValid", 1); //有效试驾
         cq.isNotNull("sfId"); //试驾信息已同步到SF
         cq.notEq("agency.id", TEST_AGENCY_ID);//测试经销商不用传
         cq.isNull("validSyncTime");//未同步到SF的试驾有效信息
