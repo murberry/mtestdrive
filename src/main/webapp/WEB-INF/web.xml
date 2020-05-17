@@ -207,6 +207,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <error-page>
     <error-code>404</error-code>
     <location>/webpage/common/404.jsp</location>
+    <location>/webpage/common/500.jsp</location>
   </error-page>
   <session-config>
     <session-timeout>60</session-timeout>
