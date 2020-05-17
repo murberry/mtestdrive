@@ -23,7 +23,7 @@ function showMsg(){
 
 
 function setRouteInfo(index) {
-	$("#routeInfo").html("路线" + index);
+	// $("#routeInfo").html("路线" + index);
 	printRoute(index - 1);
 }
 
@@ -34,9 +34,10 @@ var map = null;
 function printRoute(flag) {
 	try{
 		$("#routeId").val(gathers[flag].routeId);
+		$("#routeInfo").html(gathers[flag].routeName);
 		initMap(gathers[flag].gathers);
 	}catch(e){
-		$("#allmap").html("暂无数据");
+		$("#allmap").html("暂无线路数据 routeId="+gathers[flag].routeId);
 	}
 }
 
@@ -69,7 +70,7 @@ function initMap(jsonarr){
 			        strokeOpacity: 1
 			    });
 			    map.addOverlay(polyline);
-	    }, 1000);
+	    }, 3000);
 }
 
 

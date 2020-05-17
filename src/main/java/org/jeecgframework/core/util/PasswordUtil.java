@@ -206,6 +206,6 @@ public class PasswordUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
-		System.out.println(PasswordUtil.encrypt("MDPM_CGA_SHMH", 123456+"", PasswordUtil.getStaticSalt()));
+		System.out.println(PasswordUtil.encrypt("sysadmin", "123456", PasswordUtil.getStaticSalt()));
 	}
 }

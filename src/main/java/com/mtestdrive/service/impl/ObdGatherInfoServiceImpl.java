@@ -59,7 +59,7 @@ public class ObdGatherInfoServiceImpl extends CommonServiceImpl implements ObdGa
 		sql.append(" this_.spd , this_.termid  from  t_obd_gather_info this_  ");
 		sql.append(" where this_.TERMID=:termId ");
 		sql.append(" and this_.gnssTime between :startTime and :endTime ");
-		sql.append(" group by this_.lat , this_.lon");
+//		sql.append(" group by this_.lat , this_.lon"); 	去除无意义的聚合 20200420
 		sql.append(" order by this_.gnssTime asc ");
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
@@ -69,6 +69,28 @@ public class ObdGatherInfoServiceImpl extends CommonServiceImpl implements ObdGa
 		query.setParameter("endTime", endTime);
 		query.setResultTransformer(Transformers.aliasToBean(ObdGatherInfoEntity.class));
 		
+		return query.list();
+	}
+
+	/**
+	 * 根据线路ID获取OBD数据
+	 * @param routeId
+	 * @return
+	 */
+	@Override
+	public List<ObdGatherInfoEntity> getDatasByRoute(String routeId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" Select this_.id , this_.alt ,this_.CREATE_TIME as createTime ,this_.gnsstime, ")
+		   .append(" this_.head , this_.lat , this_.lon ,this_.mileage ,this_.obdSpd , ")
+		   .append(" this_.spd , this_.termid  from  t_obd_route_info this_  ")
+		   .append(" where this_.route_id=:routeId ")
+		   .append(" order by this_.gnssTime asc ");
+
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+
+		query.setParameter("routeId", routeId);
+		query.setResultTransformer(Transformers.aliasToBean(ObdGatherInfoEntity.class));
+
 		return query.list();
 	}
 	

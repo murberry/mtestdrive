@@ -12,7 +12,5 @@ public interface ObdGatherInfoServiceI extends CommonService{
 	
 	public List<ObdGatherInfoEntity> getDatasByTimeQuantum(String termid, Date startTime, Date endTime);
 	
-	public List<ObdGatherInfoEntity> getObdByTermidAndGnsstime(String termid,String gnssTime);
-
-	public List<ObdGatherInfoEntity> getObdIdByToday(String string);
+	public List<ObdGatherInfoEntity> getDatasByRoute(String routeId);
 }

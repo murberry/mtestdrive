@@ -121,6 +121,7 @@ public class RouteInfoAction extends BaseController {
 					}
 				}
 				routeMap.put("routeId", route.getId());
+				routeMap.put("routeName",route.getName());
 				routeMap.put("gathers", gatherList);
 				
 				routeList.add(routeMap);

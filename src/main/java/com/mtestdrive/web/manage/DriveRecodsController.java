@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mtestdrive.entity.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -44,13 +45,6 @@ import com.mtestdrive.MaseratiConstants.DriveRecodsStatus;
 import com.mtestdrive.dto.DriveRecodsDto;
 import com.mtestdrive.dto.ObdDriveDTO;
 import com.mtestdrive.dto.ObdGatherDataDto;
-import com.mtestdrive.entity.AgencyInfoEntity;
-import com.mtestdrive.entity.CarInfoEntity;
-import com.mtestdrive.entity.CustomerInfoEntity;
-import com.mtestdrive.entity.DriveRecodsEntity;
-import com.mtestdrive.entity.ObdDriveRecodsEntity;
-import com.mtestdrive.entity.ObdGatherInfoEntity;
-import com.mtestdrive.entity.SalesmanInfoEntity;
 import com.mtestdrive.service.AgencyInfoServiceI;
 import com.mtestdrive.service.CarInfoServiceI;
 import com.mtestdrive.service.CustomerInfoServiceI;
@@ -674,117 +668,103 @@ public class DriveRecodsController extends BaseController {
 		}
 		return new ModelAndView(viewName);
 	}
-	
-    /**
-     * @Title: jumpToplaybackTrackPage   
-     * @Description: 转发到轨迹 回放页面
-     * @param:  id
-     * @param:  req
-     * @return: ModelAndView      
-     * @throws
-     */
-	@RequestMapping(params = "jumpToplaybackTrackPage")
-	public ModelAndView jumpToplaybackTrackPage(@RequestParam(value = "id", required = true)String id, HttpServletRequest req) {
-		DriveRecodsEntity dr = systemService.get(DriveRecodsEntity.class, id);
-		PlaybackTrackVo ptv = new PlaybackTrackVo();
-		if(dr != null){
-			if(dr.getCarId() != null){
-				CarInfoEntity carInfo = carInfoService.get(CarInfoEntity.class, dr.getCarId());
-				
-				
-				
-				ptv.setDriver(dr.getDriver());
-				ptv.setDriveStartTime(dr.getDriveStartTime());
-				ptv.setDriveEndTime(dr.getDriveEndTime());
-				ptv.setMileage(dr.getMileage());
 
-				if(carInfo != null){					
-					ptv.setPlateNo(carInfo.getPlateNo());
-					ptv.setType(carInfo.getType());
-					
-					List<ObdGatherInfoEntity> obdGatherInfo = obdGatherInfoService.getDatasByTimeQuantum(carInfo.getObdId(), dr.getDriveStartTime(), dr.getDriveEndTime());
-					if(obdGatherInfo != null && !obdGatherInfo.isEmpty()){
-						ObdGatherInfoEntity gatherInfo = null;
-						ObdGatherDataDto gatherData = null;
-						
-						//行驶轨迹  定位点List
-						List<ObdGatherDataDto> gatherDatas = new ArrayList<ObdGatherDataDto>();
-						for(int i = 0; i < obdGatherInfo.size(); i++){
-							gatherInfo = obdGatherInfo.get(i);
-							gatherData = new ObdGatherDataDto();
-							
-							gatherData.setAlt(gatherInfo.getAlt());
-							gatherData.setGnssTime(gatherInfo.getGnsstime());
-							gatherData.setHead(gatherInfo.getHead());
-							gatherData.setLat(new BigDecimal(gatherInfo.getLat()));
-							gatherData.setLon(new BigDecimal(gatherInfo.getLon()));
-							gatherData.setMileage(gatherInfo.getMileage());
-							gatherData.setObdSpd(gatherInfo.getObdSpd());
-							gatherData.setSpd(gatherInfo.getSpd());
-							
-							gatherDatas.add(gatherData);
-						}
-						ptv.setObdGathers(JSONHelper.toJSONString(gatherDatas));
-					}
-				}
-			}
-		}
-		req.setAttribute("info", ptv);
-		return new ModelAndView("mpage/manage/driveRecods/playbackTrack");
-	}
-	
+	/**
+	 *
+	 * @param id
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping(params = "jumpToplaybackTrackPageByObd")
 	public ModelAndView jumpToplaybackTrackPageByObd(@RequestParam(value = "id", required = true)String id, HttpServletRequest req) {
-		ObdDriveRecodsEntity dr = systemService.get(ObdDriveRecodsEntity.class, id);
+		ObdDriveRecodsEntity dr = systemService.get(ObdDriveRecodsEntity.class, id); //出车记录
+		DriveRecodsEntity drflow = null;
+		if (null != dr.getDriveId()) {
+			drflow = systemService.get(DriveRecodsEntity.class, dr.getDriveId()); //试驾记录
+		} else {
+			logger.error("当前出车记录无试驾流程信息 obdDriveId=" + id);
+		}
 		PlaybackTrackVo ptv = new PlaybackTrackVo();
 		if(dr != null){
 			if(dr.getCarId() != null){
 				CarInfoEntity carInfo = carInfoService.get(CarInfoEntity.class, dr.getCarId());
-				
-				
-				
+
+				RouteInfoEntity route = null;
+				if (null!=drflow) {
+					route = systemService.get(RouteInfoEntity.class, drflow.getRouteId());
+					if (null != route) {
+						ptv.setDriveRoute(route.getName());
+					} else {
+						ptv.setDriveRoute("无试驾线路信息");
+						logger.error("当前试驾无固定试驾线路信息 driveId=" + id);
+					}
+				}
+
+				ptv.setDriver(null==drflow?"无试驾流程":drflow.getDriver());
 				ptv.setDriveStartTime(dr.getDriveStartTime());
 				ptv.setDriveEndTime(dr.getDriveEndTime());
 				ptv.setMileage(dr.getMileage());
 
-				if(carInfo != null){					
+				if (carInfo != null) {
 					ptv.setPlateNo(carInfo.getPlateNo());
 					ptv.setType(carInfo.getType());
-					
+
+					//获取行驶轨迹  GPS定位点List
 					List<ObdGatherInfoEntity> obdGatherInfo = obdGatherInfoService.getDatasByTimeQuantum(carInfo.getObdId(), dr.getDriveStartTime(), dr.getDriveEndTime());
 					if(obdGatherInfo != null && !obdGatherInfo.isEmpty()){
-						ObdGatherInfoEntity gatherInfo = null;
-						ObdGatherDataDto gatherData = null;
-						
-						//行驶轨迹  定位点List
-						List<ObdGatherDataDto> gatherDatas = new ArrayList<ObdGatherDataDto>();
-						for(int i = 0; i < obdGatherInfo.size(); i++){
-							gatherInfo = obdGatherInfo.get(i);
-							gatherData = new ObdGatherDataDto();
-							
-							gatherData.setAlt(gatherInfo.getAlt());
-							gatherData.setGnssTime(gatherInfo.getGnsstime());
-							gatherData.setHead(gatherInfo.getHead());
-							
-							DecimalFormat df = new DecimalFormat("0.000000");
-							
-							gatherData.setLat(new BigDecimal(df.format(gatherInfo.getLat())));
-							gatherData.setLon(new BigDecimal(df.format(gatherInfo.getLon())));
-							gatherData.setMileage(gatherInfo.getMileage());
-							gatherData.setObdSpd(gatherInfo.getObdSpd());
-							gatherData.setSpd(gatherInfo.getSpd());
-							
-							gatherDatas.add(gatherData);
-						}
+						List<ObdGatherDataDto> gatherDatas = getObdGatherDataDtoList(obdGatherInfo);
 						ptv.setObdGathers(JSONHelper.toJSONString(gatherDatas));
+					} else {
+						logger.error("当前试驾无OBD信息 driveId=" + id+" carId="+carInfo.getId()+" obdId="+carInfo.getObdId());
 					}
+
+					//获取固定试驾线路轨迹  GPS定位点List
+					if (null!=route) {
+						List<ObdGatherInfoEntity> obdRouteInfo = obdGatherInfoService.getDatasByRoute(route.getId());
+						if (obdRouteInfo != null && !obdRouteInfo.isEmpty()) {
+							List<ObdGatherDataDto> gatherDatas = getObdGatherDataDtoList(obdRouteInfo);
+							ptv.setRoutePoints(JSONHelper.toJSONString(gatherDatas));
+						} else {
+							logger.error("当前试驾无固定线路OBD信息 driveId=" + id + " carId=" + carInfo.getId() + " obdId=" + carInfo.getObdId() + " routeId=" + route.getId());
+						}
+					}
+
+				}  else {
+					logger.error("查无此车辆信息 driveId=" + id);
 				}
 			}
+		} else {
+			logger.error("查无此试驾信息, driveId=" + id);
 		}
 		req.setAttribute("info", ptv);
 		return new ModelAndView("mpage/manage/driveRecods/playbackTrack");
 	}
-	
+
+	/**
+	 * 将 ObdGatherInfoEntity 转为 ObdGatherDataDto
+	 * @param obdGatherInfo
+	 * @return
+	 */
+	private List<ObdGatherDataDto> getObdGatherDataDtoList(List<ObdGatherInfoEntity> obdGatherInfo) {
+		List<ObdGatherDataDto> gatherDatas = new ArrayList<ObdGatherDataDto>();
+		for(int i = 0; i < obdGatherInfo.size(); i++){
+			ObdGatherInfoEntity gatherInfo = obdGatherInfo.get(i);
+			ObdGatherDataDto gatherDto = new ObdGatherDataDto();
+
+			gatherDto.setAlt(gatherInfo.getAlt());
+			gatherDto.setGnssTime(gatherInfo.getGnsstime());
+			gatherDto.setHead(gatherInfo.getHead());
+			gatherDto.setLat(new BigDecimal(gatherInfo.getLat()));
+			gatherDto.setLon(new BigDecimal(gatherInfo.getLon()));
+			gatherDto.setMileage(gatherInfo.getMileage());
+			gatherDto.setObdSpd(gatherInfo.getObdSpd());
+			gatherDto.setSpd(gatherInfo.getSpd());
+
+			gatherDatas.add(gatherDto);
+		}
+		return gatherDatas;
+	}
+
 	@RequestMapping(params = "addorupdateByObd")
 	public ModelAndView addorupdateByObd(ObdDriveRecodsEntity obdDriveRecods, HttpServletRequest req) {
 		String viewName = "mpage/manage/driveRecods/driveRecods";

@@ -16,15 +16,19 @@ public class PlaybackTrackVo {
 	private java.util.Date driveStartTime;
 	/** 试驾结束时间 */
 	private java.util.Date driveEndTime;
+	/** 行驶线路 */
+	private java.lang.String driveRoute;
 	/** 行驶里程数 */
 	private java.math.BigDecimal mileage;
 	/** 车型 */
 	private java.lang.String type;
 	/** 车牌 */
 	private java.lang.String plateNo;
-	
 	/**行驶轨迹*/
 	private java.lang.String obdGathers;
+	/**固定试驾线路轨迹*/
+	private java.lang.String routePoints;
+
 
 	public java.lang.String getDriver() {
 		return driver;
@@ -41,6 +45,10 @@ public class PlaybackTrackVo {
 	public void setDriveStartTime(java.util.Date driveStartTime) {
 		this.driveStartTime = driveStartTime;
 	}
+
+	public String getDriveRoute() { return driveRoute; }
+
+	public void setDriveRoute(String driveRoute) {this.driveRoute = driveRoute; }
 
 	public java.math.BigDecimal getMileage() {
 		return mileage;
@@ -73,6 +81,10 @@ public class PlaybackTrackVo {
 	public void setObdGathers(String obdGathers) {
 		this.obdGathers = obdGathers;
 	}
+
+	public String getRoutePoints() { return routePoints;}
+
+	public void setRoutePoints(String routePoints) {this.routePoints = routePoints;}
 
 	public java.util.Date getDriveEndTime() {
 		return driveEndTime;

@@ -42,7 +42,7 @@
 				<!-- Wrapper for slides -->
 				<div class="carousel-inner" role="listbox" id="routeListDiv">
 					<div class="item active">
-						<div id="allmap" style="height: 235px"></div>
+						<div id="allmap" style="height:400px"></div>
 						<div class="carousel-caption">
 							<p class="fontBlack" id="routeInfo">路线1</p>
 						</div>
@@ -63,8 +63,6 @@
 		</div>
 		<div class="container tijiao">
 			<input type="hidden" name="id" id="id" value="${param.id }"/>
-			<input type="hidden" name="routeId" id="routeId" />
-			<input type="hidden" name="routeId" id="routeId" />
 			<input type="hidden" name="routeId" id="routeId" />
 			<button id="showdiv" type="button" class="btn btn-primary btn-block theme_color">完成办理</button>
 		</div>
