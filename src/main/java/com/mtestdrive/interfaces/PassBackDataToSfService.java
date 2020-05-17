@@ -278,8 +278,9 @@ public class PassBackDataToSfService {
         CriteriaQuery cq = new CriteriaQuery(DriveRecodsEntity.class);
 //        cq.eq("isValid", 1); //有效试驾
         cq.isNotNull("sfId"); //试驾信息已同步到SF
+        cq.isNotNull("isValid"); //试驾有效性判断结束
+        cq.isNull("validSyncTime");//且试驾有效性未同步到SF
         cq.notEq("agency.id", TEST_AGENCY_ID);//测试经销商不用传
-        cq.isNull("validSyncTime");//未同步到SF的试驾有效信息
         cq.add();
         List<DriveRecodsEntity> quList = sysService.getListByCriteriaQuery(cq, false);
 
