@@ -273,20 +273,27 @@ public class RouteInfoController extends BaseController {
 
 				//更新线路信息的同时，更新线路OBD统计信息
 				routeInfoService.executeSql("{call proc_statistic_route(?)}", t.getId());
+				logger.info(message+" routeId="+t.getId());
 
 				//记录日志
 				systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = "试驾路线更新失败";
+				message = "试驾路线更新失败 routeId="+t.getId();
 			}
 		} else {
-			message = "试驾路线添加成功";
+
 			routeInfo.setAgencyId(ResourceUtil.getSessionUserName().getDepartid());
 			routeInfo.setCreateBy(ResourceUtil.getSessionUserName().getId());
 			routeInfo.setCreateTime(DateUtils.gettimestamp());
 			routeInfo.setRouteStatus(ConstantStatus.VALID);
 			routeInfoService.save(routeInfo);
+
+			//新增线路信息的同时，同时新增线路OBD统计信息
+			message = "试驾路线添加成功";
+			routeInfoService.executeSql("{call proc_statistic_route(?)}", routeInfo.getId());
+			logger.info(message+" routeId="+routeInfo.getId());
+
 			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 		}
 		j.setMsg(message);
