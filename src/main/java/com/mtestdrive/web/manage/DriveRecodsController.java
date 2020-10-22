@@ -413,6 +413,7 @@ public class DriveRecodsController extends BaseController {
 		if (driveRecods.getEndTime() != null) {
 			cq.lt("driveEndTime", DateUtils.addDate(DateUtils.formatDate(driveRecods.getEndTime()), 1));
 		}
+		cq.ge("createTime", DateUtils.plusDay(-365, new Date())); //限制导出1年内数据
 		cq.addOrder("createTime", SortDirection.desc);
 		cq.add();
 		List<ObdDriveRecodsEntity> tsDriveRecods = this.systemService.getListByCriteriaQuery(cq,false);
@@ -432,14 +433,14 @@ public class DriveRecodsController extends BaseController {
 				obdDrive.setCustomerName(customerId);
 			}else{
 				CustomerInfoEntity customer = systemService.getEntity(CustomerInfoEntity.class, obdDriveRecodsEntity.getCustomerId());
-				obdDrive.setCustomerName(customer.getName());
+				obdDrive.setCustomerName(null==customer?"N/A":customer.getName());
 			}
 			String salesmanId = obdDriveRecodsEntity.getSalesmanId();
 			if("/".equals(salesmanId)|| null == salesmanId ){
 				obdDrive.setSalesmanName(salesmanId);
 			}else{
 				SalesmanInfoEntity salesman=systemService.getEntity(SalesmanInfoEntity.class, obdDriveRecodsEntity.getSalesmanId());
-				obdDrive.setSalesmanName(salesman.getName());
+				obdDrive.setSalesmanName(null==salesman?"N/A":salesman.getName());
 			}
 
 			if (null != obdDriveRecodsEntity.getDriveStartTime()
