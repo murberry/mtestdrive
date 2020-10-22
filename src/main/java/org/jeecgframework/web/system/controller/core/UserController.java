@@ -443,8 +443,8 @@ public class UserController extends BaseController {
 	public AjaxJson del(TSUser user, HttpServletRequest req) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		if("yunlinadm".equals(user.getUserName())){
-			message = "超级系统管理员[yunlinadm]不可删除";
+		if("sysadmin".equals(user.getUserName())){
+			message = "超级系统管理员[sysadmin]不可删除";
 			j.setMsg(message);
 			return j;
 		}

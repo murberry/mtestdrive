@@ -97,6 +97,8 @@ public class SysAction extends BaseController {
 	@RequestMapping(params = "report", method = RequestMethod.POST)
 	@ResponseBody
 	public String report(HttpServletRequest request, @RequestBody GroupDto group) {
+		logger.info("收到问卷反馈：driveId="+group.getDriveId()+" "+group.getGroup_1()+" "+group.getGroup_2()
+				+" "+group.getGroup_3()+" "+group.getGroup_4());
 		String driveId = group.getDriveId();
 		String[] ids = driveId.split(",");
 		for (String id : ids) {
@@ -235,6 +237,7 @@ public class SysAction extends BaseController {
 			// 验证码错误
 			aj.setSuccess(false);
 			aj.setMsg("验证码错误");
+			logger.error("手机验证码错误：phone="+phone+" code="+code);
 		}
 		return aj;
 	}

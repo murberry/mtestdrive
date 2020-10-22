@@ -81,21 +81,25 @@ table th,table td{
 
 	</header>
 	<div class=" container" style="margin-top: 3px;">
-		<div class="col-xs-6" style="height: 82px">
-			<p id="titleLabel" class="title_P"></p>
-			<p id="subheadLabel" class="title_P"></p>
-			<img id="carImg" src="" width="100%" 
-			onerror="this.src='images/onError.jpg'"
-			/>
-		</div>
-		<div id="photo" class="col-xs-6">
-			<img src="fileUpload.action?view&fileName=${driveRecodsVo.endPicPath }" width="100%"
-				style="margin-bottom: 10px;" 
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p id="titleLabel" class="title_P"></p>
+				<p id="subheadLabel" class="title_P"></p>
+				<img id="carImg" src="" width="50%"
 				onerror="this.src='images/onError.jpg'"
 				/>
-				<!-- <img src="images/hezhao.JPG" width="100%"
-				style="margin-bottom: 10px;" /> -->
-				
+			</div>
+			<%--div id="photo" class="col-xs-6">
+				<img src="fileUpload.action?view&fileName=${driveRecodsVo.endPicPath }" width="100%"
+					style="margin-bottom: 10px;"
+					onerror="this.src='images/onError.jpg'"
+					/>
+					<!-- <img src="images/hezhao.JPG" width="100%"
+					style="margin-bottom: 10px;" /> -->
+
+			</div>
+			--%>
 		</div>
 
 		<div class="row">
@@ -107,7 +111,8 @@ table th,table td{
 					试驾时间：
 					<fmt:formatDate value="${driveRecodsVo.driveStartTime }" type="date" pattern="yyyy.MM.dd" />
 				</p>
-				<p>试驾里程（km）：<c:if test="${driveRecodsVo.mileage == null}">0.00</c:if><c:if test="${driveRecodsVo.mileage != null}">${driveRecodsVo.mileage }</c:if></p>
+				<%--<p>试驾里程（km）：<c:if test="${driveRecodsVo.mileage == null}">0.00</c:if><c:if test="${driveRecodsVo.mileage != null}">${driveRecodsVo.mileage }</c:if></p>
+				--%>
 				<p>排&nbsp;&nbsp;量(L)：<span id="displacementSpan"></span></p>
 			</div>
 			<div class="col-xs-6" style="text-align: left; white-space: nowrap;">

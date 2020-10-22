@@ -91,8 +91,8 @@ public class FileUploadAction {
 			   logger.error("文件输出失败: File=" + file.getAbsolutePath()+" Exception="+e.getMessage());
 //			   e.printStackTrace();
 		   } finally {
-			   fis.close();
-			   os.close();
+			   if (null != fis) {fis.close();}
+			   if (null !=os) {os.close();}
 		   }
 	   }
 	 }

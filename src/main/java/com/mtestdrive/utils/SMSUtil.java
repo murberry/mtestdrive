@@ -33,9 +33,12 @@ public class SMSUtil {
 		return send(tel, json, "SMS_63085173");
 	}
 
-	public static boolean sendTestDriveReportLink(String dealerName, String tel, String testDriveId) {
-		String json = "{\"dealerName\":\""+dealerName+"\",\"recode\":\""+testDriveId+"\"}";
-		return send(tel, json, "SMS_63335335");
+	public static boolean sendTestDriveReportLink(String dealerName, String tel, String driveId, String driveId_cut) {
+		String json = "{\"dealerName\":\""+dealerName+"\","
+				       +"\"recode\":\""+driveId+"\","
+				       +"\"recode_cut\":\""+driveId_cut+"\""
+				       +"}";
+		return send(tel, json, "SMS_141607724");
 	}
 
 	/**
@@ -88,8 +91,7 @@ public class SMSUtil {
 	}
 
 	public static void main(String[] args) {
-		//sendAuthCode("13127673365","2768");
-		//sendTestDriveReportLink("茵诺惟熙","13917264379","2");
-		sendTestDriveReportLink("茵诺惟熙","13917264379","2c9a4cf96107c97c016140c6f64c4e06".substring(0,20));
+		String driveId = "2c9a4cf96107c97c016140c6f64c4e06";
+		sendTestDriveReportLink("茵诺惟熙","139XXXXXXXX",driveId.substring(0,20), driveId.substring(20,32));
 	}
 }

@@ -1,7 +1,22 @@
-try {
-	gathers = JSON.parse(gathers);
-} catch (e) {
+
+if (gathers != null && gathers.length > 0) {
+	try {
+	gathers = JSON.parse(gathers);// 实际行驶路线
+	} catch (e) {
+		console.error(e);
+	}
+} else {
 	gathers = new Array();
+}
+
+if (routePoints != null && routePoints.length > 0) {
+	try {
+		routePoints = JSON.parse(routePoints);// 预定试驾路线
+	} catch (e) {
+		console.error(e);
+	}
+} else {
+	routePoints = new Array();
 }
 
 // 重新播放
@@ -18,51 +33,58 @@ function initLine(){
 		$("#errorMsg").show();
 		return false;
 	}
-	var pointArr = [];
-    var total = [];
+	var pointArr = []; //固定试驾驾线路轨迹
+    var total = [];    //实际行驶轨迹
     translateCallback = function (data){
-    	
     	total.push(new BMap.Point(data.points[0].lng,data.points[0].lat));
 	}
-    
-    var convertor = new BMap.Convertor();
+
+	//转换实际行驶轨迹
     for(var i=0;i<gathers.length;i++){
-    	
-    	
     	 var c=new Convertor();
 	     var r1=c.WGS2BD09({lng:gathers[i].lon,lat:gathers[i].lat});
 //	     console.log(r1);
-	     
 	     total.push(new BMap.Point(r1.lng,r1.lat));
-    	 
-    	 
-//		 convertor.translate(pointArr, 1, 5, translateCallback)
 	}
-    
     console.log(total)
-    
+
+	//转换固定试驾驾线路轨迹
+	for(var i=0;i<routePoints.length;i++){
+		var c=new Convertor();
+		var r1=c.WGS2BD09({lng:routePoints[i].lon,lat:routePoints[i].lat});
+		pointArr.push(new BMap.Point(r1.lng,r1.lat));
+	}
+	console.log(pointArr)
+
+
 	// 画线
 	 setTimeout(function(){
 		 
-		    var marker;
-		    var map = new BMap.Map('currMap');
-		    map.enableScrollWheelZoom();
-		    map.centerAndZoom();
-		    var lushu;
-		    var arrPois=total;
-		    
-		                map.setViewport(arrPois);
-		                   marker=new BMap.Marker(arrPois[0],{
+	 	 var marker;
+	 	 var map = new BMap.Map('currMap');
+	 	 map.enableScrollWheelZoom();
+	 	 map.centerAndZoom();
+	 	 var lushu;
+	 	 var arrPois=total;
+
+		 //画固定试驾线路 2020/04/25
+		 if (pointArr.length>0) {
+			 var polyline = new BMap.Polyline(pointArr, {strokeColor:"#5298ff", strokeWeight:20, strokeOpacity:0.3});
+			 map.addOverlay(polyline);//添加轨迹到地图
+		 }
+
+	 	 map.setViewport(arrPois);
+	 	 marker=new BMap.Marker(arrPois[0],{
 		                      icon  : new BMap.Icon('http://developer.baidu.com/map/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)})
 		                   });
-		      var label = new BMap.Label(plateNo,{offset:new BMap.Size(0,-30)});
-		      label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px",background:"rgb(255, 255, 255)",});
-		                marker.setLabel(label);
-		      map.addOverlay(marker);
-			  map.enableScrollWheelZoom(); // 开启鼠标滚轮缩放
-					    map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
-		     BMapLib.LuShu.prototype._move=function(initPos,targetPos,effect) {
-		            var pointsArr=[initPos,targetPos];  //点数组
+	 	 var label = new BMap.Label(plateNo,{offset:new BMap.Size(0,-30)});
+	 	 label.setStyle({border:"1px solid rgb(204, 204, 204)",color: "rgb(0, 0, 0)",borderRadius:"10px",padding:"5px",background:"rgb(255,255,255)",});
+	 	 marker.setLabel(label);
+	 	 map.addOverlay(marker);
+	 	 map.enableScrollWheelZoom(); // 开启鼠标滚轮缩放
+		 map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
+		 BMapLib.LuShu.prototype._move=function(initPos,targetPos,effect) {
+		 			var pointsArr=[initPos,targetPos];  //点数组
 		            var me = this,
 		                //当前的帧数
 		                currentCount = 0,

@@ -343,13 +343,15 @@ public class DriveRecodsAction extends BaseController {
 	public ModelAndView add(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		String customerId = request.getParameter("customerId");
+        String agencyId = null;
 		DriveRecodsVo driveRecodsVo = null;
 		if (StringUtil.isNotEmpty(id)) {
+		    logger.info("已有试驾流程 ID="+id);
 			DriveRecodsEntity driveRecods = driveRecodsService.get(DriveRecodsEntity.class, id);
+            agencyId = driveRecods.getAgency().getId();
 			driveRecodsVo = new DriveRecodsVo();
 			try {
 				MyBeanUtils.copyBean2Bean(driveRecodsVo, driveRecods);
-				//BeanUtils.copyProperties(driveRecodsVo, driveRecods);
 				if (StringUtils.isNotEmpty(driveRecodsVo.getCarId())) {
 					CarInfoEntity car = carInfoService.get(CarInfoEntity.class, driveRecodsVo.getCarId());
 					if (car != null) {
@@ -360,27 +362,28 @@ public class DriveRecodsAction extends BaseController {
 				e.printStackTrace();
 			}
 		} else if (StringUtil.isNotEmpty(customerId)) {
+            logger.info("暂无试驾流程，仅有客户ID="+customerId);
 			CustomerInfoEntity customer = customerInfoService.get(CustomerInfoEntity.class, customerId);
+            agencyId = customer.getAgencyId();
 			driveRecodsVo = new DriveRecodsVo();
 			driveRecodsVo.setCustomer(customer);
-		}
+		} else {
+            logger.error("既无试驾流程ID又无客户ID！入口页面有误："+request.getRequestURI());
+        }
+
 		request.setAttribute("driveRecodsVo", driveRecodsVo);
 
 		// 查询车型
 		DetachedCriteria dc = DetachedCriteria.forClass(CarInfoEntity.class);
-		dc.add(Restrictions.eq("agency.id", ((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId()));
+        dc.add(Restrictions.eq("agency.id", agencyId));
 		dc.add(Restrictions.eq("status", CarStatus.NO_USED));
 
-		logger.debug("agency_id:" +((CustomerInfoEntity)driveRecodsVo.getCustomer()).getAgencyId());
-		logger.debug("status:" + CarStatus.NO_USED);
-				
 		List<CarInfoEntity> cars = carInfoService.findByDetached(dc);
-		logger.info("查询车辆信息集合size:" + cars.size());
-		for (CarInfoEntity car :cars){
-			logger.info("car id:" + car.getId()+"car type:"+car.getType()+"car plateno:"+car.getPlateNo());
-		}
+//		logger.debug("查询车辆信息集合size:" + cars.size());
+//		for (CarInfoEntity car :cars){
+//			logger.info("car id:" + car.getId()+"car type:"+car.getType()+"car plateno:"+car.getPlateNo());
+//		}
 
-		
 		List<Object[]> types = new ArrayList<Object[]>();//carInfoService.getCarTypes();
 		for (int i = 0; i < cars.size(); i++) {
 			CarInfoEntity car = cars.get(i);
@@ -498,7 +501,7 @@ public class DriveRecodsAction extends BaseController {
 			CarArrangeVo carArrangeVo = new CarArrangeVo();
 			carArrangeVo.setStartTime(driveRecodsEntity.getOrderStartTime());
 			carArrangeVo.setEndTime(driveRecodsEntity.getOrderEndTime());
-			carArrangeVo.setStatus(1);
+			carArrangeVo.setStatus(1);//预约
 			carArrangeVoList.add(carArrangeVo);
 		}
 		//排序
@@ -520,8 +523,14 @@ public class DriveRecodsAction extends BaseController {
 		j.setObj(carArrangeVoList);
 		return j;
 	}
-	
-	
+
+
+	/**
+	 * 创建或修改试驾预约信息
+	 * @param drive
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(params = "save", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxJson save(@RequestBody DriveRecodsDto drive, HttpServletRequest request) {
@@ -539,7 +548,8 @@ public class DriveRecodsAction extends BaseController {
 				t.setUpdateTime(DateUtils.gettimestamp());
 				t.setUpdateBy(salesmanInfo.getId());
 				t.setCarType(carInfo.getType());
-				driveRecodsService.saveOrUpdate(t);
+				driveRecodsService.updateEntitie(t);
+                logger.info("修改试驾 driveId="+t.getId()+" carId="+drive.getCarId());
 				// systemService.addLog(message, Globals.Log_Type_UPDATE,
 				// Globals.Log_Leavel_INFO);
 			} catch (Exception e) {
@@ -565,6 +575,7 @@ public class DriveRecodsAction extends BaseController {
 				t.setCreateBy(salesmanInfo.getId());
 				t.setCarType(carInfo.getType());
 				driveRecodsService.save(t);
+				logger.info("创建试驾 driveId="+t.getId()+" carId="+drive.getCarId());
 				// systemService.addLog(message, Globals.Log_Type_INSERT,
 				// Globals.Log_Leavel_INFO);
 			} catch (Exception e) {
@@ -574,6 +585,11 @@ public class DriveRecodsAction extends BaseController {
 		return j;
 	}
 
+    /**
+     * 当前页为“手续办理-试驾信息”展示页，由点击“首页Tab/试驾Tab-手续办理”进入
+     * @param request
+     * @return
+     */
 	@RequestMapping(params = "informations", method = RequestMethod.GET)
 	public ModelAndView informations(HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -622,8 +638,10 @@ public class DriveRecodsAction extends BaseController {
 				driveRecods.setEndPicPath(endPicPath);
 			}
 			driveRecods.setStatus(DriveRecodsStatus.GENERATEDREPORT);
-			carInfoService.saveOrUpdate(driveRecods);
-			driveRecodsVo = new DriveRecodsVo();
+            driveRecodsService.updateEntitie(driveRecods);
+            logger.info("生成报告 driveId="+driveRecods.getId()+" carId="+driveRecods.getCarId());
+
+            driveRecodsVo = new DriveRecodsVo();
 			try {
 				MyBeanUtils.copyBean2Bean(driveRecodsVo, driveRecods);
 				if (StringUtils.isNotEmpty(driveRecodsVo.getCarId())) {
@@ -666,9 +684,15 @@ public class DriveRecodsAction extends BaseController {
 		return new ModelAndView("driveRecods/picture");
 	}
 
+    /**
+     * 当前页面为“手续办理-线路信息”页面，由“手续办理-试驾信息”展现页的点击“下一步”进入
+     * @param request
+     * @return
+     */
 	@RequestMapping(params = "management", method = RequestMethod.GET)
 	public ModelAndView management(HttpServletRequest request) {
-		//String id = request.getParameter("id");
+		String id = request.getParameter("id");
+        logger.info("线路信息 driveId="+id);
 		/*String picPath = request.getParameter("picPath");
 		if(StringUtil.isNotEmpty(picPath)){
 			try {
@@ -680,28 +704,48 @@ public class DriveRecodsAction extends BaseController {
 		}
 		
 		DriveRecodsVo driveRecodsVo = driveRecodsService.attachPic(id, picPath);*/
-		
 		//request.setAttribute("driveRecodsVo", driveRecodsVo);
 		return new ModelAndView("driveRecods/management");
 	}
 
+    /**
+     * 当前页面为“手续办理-开始试驾”页面，由“手续办理-完成办理”展现页，点击“完成办理”进入
+     * @param drive
+     * @param req
+     * @return
+     */
 	@RequestMapping(params = "management", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxJson management(@RequestBody DriveRecodsDto drive, HttpServletRequest req) {
 		AjaxJson j = new AjaxJson();
 		if (StringUtil.isNotEmpty(drive.getId()) && StringUtil.isNotEmpty(drive.getRouteId())) {
 			DriveRecodsEntity t = driveRecodsService.get(DriveRecodsEntity.class, drive.getId());
+
 			if (t != null) {
-				CustomerInfoEntity customer = driveRecodsService.get(CustomerInfoEntity.class, t.getCustomer().getId());
-				customer.setDrivingLicensePicPath(req.getParameter("drivingLicensePicPath"));
-				driveRecodsService.updateEntitie(customer);
-				
-				
-				t.setRouteId(drive.getRouteId());
-				t.setTestDriveContractPicPath(drive.getTestDriveContractPicPath());
-				t.setStatus(t.getStatus() + 1);
-				driveRecodsService.saveOrUpdate(t);
-			}
+
+				if (t.getStatus()==DriveRecodsStatus.CONFIRMED) {// =2 已准备
+					CustomerInfoEntity customer = driveRecodsService.get(CustomerInfoEntity.class, t.getCustomer().getId());
+					customer.setDrivingLicensePicPath(req.getParameter("drivingLicensePicPath"));
+					driveRecodsService.updateEntitie(customer);
+
+
+					t.setRouteId(drive.getRouteId());
+					t.setTestDriveContractPicPath(drive.getTestDriveContractPicPath());
+					//t.setStatus(t.getStatus() + 1);
+					//(0预约,1已确认,2已准备,3手续已办理,4试驾中,5完成,6无效的,7放弃,8已提交问卷,9已提交问卷)"
+					t.setStatus(DriveRecodsStatus.FORMALITIES);// =3 手续已办理
+					driveRecodsService.updateEntitie(t);
+					logger.info("完成办理 driveId=" + t.getId() + " carId=" + t.getCarId() + " 流程状态：" + t.getStatus());
+				} else if (t.getStatus()==DriveRecodsStatus.FORMALITIES) {// =3 手续已办理
+					logger.error("重复办理 driveId=" + t.getId() + " carId=" + t.getCarId() + " 流程状态：" + t.getStatus());
+				} else {
+					logger.error("错误办理 driveId=" + t.getId() + " carId=" + t.getCarId() + " 流程状态：" + t.getStatus());
+				}
+			} else {
+                logger.error("无对应试驾流程: DriveRecodsDto="+drive.toString());
+            }
+		} else {
+			logger.error("试驾流程或线路有问题：试驾流程ID="+drive.getId()+" 试驾线路ID="+drive.getRouteId());
 		}
 		return j;
 	}

@@ -7,7 +7,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 <%@include file="/context/ico.jsp"%>
-<title>试驾后添加图片</title>
+<title>试驾后添加图片  </title>
 <link rel="stylesheet" href="plug-in/bootstrap.min/css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/maser.css" />
 <link rel="stylesheet" href="css/style.css" />
@@ -17,7 +17,7 @@
 <body>
 	<section>
 		<div class=" theme_color top_bom_pad text-center">
-			<h4 class="font_color">生成报告</h4>
+			<h4 class="font_color">生成报告  </h4>
 		</div>
 	</section>
 	<section class="container imgpad">
@@ -52,7 +52,7 @@
 					</dt>
 				</div>
 			</div>
-			<div class="photo">
+			<%--<div class="photo">
 				<div class="pic">
 					<input id="endPicPath" name="endPicPath" type="text" value="${driveRecods.endPicPath }">
 					<input id="img" type="file" accept="image/*" capture="camera"  data-url="fileUpload.action?upImg"/>
@@ -64,6 +64,8 @@
 					</div>
 				</div>
 			</div>
+			--%>
+
 			<div class="container tijiao">
 				<button type="button" class="btn btn-primary  btn-block theme_color" onclick="jumpToTestDriveReportPage()">生成报告</button>
 
@@ -155,10 +157,11 @@
 			function jumpToTestDriveReportPage(){
 				var endPicPath = $("#endPicPath").val();
 				
-				if(endPicPath.length==0){
+				/*if(endPicPath.length==0){
 					layer.msg('请上传试驾合照照片！');
 					return false;
-				}
+				}*/
+
 				location.href="/mtestdrive/driveRecodsAction.action?report&id=${driveRecods.id }&endPicPath="+$("#endPicPath").val();
 			}
 </script>

@@ -40,7 +40,7 @@ public class TSType extends IdEntity implements java.io.Serializable {
 		this.TSTypegroup = TSTypegroup;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "typepid")
 	public TSType getTSType() {
 		return this.TSType;

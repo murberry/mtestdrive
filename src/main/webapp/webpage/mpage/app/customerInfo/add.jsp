@@ -35,7 +35,7 @@
 		</div>
 	</header>
 	<!--顶部标题结束 -->
-	<div class="container show" style="padding-top: 35px;">
+	<div class="container show" style="padding-top: 5px;">
 		<section>
 			<form id="form1" class="form-horizontal text-center" role="form" action="/mtestdrive/customerInfoAction.action?save" method="post">
 				<div class="form-group ">
@@ -43,16 +43,19 @@
 					<div class="col-xs-4  compellation">渠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;道:</div>
 					<div class="col-xs-8  distance">
 						<select id="quarry" name="quarry" class="form-control">
-						<c:forEach items="${ quarry}" var="row">
-						<c:if test="${customerInfo.quarry ==row.typecode }">
-						<option value="${row.typecode }" selected="selected">${row.typename }</option>
-						</c:if>
-						<c:if test="${customerInfo.quarry !=row.typecode }">
-						<option value="${row.typecode }">${row.typename }</option>
-						</c:if>
-						</c:forEach>
-							
-
+							<c:forEach items="${quarry}" var="row">
+							    <option value="${row.typecode}" <c:if test="${customerInfo.quarry==row.typecode}">selected="selected"</c:if> >${row.typename}</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-4  compellation"></div>
+					<div class="col-xs-8  distance">
+						<select id="quarryDetail" name="quarryDetail" class="form-control">
+                            <c:forEach items="${quarryDetail}" var="row">
+                                <option value="${row.typecode}" <c:if test="${customerInfo.quarryDetail==row.typecode}">selected="selected"</c:if> class="${row.TSType.typecode}">${row.typename}</option>
+                            </c:forEach>
 						</select>
 					</div>
 				</div>
@@ -159,6 +162,7 @@
 <script src="js/mobiscroll_002.js" type="text/javascript"></script>
 <script src="js/mobiscroll.js" type="text/javascript"></script>
 <script src="js/mobiscroll_003.js" type="text/javascript"></script>
+<script src="js/jquery.chained.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="plug-in/layer/layer.js"></script>
 
 
@@ -186,7 +190,7 @@
 				lang: 'zh',
 				showNow: true,
 				nowText: "今天",
-				startYear: currYear - 60, //开始年份
+				startYear: currYear - 90, //开始年份
 				endYear: currYear + 10, //结束年份
 
 			};
@@ -324,8 +328,11 @@
 			
 		})
 	})
-			
-	
+
+    $(function() {
+        $("#quarryDetail").chained("#quarry"); //级联显示客户渠道来源
+    });
+
 	function validatemobile(mobile) 
    { 
        if(mobile.length==0) 
@@ -340,9 +347,9 @@
            return false; 
        } 
        return true;
-   } 
-	
-	
+   }
+
+
 </script>
 
 

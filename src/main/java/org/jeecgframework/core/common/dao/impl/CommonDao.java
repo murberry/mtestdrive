@@ -78,7 +78,6 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 	 * 检查用户是否存在
 	 * */
 	public TSUser getUserByUserIdAndUserNameExits(TSUser user) {
-		logger.info("用户登录：Name="+user.getUserName());
 		String password = PasswordUtil.encrypt(user.getUserName(), user.getPassword(), PasswordUtil.getStaticSalt());
 		String query = "from TSUser u where u.userName = :username and u.password=:passowrd and deleteFlag=:deleteFlag ";
 		Query queryObject = getSession().createQuery(query);
@@ -88,6 +87,7 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 		List<TSUser> users = queryObject.list();
 
 		if (users != null && users.size() > 0) {
+			logger.info("用户登录成功（加密）：Name="+user.getUserName());
 			return users.get(0);
 		} else {
 			queryObject = getSession().createQuery(query);
@@ -96,7 +96,10 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 			queryObject.setParameter("deleteFlag", Globals.Delete_Normal);
 			users = queryObject.list();
 			if(users != null && users.size() > 0){
+				logger.info("用户登录成功（非加密）：Name="+user.getUserName());
 				return users.get(0);
+			} else {
+				logger.error("用户名或密码错误："+user.getUserName());
 			}
 		}
 

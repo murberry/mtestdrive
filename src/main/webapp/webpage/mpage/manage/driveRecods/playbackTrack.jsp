@@ -26,6 +26,10 @@
 						<td>${info.plateNo }</td>
 					</tr>
 					<tr>
+						<td><label>预定试驾线路：</label></td>
+						<td>${info.driveRoute }</td>
+					</tr>
+					<tr>
 						<td><label>开始时间：</label></td>
 						<td><fmt:formatDate value="${info.driveStartTime }"
 								pattern="yyyy-MM-dd HH:mm" /></td>
@@ -58,6 +62,7 @@
 	<script type="text/javascript">
 	    //缓存定位点数据
 		var gathers = '${info.obdGathers}';
+		var routePoints = '${info.routePoints}';
 		var plateNo = '${info.plateNo }';
 	</script>
 	<script type="text/javascript"

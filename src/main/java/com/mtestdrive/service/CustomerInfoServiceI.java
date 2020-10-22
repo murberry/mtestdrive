@@ -11,5 +11,7 @@ public interface CustomerInfoServiceI extends CommonService {
 
 	public List<TSType> getAllQuarries();
 
+	public List<TSType> getAllQuarryDetail();
+
 	public CustomerInfoEntity getCustomerByMobileAndSalesManId(String mobile, String salesManId);
 }

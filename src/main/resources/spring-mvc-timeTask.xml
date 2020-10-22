@@ -13,7 +13,7 @@
 
 
 	<!-- 定时任务配置 scheduler 方式 注解 暂时不支持动态更新 -->
-	<context:component-scan base-package="org.jeecgframework.core.timer" />
+	<context:component-scan base-package="org.jeecgframework.core.timer,com.mtestdrive.interfaces" />
 	<task:executor id="executor" pool-size="10" />
 	<task:scheduler id="scheduler" pool-size="20" />
 	<task:annotation-driven executor="executor" scheduler="scheduler" />

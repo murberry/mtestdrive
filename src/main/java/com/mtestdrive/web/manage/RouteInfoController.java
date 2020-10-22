@@ -13,7 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.mtestdrive.entity.AgencyInfoEntity;
+import com.mtestdrive.service.AgencyInfoServiceI;
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.core.common.controller.BaseController;
@@ -73,6 +76,8 @@ public class RouteInfoController extends BaseController {
 
 	@Autowired
 	private RouteInfoServiceI routeInfoService;
+	@Autowired
+	private AgencyInfoServiceI agencyInfoService;
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -180,20 +185,40 @@ public class RouteInfoController extends BaseController {
 
 	/**
 	 * easyui AJAX请求数据
-	 * 
+	 * @param routeInfo
 	 * @param request
 	 * @param response
 	 * @param dataGrid
-	 * @param user
 	 */
-
 	@RequestMapping(params = "datagrid")
 	public void datagrid(RouteInfoEntity routeInfo, HttpServletRequest request, HttpServletResponse response,
 			DataGrid dataGrid) {
 		CriteriaQuery cq = new CriteriaQuery(RouteInfoEntity.class, dataGrid);
 		if (!ResourceUtil.getSessionUserName().getUserKey().equals("超级管理员")&&!ResourceUtil.getSessionUserName().getUserKey().equals("超级系统管理员")) {
 			cq.add(Restrictions.eq("agencyId", ResourceUtil.getSessionUserName().getDepartid()));
+		} else { //若是 超级管理员 或 超级系统管理员
+
+			// 根据经销商名称模糊查询线路
+			String dealerName = request.getParameter("agency.name");
+			if (StringUtil.isNotEmpty(dealerName)) {
+				// 根据经销商名称模糊搜索
+				DetachedCriteria agencyDc = DetachedCriteria.forClass(AgencyInfoEntity.class);
+				agencyDc.add(Restrictions.eq("status", ConstantStatus.VALID));
+				agencyDc.add(Restrictions.like("name", agencyInfoService.getLikeStr(dealerName)));
+				List<AgencyInfoEntity> agencyList = agencyInfoService.findByDetached(agencyDc);
+				if (agencyList != null) {
+					List<Object>idList = new ArrayList<Object>();
+					for (Object agency : agencyList) {
+						idList.add(agency);
+					}
+					if (agencyList.isEmpty()) {
+						idList.add("");
+					}
+					cq.add(Restrictions.in("agency.id", idList));
+				}
+			}
 		}
+
 		cq.add(Restrictions.eq("routeStatus", RouteStatus.VALID));
 		cq.addOrder("createTime", SortDirection.desc);
 		// 查询条件组装器
@@ -228,8 +253,8 @@ public class RouteInfoController extends BaseController {
 
 	/**
 	 * 添加试驾路线
-	 * 
-	 * @param ids
+	 * @param routeInfo
+	 * @param request
 	 * @return
 	 */
 	@RequestMapping(params = "save")
@@ -245,18 +270,30 @@ public class RouteInfoController extends BaseController {
 				t.setUpdateTime(DateUtils.gettimestamp());
 				MyBeanUtils.copyBeanNotNull2Bean(routeInfo, t);
 				routeInfoService.saveOrUpdate(t);
+
+				//更新线路信息的同时，更新线路OBD统计信息
+				routeInfoService.executeSql("{call proc_statistic_route(?)}", t.getId());
+				logger.info(message+" routeId="+t.getId());
+
+				//记录日志
 				systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 			} catch (Exception e) {
 				e.printStackTrace();
-				message = "试驾路线更新失败";
+				message = "试驾路线更新失败 routeId="+t.getId();
 			}
 		} else {
-			message = "试驾路线添加成功";
+
 			routeInfo.setAgencyId(ResourceUtil.getSessionUserName().getDepartid());
 			routeInfo.setCreateBy(ResourceUtil.getSessionUserName().getId());
 			routeInfo.setCreateTime(DateUtils.gettimestamp());
 			routeInfo.setRouteStatus(ConstantStatus.VALID);
 			routeInfoService.save(routeInfo);
+
+			//新增线路信息的同时，同时新增线路OBD统计信息
+			message = "试驾路线添加成功";
+			routeInfoService.executeSql("{call proc_statistic_route(?)}", routeInfo.getId());
+			logger.info(message+" routeId="+routeInfo.getId());
+
 			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 		}
 		j.setMsg(message);

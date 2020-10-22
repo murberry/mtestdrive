@@ -48,6 +48,8 @@ public class ObdGatherInfoEntity implements java.io.Serializable {
 	private java.lang.Float mileage;
 	/**记录创建时间*/
 	private java.util.Date createTime;
+	/**是否GPS漂移点*/
+	private Boolean isDrift ;
 	
 	/**
 	 *方法: 取得java.lang.String
@@ -238,4 +240,13 @@ public class ObdGatherInfoEntity implements java.io.Serializable {
 	public void setAccOn(Boolean accOn) {
 		this.accOn = accOn;
 	}
+
+	@Column(name ="IS_DRIFT",nullable=true)
+	public Boolean getDrift() {
+		return isDrift;
+	}
+	public void setDrift(Boolean drift) {
+		isDrift = drift;
+	}
+
 }

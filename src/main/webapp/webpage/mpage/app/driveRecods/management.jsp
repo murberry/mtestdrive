@@ -42,7 +42,7 @@
 				<!-- Wrapper for slides -->
 				<div class="carousel-inner" role="listbox" id="routeListDiv">
 					<div class="item active">
-						<div id="allmap" style="height: 235px"></div>
+						<div id="allmap" style="height:400px"></div>
 						<div class="carousel-caption">
 							<p class="fontBlack" id="routeInfo">路线1</p>
 						</div>
@@ -63,8 +63,6 @@
 		</div>
 		<div class="container tijiao">
 			<input type="hidden" name="id" id="id" value="${param.id }"/>
-			<input type="hidden" name="routeId" id="routeId" />
-			<input type="hidden" name="routeId" id="routeId" />
 			<input type="hidden" name="routeId" id="routeId" />
 			<button id="showdiv" type="button" class="btn btn-primary btn-block theme_color">完成办理</button>
 		</div>
@@ -127,16 +125,18 @@
 				success:function(data){
 					$("#beginTestDrive").show(1000);
 					$("#showdiv").parent().hide();
+                    $("#showdiv").unbind("click");//防止重复点击
 				}
 			});
 
-            $(this).unbind("click");//防止重复点击
+
 
 		});
 		$(".carousel").carousel('pause');//停止自动轮播
 		$("#beginTestDrive").on("click", function() {
 			var id = $("#id").val();
 			location.href = "/mtestdrive/carInfoAction.action?monitor&driveStart=1&id="+id;
+            $(this).unbind("click");//防止重复点击
 		});
 		$('#myCarousel').on('slid.bs.carousel', function() {
 			$(".carousel").carousel('pause');//停止自动轮播

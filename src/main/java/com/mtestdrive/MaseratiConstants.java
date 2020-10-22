@@ -139,34 +139,28 @@ public class MaseratiConstants {
 	 *  8:已提交问卷
 	 */
 	public static class DriveRecodsStatus {
+
 		/** 预约  */
 		public static final int ASK = 0;
-		
 		/** 已确认  */
 		public static final int ANSWER = 1;
-		
 		/** 已准备  */
 		public static final int CONFIRMED = 2;
-		
 		/** 手续已办理  */
 		public static final int FORMALITIES = 3;
-		
 		/** 试驾中  */
 		public static final int UNDERWAY = 4;
-		
 		/** 完成  */
 		public static final int COMPLETE = 5;
-		
 		/** 无效的  */
 		public static final int DESERTED = 6;
-		
 		/** 放弃  */
 		public static final int CANCEL = 7;
-		
 		/** 已提交问卷  */
 		public static final int GROUP = 8;
 		/** 已生成报告  */
 		public static final int GENERATEDREPORT = 9;
+
 		/** 预约  */
 		private static final Integer NONEVENT[] = {ASK,ANSWER,CANCEL};
 		

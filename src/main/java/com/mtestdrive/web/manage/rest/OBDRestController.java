@@ -74,6 +74,7 @@ public class OBDRestController {
 							oe.setMileage(data.getMileage());
 							oe.setAccOn(data.getAccOn());
 							oe.setCreateTime(DateUtils.getTimestamp());
+							oe.setDrift(false); //默认是否漂移为false
 							sysService.save(oe);
 						}
 					}

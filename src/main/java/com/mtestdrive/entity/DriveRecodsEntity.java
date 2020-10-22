@@ -82,15 +82,17 @@ public class DriveRecodsEntity implements java.io.Serializable {
 	private java.lang.String updateBy;
 	/** 修改时间 */
 	private java.util.Date updateTime;
-	/** 预约状态 0-预约，1-已确认，2-试驾中，3-完成，4-放弃，5-取消 */
+	/** 预约状态 0-预约，1-已确认，2-已准备，3-手续已办理，4-试驾中，5-完成，6-无效的，7-放弃，8-已提交问卷，9-已提交问卷 */
 	private java.lang.Integer status;
 	/**sfID */
 	private java.lang.String sfId;
 	/**试驾合同照片*/
-	private String testDriveContractPicPath;
-	
-	
-	
+    private String testDriveContractPicPath;
+    /**是否有效试驾*/
+    private Integer isValid;
+    /**有效试驾信息同步到SF的时间*/
+    private java.util.Date validSyncTime;
+
 	/**
 	 * 方法: 取得id
 	 * 
@@ -562,4 +564,22 @@ public class DriveRecodsEntity implements java.io.Serializable {
 	public void setTestDriveContractPicPath(String testDriveContractPicPath) {
 		this.testDriveContractPicPath = testDriveContractPicPath;
 	}
+
+    @Column(name = "is_valid", nullable = true)
+    public Integer getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(Integer isValid) {
+        this.isValid = isValid;
+    }
+
+    @Column(name = "valid_sync_time", nullable = true)
+    public Date getValidSyncTime() {
+        return validSyncTime;
+    }
+
+    public void setValidSyncTime(Date validSyncTime) {
+        this.validSyncTime = validSyncTime;
+    }
 }

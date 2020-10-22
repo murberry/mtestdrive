@@ -37,6 +37,9 @@ public class ObdDriveRecodsEntity implements java.io.Serializable {
 	
 	/**本表id*/
 	private java.lang.String id;
+	/**试驾流程id*/
+	@Excel(name = "试驾流程")
+	private java.lang.String driveId;
 	/**4S经销商id*/
 	@Excel(name = "经销商")
 	private java.lang.String agencyId;
@@ -108,6 +111,19 @@ public class ObdDriveRecodsEntity implements java.io.Serializable {
 	public void setId(java.lang.String id){
 		this.id = id;
 	}
+
+	/**
+	 *方法: 取得java.lang.String
+	 *@return: java.lang.String  试驾流程id
+	 */
+	@Column(name ="drive_id",nullable=true,length=32)
+	public String getDriveId() {
+		return driveId;
+	}
+
+	public void setDriveId(String driveId) {
+		this.driveId = driveId;
+	}
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  4S经销商id
@@ -116,7 +132,6 @@ public class ObdDriveRecodsEntity implements java.io.Serializable {
 	public java.lang.String getAgencyId(){
 		return this.agencyId;
 	}
-
 	/**
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  4S经销商id

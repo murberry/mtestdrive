@@ -1,4 +1,4 @@
-package org.jeecgframework.web.demo.service.impl.test;
+package com.mtestdrive.interfaces;
 
 import com.mtestdrive.MaseratiConstants.CarStatus;
 import com.mtestdrive.MaseratiConstants.ReportStatus;

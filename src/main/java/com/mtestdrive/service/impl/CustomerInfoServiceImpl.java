@@ -23,7 +23,12 @@ public class CustomerInfoServiceImpl extends CommonServiceImpl implements Custom
 		TSTypegroup group = commonDao.findUniqueByProperty(TSTypegroup.class, "typegroupcode", "quarry");
 		return group.getTSTypes();
 	}
-	
+
+	@Override
+	public List<TSType> getAllQuarryDetail() {
+		TSTypegroup group = commonDao.findUniqueByProperty(TSTypegroup.class, "typegroupcode", "quarryDetail");
+		return group.getTSTypes();
+	}
 	@Override
 	public CustomerInfoEntity getCustomerByMobileAndSalesManId(String mobile, String salesManId) {
 		DetachedCriteria dc = DetachedCriteria.forClass(CustomerInfoEntity.class);

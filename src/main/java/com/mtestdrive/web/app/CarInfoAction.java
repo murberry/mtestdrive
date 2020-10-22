@@ -194,6 +194,7 @@ public class CarInfoAction extends BaseController {
 		String driveId = request.getParameter("driveId");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, driveId);
 		DriveRecodsVo driveRecodsVo=convertToDriveRecodsVo(driveRecodsEntity);
+		logger.info("查看车况 driveId="+driveId+" carId="+carId);
 
 		request.setAttribute("driveRecods", driveRecodsVo);
 		request.setAttribute("carInfo", carInfoVo);
@@ -226,8 +227,9 @@ public class CarInfoAction extends BaseController {
 	public ModelAndView status(HttpServletRequest request) {
 		String id = request.getParameter("id");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, id);
-		driveRecodsEntity.setStatus(2);
+		driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.CONFIRMED);//2
 		driveRecodsService.saveOrUpdate(driveRecodsEntity);
+        logger.info("确认车况 driveId="+id+" carId="+driveRecodsEntity.getCarId());
 		return new ModelAndView(new RedirectView("login.action?page"));
 	}
 	
@@ -236,7 +238,7 @@ public class CarInfoAction extends BaseController {
 		String id = request.getParameter("id");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, id);
 		driveRecodsEntity.setDriveEndTime(new Date());
-		driveRecodsEntity.setStatus(5);
+		driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.COMPLETE);//5 完成试驾
 
 		//获取OBD记录的公里数
 		CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, driveRecodsEntity.getCarId());
@@ -255,39 +257,50 @@ public class CarInfoAction extends BaseController {
 
 		carInfoEntity.setStatus(MaseratiConstants.CarStatus.NO_USED);
 		carInfoService.updateEntitie(carInfoEntity);
-		logger.info("结束试驾 driveRecordId="+driveRecodsEntity.getId()+" CarId="+carInfoEntity.getId()+" （车辆状态已经置为空闲中）");
+		logger.info("结束试驾 driveId="+driveRecodsEntity.getId()+" carId="+carInfoEntity.getId()+" endCarStatus="+carInfoEntity.getStatus());
 
 		//跳到试驾报告
 		request.setAttribute("driveId", driveRecodsEntity.getId());
 		
 		return new ModelAndView(new RedirectView("driveRecodsAction.action?picture&driveId="+driveRecodsEntity.getId()));
 	}
-	
+
+    /**
+     * 当前页面为试驾中的“试驾车位置”页面，由点击“首页Tab/试驾Tab-查看试驾/开始试驾”页面按钮进入
+     * @param request
+     * @return
+     */
 	@RequestMapping(params = "monitor", method = RequestMethod.GET)
 	public ModelAndView monitor(HttpServletRequest request) {
 		
 		String driveId = request.getParameter("id");
 		DriveRecodsEntity driveRecodsEntity = driveRecodsService.get(DriveRecodsEntity.class, driveId);
-		Integer status = driveRecodsEntity.getStatus();
-		if(status==MaseratiConstants.DriveRecodsStatus.FORMALITIES){//3
-			driveRecodsEntity.setDriveStartTime(new Date());
-			driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.UNDERWAY);//4
-			driveRecodsService.saveOrUpdate(driveRecodsEntity);
-		}
-		DriveRecodsVo driveRecodsVo=convertToDriveRecodsVo(driveRecodsEntity);
+		Integer driveStatus = driveRecodsEntity.getStatus();
+        String carId = driveRecodsEntity.getCarId();
+        CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, carId);
 
-		String carId = driveRecodsVo.getCarId();
-		CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, carId);
-		carInfoEntity.setStatus(MaseratiConstants.CarStatus.TEST_DRIVING);
-		carInfoEntity.setDriveTotal(carInfoEntity.getDriveTotal()+1);
-		
-		carInfoService.updateEntitie(carInfoEntity);
-		logger.info("开始试驾 driveRecordId="+driveId+" CarId="+carId);
+		if(driveStatus==MaseratiConstants.DriveRecodsStatus.FORMALITIES){//3 若手续已办理，则开始试驾
+			driveRecodsEntity.setDriveStartTime(new Date()); //记录开始试驾时间
+			driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.UNDERWAY);//=4 流程试驾中
+			driveRecodsService.saveOrUpdate(driveRecodsEntity);
+
+            carInfoEntity.setStatus(MaseratiConstants.CarStatus.TEST_DRIVING); //=1 车辆试驾中
+            carInfoEntity.setDriveTotal(carInfoEntity.getDriveTotal()+1);
+            carInfoService.updateEntitie(carInfoEntity);
+
+            logger.info("开始试驾 driveId="+driveId+" carId="+carId+" carStatus="+carInfoEntity.getStatus());
+
+		} else if (driveStatus==MaseratiConstants.DriveRecodsStatus.UNDERWAY){//4 若流程试驾中，则为重入该流程
+            logger.info("重入流程 driveId="+driveId+" carId="+carId+" carStatus="+carInfoEntity.getStatus()+" driveStatus="+driveStatus);
+        } else { //其他状态判定为非法进入该流程
+		    logger.error("非法进入 driveId="+driveId+" carId="+carId+" carStatus="+carInfoEntity.getStatus()+" driveStatus="+driveStatus);
+        }
+
+		DriveRecodsVo driveRecodsVo=convertToDriveRecodsVo(driveRecodsEntity);
 		CarInfoVo carInfoVo = new CarInfoVo();
 		try {
 			BeanUtils.copyProperties(carInfoVo, carInfoEntity);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		request.setAttribute("driveRecods", driveRecodsVo);

@@ -58,7 +58,7 @@
 				<div id="photo"></div>
                 --%>
 
-                <div class="pic">
+                <%--<div class="pic">
                     <input id="path2" name="path2" type="hidden" value="${licensePicPath }" />
                     <input id="img1" type="file" name="img[]" data-url="fileUpload.action?upImg" accept="image/*" capture="camera" />
                     <c:if test="${empty licensePicPath}">
@@ -74,6 +74,7 @@
                         <div class="bar" style="width: 0%;"></div>
                     </div>
                 </div>
+                --%>
 
             </div>
 
@@ -172,17 +173,17 @@
 					layer.msg('请上传试驾合同！');
 					return false;
 				}*/
-				var path2 = $("#path2").val();
+				var path2 = "NoLicence";//$("#path2").val();
 				if(path2.length == 0){
 					layer.msg('请上传驾照照片！');
 					return false;
 				}
-				
+
 				window.location.href="/mtestdrive/driveRecodsAction.action?management&id="+"${driveRecodsVo.id}&picPath2="+path2;
-				
+
 			}
-			
-			
+
+
 		</script>
 
 </html>

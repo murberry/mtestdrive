@@ -91,7 +91,7 @@
 						</label>
 					</td>
 					<td class="value">
-						<input class="inputxt" id="address" name="address" datatype="s2-20"
+						<input class="inputxt" id="address" name="address" datatype="s2-30"
 							   value="${agencyInfoPage.address}" >
 						<span class="Validform_checktip"></span>
 					</td>
