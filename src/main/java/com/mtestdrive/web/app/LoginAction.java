@@ -98,7 +98,7 @@ public class LoginAction extends BaseController {
 				Date createTime = tokenList.get(0).getCreateTime();
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(createTime);
-				cal.add(Calendar.DATE, 30);
+				cal.add(Calendar.DATE, 30);//30天内免登录
 				Date time = cal.getTime();
 				boolean after = time.after(new Date());
 				if (after) {

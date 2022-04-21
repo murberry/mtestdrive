@@ -126,8 +126,7 @@ public class MaseratiConstants {
 	
 	
 	/**
-	 * 
-	 * 预约状态 0-预约，1-已确认，2-试驾中，3-完成，4-无效的，5-放弃
+	 * 试驾流程状态：
 	 *  0:预约;
 	 *  1:已确认;
 	 *  2:已准备;
@@ -136,7 +135,8 @@ public class MaseratiConstants {
 	 *  5:完成;
 	 *  6:无效的;
 	 *  7:放弃;
-	 *  8:已提交问卷
+	 *  8:已提交问卷;
+	 *  9:已生成报告;
 	 */
 	public static class DriveRecodsStatus {
 
