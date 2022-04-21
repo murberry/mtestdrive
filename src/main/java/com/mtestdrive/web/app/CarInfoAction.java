@@ -279,7 +279,8 @@ public class CarInfoAction extends BaseController {
         String carId = driveRecodsEntity.getCarId();
         CarInfoEntity carInfoEntity = carInfoService.get(CarInfoEntity.class, carId);
 
-		if(driveStatus==MaseratiConstants.DriveRecodsStatus.FORMALITIES){//3 若手续已办理，则开始试驾
+		if(driveStatus==MaseratiConstants.DriveRecodsStatus.FORMALITIES
+		   ||driveStatus == MaseratiConstants.DriveRecodsStatus.CONFIRMED){//3 or 2  若手续已办理或者已准备，则开始试驾
 			driveRecodsEntity.setDriveStartTime(new Date()); //记录开始试驾时间
 			driveRecodsEntity.setStatus(MaseratiConstants.DriveRecodsStatus.UNDERWAY);//=4 流程试驾中
 			driveRecodsService.saveOrUpdate(driveRecodsEntity);
