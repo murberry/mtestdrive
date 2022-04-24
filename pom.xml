@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mtestdrive</groupId>
 	<artifactId>mtestdrive</artifactId>
@@ -12,7 +12,7 @@
 
 		<guava.version>16.0.1</guava.version>
 		<!-- 主要依赖库的版本定义 -->
-		<spring.version>5.2.9.RELEASE</spring.version>
+		<spring.version>4.0.9.RELEASE</spring.version>
 		<hibernate.version>4.1.0.Final</hibernate.version>
 		<hibernate-common-annotations.version>4.0.2.Final</hibernate-common-annotations.version>
 		<hibernate-jpa.version>1.0.1.Final</hibernate-jpa.version>
@@ -35,20 +35,20 @@
 		<jackson.version>1.8.4</jackson.version>
 		<jacksonframework.version>1.84</jacksonframework.version>
 		<json-lib.version>2.1</json-lib.version>
-		<fastjson-lib.version>1.2.25.sec10</fastjson-lib.version>
+		<fastjson-lib.version>1.2.6</fastjson-lib.version>
 		<gson.version>2.2.4</gson.version>
 		<!-- json start -->
 		<dom4j.version>1.6.1</dom4j.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<classmate.version>0.5.4</classmate.version>
-		<commons-beanutils.version>1.9.4</commons-beanutils.version>
-		<commons-collections.version>3.2.2</commons-collections.version>
+		<commons-beanutils.version>1.7.0</commons-beanutils.version>
+		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-chain.version>1.2</commons-chain.version>
 		<commons-codec.version>1.3</commons-codec.version>
 		<commons-digester.version>2.0</commons-digester.version>
 		<commons-io.version>1.3.2</commons-io.version>
-		<commons-fileupload.version>1.3.3</commons-fileupload.version>
+		<commons-fileupload.version>1.2.1</commons-fileupload.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
 		<commons-email.version>1.2</commons-email.version>
@@ -57,7 +57,7 @@
 		<commons-validator.version>1.3.1</commons-validator.version>
 		<ehcache.version>2.4.3</ehcache.version>
 		<freemarker.version>2.3.19</freemarker.version>
-		<hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
+		<hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
 		<poi.version>3.9</poi.version>
 		<antlr.version>3.3</antlr.version>
 		<openoffice.version>3.2.1</openoffice.version>
@@ -69,7 +69,7 @@
 		<commons-pool.version>1.6</commons-pool.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<druid.version>1.0.29</druid.version>
-		<mysql.version>8.0.16</mysql.version>
+		<mysql.version>5.1.27</mysql.version>
 		<!-- sqlserver2005 -->
 		<sqlserver.version>1.0.0</sqlserver.version>
 		<!-- oracle -->
@@ -80,7 +80,7 @@
 		<postgresql.version>9.1-903.jdbc4</postgresql.version>
 
 		<!-- 测试依赖包 -->
-		<junit.version>4.13.1</junit.version>
+		<junit.version>4.7</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 
 		<CKFinder.version>2.4</CKFinder.version>
@@ -90,7 +90,7 @@
 		<org.quartz.version>1.6.2</org.quartz.version>
 		<activation.version>1.1.1</activation.version>
 		<aopalliance.version>1.0</aopalliance.version>
-		<xstream.version>1.4.10-java7</xstream.version>
+		<xstream.version>1.4.4</xstream.version>
 		<groovy.version>2.3.3</groovy.version>
 		<!--poi 工具类 -->
 		<easypoi.version>2.1.4</easypoi.version>
@@ -155,7 +155,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<!-- <repository> <id>proxool</id> <name>proxool</name> <url>http://proxool.cvs.sourceforge.net/viewvc/proxool/</url> 
+		<!-- <repository> <id>proxool</id> <name>proxool</name> <url>http://proxool.cvs.sourceforge.net/viewvc/proxool/</url>
 			<snapshots> <enabled>false</enabled> </snapshots> </repository> -->
 	</repositories>
 
@@ -304,7 +304,7 @@
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-proxool</artifactId> 
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-proxool</artifactId>
 			<version>${hibernate.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.hibernate.common</groupId>
@@ -336,24 +336,24 @@
 		</dependency>
 
 		<!--工作流依赖包 -->
-		<!-- <dependency> <groupId>org.activiti</groupId> <artifactId>activiti-engine</artifactId> 
-			<version>${activiti.version}</version> </dependency> <dependency> <groupId>org.activiti</groupId> 
-			<artifactId>activiti-spring</artifactId> <version>${activiti.version}</version> 
+		<!-- <dependency> <groupId>org.activiti</groupId> <artifactId>activiti-engine</artifactId>
+			<version>${activiti.version}</version> </dependency> <dependency> <groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId> <version>${activiti.version}</version>
 			</dependency> -->
 		<!-- mybatis -->
-		<!-- <dependency> <groupId>org.mybatis</groupId> <artifactId>mybatis</artifactId> 
-			<version>${mybatis.version}</version> </dependency> <dependency> <groupId>org.mybatis</groupId> 
-			<artifactId>mybatis-spring</artifactId> <version>${mybatis-spring.version}</version> 
+		<!-- <dependency> <groupId>org.mybatis</groupId> <artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version> </dependency> <dependency> <groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId> <version>${mybatis-spring.version}</version>
 			</dependency> -->
 
 
 		<!-- 数据库相关依赖包 _start -->
 		<!--proxool start -->
-		<!-- <dependency> <groupId>com.cloudhopper.proxool</groupId> <artifactId>proxool</artifactId> 
-			<version>${proxool.version}</version> <exclusions> <exclusion> <artifactId>geronimo-spec-javamail</artifactId> 
-			<groupId>geronimo-spec</groupId> </exclusion> <exclusion> <artifactId>avalon-framework-api</artifactId> 
-			<groupId>avalon-framework</groupId> </exclusion> </exclusions> </dependency> 
-			<dependency> <groupId>com.cloudhopper.proxool</groupId> <artifactId>proxool-cglib</artifactId> 
+		<!-- <dependency> <groupId>com.cloudhopper.proxool</groupId> <artifactId>proxool</artifactId>
+			<version>${proxool.version}</version> <exclusions> <exclusion> <artifactId>geronimo-spec-javamail</artifactId>
+			<groupId>geronimo-spec</groupId> </exclusion> <exclusion> <artifactId>avalon-framework-api</artifactId>
+			<groupId>avalon-framework</groupId> </exclusion> </exclusions> </dependency>
+			<dependency> <groupId>com.cloudhopper.proxool</groupId> <artifactId>proxool-cglib</artifactId>
 			<version>${proxool.version}</version> </dependency> -->
 		<!-- proxool end -->
 		<dependency>
@@ -381,18 +381,18 @@
 			<version>${mysql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.jeecgframework</groupId> <artifactId>jdbc2005</artifactId> 
-			<version>${sqlserver.version}</version> <scope>runtime</scope> </dependency> 
-			<dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc14</artifactId> 
+		<!-- <dependency> <groupId>org.jeecgframework</groupId> <artifactId>jdbc2005</artifactId>
+			<version>${sqlserver.version}</version> <scope>runtime</scope> </dependency>
+			<dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc14</artifactId>
 			<version>${ojdbc14.version}</version> </dependency> -->
 		<!-- jtds for mssql/db2 -->
-		<!-- <dependency> <groupId>net.sourceforge.jtds</groupId> <artifactId>jtds</artifactId> 
+		<!-- <dependency> <groupId>net.sourceforge.jtds</groupId> <artifactId>jtds</artifactId>
 			<version>${jtds.version}</version> <scope>runtime</scope> </dependency> -->
 		<!-- h2 -->
-		<!-- <dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId> 
+		<!-- <dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId>
 			<version>${h2.version}</version> <scope>test</scope> </dependency> -->
 		<!-- postgresql -->
-		<!-- <dependency> <groupId>org.jeecgframework</groupId> <artifactId>postgresql</artifactId> 
+		<!-- <dependency> <groupId>org.jeecgframework</groupId> <artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version> </dependency> -->
 		<!-- 数据库相关依赖包 _end -->
 
@@ -511,12 +511,12 @@
 			</exclusions>
 		</dependency>
 		<!-- slf4j -->
-		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> 
-			<version>${slf4j.version}</version> </dependency> <dependency> <groupId>org.slf4j</groupId> 
-			<artifactId>slf4j-log4j12</artifactId> <version>${slf4j.version}</version> 
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version> </dependency> <dependency> <groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId> <version>${slf4j.version}</version>
 			</dependency> -->
 		<!-- log4j -->
-		<!-- <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
+		<!-- <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId>
 			<version>${log4j.version}</version> </dependency> -->
 		<!--Logger Support -->
 		<dependency>
@@ -545,7 +545,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version> <type>jar</type> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -796,7 +796,7 @@
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
-			<version>2.12.0</version>
+			<version>2.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>xml-apis</groupId>
@@ -907,9 +907,9 @@
 
 
 
-		<!-- 插件: 微信企业号 <dependency> <groupId>org.p3framework</groupId> <artifactId>jeecg-p3-biz-qywx</artifactId> 
-			<version>1.0.0</version> <type>jar</type> <scope>compile</scope> </dependency> 
-			<dependency> <groupId>org.jeewx</groupId> <artifactId>jeewx-qywx-api</artifactId> 
+		<!-- 插件: 微信企业号 <dependency> <groupId>org.p3framework</groupId> <artifactId>jeecg-p3-biz-qywx</artifactId>
+			<version>1.0.0</version> <type>jar</type> <scope>compile</scope> </dependency>
+			<dependency> <groupId>org.jeewx</groupId> <artifactId>jeewx-qywx-api</artifactId>
 			<version>1.0-SNAPSHOT</version> <type>jar</type> <scope>compile</scope> </dependency> -->
 		<!-- jeecg plugin -->
 
@@ -922,7 +922,7 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/taobao-sdk-java-auto_1455552377940-20160607.jar</systemPath>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
-		
+
 		<!-- pinyin4j  中文转拼音 -->
 		<dependency>
 			<groupId>com.belerweb</groupId>
@@ -952,8 +952,8 @@
 				</configuration>
 			</plugin>
 			<plugin>
-			    <inherited>true</inherited>
-    			<groupId>org.apache.maven.plugins</groupId>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
@@ -973,7 +973,7 @@
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 		<finalName>mtestdrive</finalName>
 		<resources>
