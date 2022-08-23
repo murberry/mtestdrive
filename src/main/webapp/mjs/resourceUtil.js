@@ -27,5 +27,7 @@ var carTypes =  [
 	{"type":"QP 410", "imagePath":"fileUpload.action?view&fileName=carType/QP-SQ4-GranSport-Grigio-Maratea.jpg", "title":"新款Quattroporte总裁轿车系列","subhead":"玛莎拉蒂匠心之作", "config":{"displacement":"3.0","RPM":"286","maxSpeed":"286"}},
 	{"type":"Levante", "imagePath":"fileUpload.action?view&fileName=carType/Grigia_sport_chrome_02.jpg", "title":"Levante","subhead":"THE MASERATI OF SUV", "config":{"displacement":"3.0T","RPM":"5750","maxSpeed":"264"}},
 	{"type":"Levante S", "imagePath":"fileUpload.action?view&fileName=carType/Grigia_sport_chrome_02.jpg", "title":"Levante","subhead":"THE MASERATI OF SUV", "config":{"displacement":"3.0T","RPM":"5750","maxSpeed":"264"}},
-	{"type":"MC20", "imagePath":"fileUpload.action?view&fileName=carType/MC20_front.jpg", "title":"MC20","subhead":"超级跑车", "config":{"displacement":"3.0L V6","RPM":"8000","maxSpeed":"325"}}
+	{"type":"MC20", "imagePath":"fileUpload.action?view&fileName=carType/MC20_front.jpg", "title":"MC20","subhead":"超级跑车", "config":{"displacement":"3.0L V6","RPM":"8000","maxSpeed":"325"}},
+	{"type":"Grecale", "imagePath":"fileUpload.action?view&fileName=carType/gr_front.jpg", "title":"Grecale","subhead":"中型SUV", "config":{"displacement":"2.0T","RPM":"4500","maxSpeed":"240"}}
+
 ];
