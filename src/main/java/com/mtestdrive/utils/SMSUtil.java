@@ -28,9 +28,9 @@ public class SMSUtil {
 	 *             mengtaocui
 	 */
 	public static boolean sendAuthCode(String tel, String authCode) {
-		// 验证码模板CODE SMS_57195024
+		// 验证码模板CODE SMS_57195024 旧版短信验证码模版 SMS_63085173
 		String json = "{\"authCode\":\"" + authCode + "\"}";
-		return send(tel, json, "SMS_63085173");
+		return send(tel, json, "SMS_62520441"); // 新模版2022-0814
 	}
 
 	public static boolean sendTestDriveReportLink(String dealerName, String tel, String driveId, String driveId_cut) {
@@ -92,6 +92,7 @@ public class SMSUtil {
 
 	public static void main(String[] args) {
 		String driveId = "2c9a4cf96107c97c016140c6f64c4e06";
-		sendTestDriveReportLink("茵诺惟熙","139XXXXXXXX",driveId.substring(0,20), driveId.substring(20,32));
+		// sendTestDriveReportLink("茵诺惟熙","139XXXXXXXX",driveId.substring(0,20), driveId.substring(20,32));
+		sendAuthCode("13917264379","8888-8888");
 	}
 }
