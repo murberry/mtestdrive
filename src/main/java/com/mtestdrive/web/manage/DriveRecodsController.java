@@ -418,7 +418,7 @@ public class DriveRecodsController extends BaseController {
 		cq.add();
 		List<ObdDriveRecodsEntity> tsDriveRecods = this.systemService.getListByCriteriaQuery(cq,false);
 		List<ObdDriveDTO> obdDriveList = new ArrayList<ObdDriveDTO>();
-		logger.info("开始导出出车明细： 条数="+tsDriveRecods.size()+" CriteriaQuery="+cq.getCriterionList().toString());
+		logger.info("开始导出出车明细： 条数="+tsDriveRecods.size()+" status="+status+" agencyName="+agencyName+" salesmanName="+salesmanName+" customerName="+customerName);
 		for (ObdDriveRecodsEntity obdDriveRecodsEntity : tsDriveRecods) {
 			AgencyInfoEntity agencyInfo = systemService.getEntity(AgencyInfoEntity.class ,obdDriveRecodsEntity.getAgencyId() );
 			CarInfoEntity carInfo = systemService.getEntity(CarInfoEntity.class ,obdDriveRecodsEntity.getCarId() );
@@ -473,7 +473,7 @@ public class DriveRecodsController extends BaseController {
 		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("出车明细列表", "导出人:"+ ResourceUtil.getSessionUserName().getRealName(),
 				"导出信息"));
 		modelMap.put(NormalExcelConstants.DATA_LIST,obdDriveList);
-		logger.info("结束导出出车明细： CriteriaQuery="+cq.toString());
+		logger.info("结束导出出车明细："+" status="+status+" agencyName="+agencyName+" salesmanName="+salesmanName+" customerName="+customerName);
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
 	}
 	
