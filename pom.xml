@@ -7,8 +7,8 @@
 	<packaging>war</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<codegenerate.version>3.6.1-SNAPSHOT</codegenerate.version>
-		<minidao.version>1.6-SNAPSHOT</minidao.version>
+		<codegenerate.version>3.6.2</codegenerate.version>
+		<minidao.version>1.6.1</minidao.version>
 
 		<guava.version>16.0.1</guava.version>
 		<!-- 主要依赖库的版本定义 -->
@@ -35,20 +35,20 @@
 		<jackson.version>1.8.4</jackson.version>
 		<jacksonframework.version>1.84</jacksonframework.version>
 		<json-lib.version>2.1</json-lib.version>
-		<fastjson-lib.version>1.2.25.sec10</fastjson-lib.version>
+		<fastjson-lib.version>1.2.6</fastjson-lib.version>
 		<gson.version>2.2.4</gson.version>
 		<!-- json start -->
 		<dom4j.version>1.6.1</dom4j.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<classmate.version>0.5.4</classmate.version>
-		<commons-beanutils.version>1.9.4</commons-beanutils.version>
-		<commons-collections.version>3.2.2</commons-collections.version>
+		<commons-beanutils.version>1.7.0</commons-beanutils.version>
+		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-chain.version>1.2</commons-chain.version>
 		<commons-codec.version>1.3</commons-codec.version>
 		<commons-digester.version>2.0</commons-digester.version>
 		<commons-io.version>1.3.2</commons-io.version>
-		<commons-fileupload.version>1.3.3</commons-fileupload.version>
+		<commons-fileupload.version>1.2.1</commons-fileupload.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
 		<commons-email.version>1.2</commons-email.version>
@@ -57,7 +57,7 @@
 		<commons-validator.version>1.3.1</commons-validator.version>
 		<ehcache.version>2.4.3</ehcache.version>
 		<freemarker.version>2.3.19</freemarker.version>
-		<hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
+		<hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
 		<poi.version>3.9</poi.version>
 		<antlr.version>3.3</antlr.version>
 		<openoffice.version>3.2.1</openoffice.version>
@@ -69,7 +69,9 @@
 		<commons-pool.version>1.6</commons-pool.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<druid.version>1.0.29</druid.version>
-		<mysql.version>8.0.16</mysql.version>
+<!--		<mysql.version>5.1.27</mysql.version>-->
+		<mysql.version>8.0.30</mysql.version>
+
 		<!-- sqlserver2005 -->
 		<sqlserver.version>1.0.0</sqlserver.version>
 		<!-- oracle -->
@@ -80,7 +82,7 @@
 		<postgresql.version>9.1-903.jdbc4</postgresql.version>
 
 		<!-- 测试依赖包 -->
-		<junit.version>4.13.1</junit.version>
+		<junit.version>4.7</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 
 		<CKFinder.version>2.4</CKFinder.version>
@@ -90,7 +92,7 @@
 		<org.quartz.version>1.6.2</org.quartz.version>
 		<activation.version>1.1.1</activation.version>
 		<aopalliance.version>1.0</aopalliance.version>
-		<xstream.version>1.4.10-java7</xstream.version>
+		<xstream.version>1.4.4</xstream.version>
 		<groovy.version>2.3.3</groovy.version>
 		<!--poi 工具类 -->
 		<easypoi.version>2.1.4</easypoi.version>
@@ -112,14 +114,14 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>jeecg-snapshots</id>
-			<name>jeecg-snapshots Repository</name>
-			<url>http://maven.jeecg.org/nexus/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
+		<!--		<repository>-->
+		<!--			<id>jeecg-snapshots</id>-->
+		<!--			<name>jeecg-snapshots Repository</name>-->
+		<!--			<url>http://maven.jeecg.org/nexus/content/repositories/snapshots</url>-->
+		<!--			<snapshots>-->
+		<!--				<enabled>true</enabled>-->
+		<!--			</snapshots>-->
+		<!--		</repository>-->
 		<repository>
 			<id>central</id>
 			<name>Central Repository</name>
@@ -796,7 +798,7 @@
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
-			<version>2.12.0</version>
+			<version>2.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>xml-apis</groupId>
@@ -806,7 +808,7 @@
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
-			<version>1.3.04</version>
+			<version>1.4.01</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlgraphics</groupId>
@@ -882,12 +884,12 @@
 		<dependency>
 			<groupId>org.p3framework</groupId>
 			<artifactId>jeecg-p3-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.p3framework</groupId>
 			<artifactId>jeecg-p3-ui</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.1.1</version>
 			<type>jar</type>
 		</dependency>
 		<!-- 插件demo -->
@@ -952,8 +954,8 @@
 				</configuration>
 			</plugin>
 			<plugin>
-			    <inherited>true</inherited>
-    			<groupId>org.apache.maven.plugins</groupId>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
